@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BE
 {
+    [Serializable]
     public class GuestRequest
     {
         public long GuestRequestKey { get; set; }

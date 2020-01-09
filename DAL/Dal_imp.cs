@@ -133,9 +133,9 @@ namespace DAL
         public IEnumerable<GuestRequest> getListGuestRequest(Func<GuestRequest, bool> predicate = null)
         {
             if (predicate == null) 
-                return (DS.DataSource.GuestRequestList).Clone(); 
+                return (DS.DataSource.GuestRequestList).Copy(); 
 
-            return DS.DataSource.GuestRequestList.Where(predicate).Clone();
+            return DS.DataSource.GuestRequestList.Where(predicate).Copy();
         }
 
         public Host getHost(long key)//return host by Guest Request Key.
@@ -145,7 +145,7 @@ namespace DAL
             if (host == null)
                 throw new Exception("Wrong host ID");
             else
-                return host.Clone();
+                return host.Copy();
         }
 
         public GuestRequest getGuestRequest(long key)//return guest Request by Guest Request Key.
@@ -155,15 +155,15 @@ namespace DAL
             if (guestRequest == null)
                 throw new Exception("Wrong guest request key");
             else
-                return guestRequest.Clone();
+                return guestRequest.Copy();
         }
 
         public IEnumerable<HostingUnit> getListHostingUnit(Func<HostingUnit, bool> predicate = null)
         {
             if (predicate == null)
-                return (DS.DataSource.HostingUnitList).Clone();
+                return (DS.DataSource.HostingUnitList).Copy();
 
-            return (DS.DataSource.HostingUnitList.Where(predicate)).Clone();
+            return (DS.DataSource.HostingUnitList.Where(predicate)).Copy();
         }
 
         public HostingUnit getHostingUnit(long key)//return Hosting Unit by Guest Hosting Unit Key.
@@ -173,7 +173,7 @@ namespace DAL
             if (hostingUnit == null)
                 throw new Exception("Wrong hosting unit key");
             else
-                return hostingUnit.Clone();
+                return hostingUnit.Copy();
         }
 
         public Order GetOrder(long key)
@@ -183,23 +183,23 @@ namespace DAL
             if (Order == null)
                 throw new Exception("Wrong order key");
             else
-                return Order.Clone();
+                return Order.Copy();
         }
 
         public IEnumerable<Order> getListOrders(Func<Order, bool> predicate = null)
         {
             if (predicate == null)
-                return (DS.DataSource.OrderList).Clone();
+                return (DS.DataSource.OrderList).Copy();
 
-            return (DS.DataSource.OrderList.Where(predicate)).Clone();
+            return (DS.DataSource.OrderList.Where(predicate)).Copy();
         }
 
         public IEnumerable<Host> getListHosts(Func<Host, bool> predicate = null)
         {
             if (predicate == null)
-                return (DS.DataSource.HostList).Clone();
+                return (DS.DataSource.HostList).Copy();
 
-            return (DS.DataSource.HostList.Where(predicate)).Clone();
+            return (DS.DataSource.HostList.Where(predicate)).Copy();
         }
 
         public void updateHostingUnit(HostingUnit hostingUnit)
@@ -208,7 +208,7 @@ namespace DAL
             if (index == -1)
                 throw new Exception("hosting Unit with the same key not found...");
 
-            DS.DataSource.HostingUnitList[index] = (hostingUnit).Clone();
+            DS.DataSource.HostingUnitList[index] = (hostingUnit).Copy();
         }
 
         public void updateOrder(Order order)
@@ -217,7 +217,7 @@ namespace DAL
             if (index == -1)
                 throw new Exception("Order with the same key not found...");
 
-            DS.DataSource.OrderList[index] = (order).Clone();
+            DS.DataSource.OrderList[index] = (order).Copy();
         }
 
         public void updateGuestReq(GuestRequest guestRequest)
@@ -226,17 +226,17 @@ namespace DAL
             if (index == -1)
                 throw new Exception("hosting Unit with the same key not found...");
 
-            DS.DataSource.GuestRequestList[index] = (guestRequest).Clone();
+            DS.DataSource.GuestRequestList[index] = (guestRequest).Copy();
         }
 
         public HostingUnit getHostingUnitByOrder(BE.Order order)//return Hosting Unit by Order.
         {
-            return (getHostingUnit(order.HostingUnitKey)).Clone();
+            return (getHostingUnit(order.HostingUnitKey)).Copy();
         }
 
         public GuestRequest getGuestReqByOrder(BE.Order order)//return guest req by Order.
         {
-            return (getGuestRequest((order.GuestRequestKey))).Clone();
+            return (getGuestRequest((order.GuestRequestKey))).Copy();
         }
 
         

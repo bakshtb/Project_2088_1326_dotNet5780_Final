@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BE
 {
+    [Serializable]
     public class HostingUnit
     {
         public long HostingUnitKey { get; set; }
