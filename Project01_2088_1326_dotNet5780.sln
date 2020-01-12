@@ -9,9 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL", "BL\BL.csproj", "{F682D72B-7F12-4DDF-9A80-D928B7B1DB45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PL", "PL\PL.csproj", "{5C8A3C3C-EB1D-452C-9AB4-22A2AE74B3ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PL", "PL\PL.csproj", "{5C8A3C3C-EB1D-452C-9AB4-22A2AE74B3ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DS", "DS\DS.csproj", "{FCA4AFAD-D405-4DA1-85CC-5A67F9952181}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PLWPF", "PLWPF\PLWPF.csproj", "{0517584E-9CFC-4BB8-84A5-B9AA5B92A3FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{FCA4AFAD-D405-4DA1-85CC-5A67F9952181}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCA4AFAD-D405-4DA1-85CC-5A67F9952181}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCA4AFAD-D405-4DA1-85CC-5A67F9952181}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0517584E-9CFC-4BB8-84A5-B9AA5B92A3FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0517584E-9CFC-4BB8-84A5-B9AA5B92A3FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0517584E-9CFC-4BB8-84A5-B9AA5B92A3FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0517584E-9CFC-4BB8-84A5-B9AA5B92A3FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

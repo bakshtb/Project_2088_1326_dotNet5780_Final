@@ -11,7 +11,9 @@ namespace PL
         {
             Console.ForegroundColor = ConsoleColor.White;
 
-            BL.BL_basic bl = new BL.BL_basic();
+            BL.IBL bl = BL.FactoryBL.GetBL();
+
+
             int coise = -1;
             int key , num;
             int tempEnum;
@@ -48,7 +50,16 @@ namespace PL
 
                     switch (coise)
                     {
+
+
+                        #region case 0
+
                         case 0: break;
+
+                        #endregion
+
+                        #region case 1
+
 
                         case 1:
                             BE.GuestRequest request = new BE.GuestRequest();
@@ -154,7 +165,9 @@ namespace PL
                             Console.ForegroundColor = ConsoleColor.White;
 
                             break;
+                        #endregion
 
+                        #region case 2
                         case 2:
 
                             BE.Host host= new BE.Host();
@@ -201,6 +214,10 @@ namespace PL
 
                             break;
 
+                        #endregion
+
+                        #region case 3
+
                         case 3:
 
                             BE.HostingUnit hostingUnit = new BE.HostingUnit();
@@ -235,6 +252,12 @@ namespace PL
                             Console.ForegroundColor = ConsoleColor.White;
 
                             break;
+
+
+                        #endregion
+
+                        #region case 4
+
                         case 4:
                             BE.Order order = new BE.Order();
 
@@ -254,6 +277,10 @@ namespace PL
 
                             break;
 
+                        #endregion
+
+                        #region case 5
+
                         case 5:
                             Console.Write("Enter hosting unit key to delete: ");
                             key = int.Parse(Console.ReadLine());
@@ -265,6 +292,10 @@ namespace PL
                             Console.ForegroundColor = ConsoleColor.White;
 
                             break;
+
+                        #endregion
+
+                        #region case 6
 
                         case 6:
 
@@ -293,6 +324,10 @@ namespace PL
                             Console.ForegroundColor = ConsoleColor.White;
 
                             break;
+
+                        #endregion
+
+                        #region case 7
 
                         case 7:
 
@@ -342,6 +377,10 @@ namespace PL
 
                             break;
 
+                        #endregion
+
+                        #region case 3
+
                         case 8:
 
                             Console.Write("Enter key of the hosting unit: ");
@@ -381,6 +420,10 @@ namespace PL
                             Console.ForegroundColor = ConsoleColor.White;
 
                             break;
+
+                        #endregion
+
+                        #region case 9
 
                         case 9:
 
@@ -492,6 +535,10 @@ namespace PL
 
                             break;
 
+                        #endregion
+
+                        #region case 10
+
                         case 10:
 
                             Console.Write("Enter the host ID to print [To print all hosting units please enter 0]: ");
@@ -507,6 +554,10 @@ namespace PL
                                 Console.WriteLine(bl.GetHost(key));
 
                             break;
+
+                        #endregion
+
+                        #region case 11
 
                         case 11:
 
@@ -524,6 +575,10 @@ namespace PL
 
                             break;
 
+                        #endregion
+
+                        #region case 12
+
                         case 12:
 
                             Console.Write("Enter the guest request key to print [To print all guest requests please enter 0]: ");
@@ -539,6 +594,10 @@ namespace PL
                                 Console.WriteLine(bl.GetGuestRequest(key));
 
                             break;
+
+                        #endregion
+
+                        #region case 13
 
                         case 13:
 
@@ -556,6 +615,10 @@ namespace PL
 
                             break;
 
+                        #endregion
+
+                        #region case 14
+
                         case 14:
 
                             foreach (var item in bl.getListBankBranchs())
@@ -565,6 +628,10 @@ namespace PL
                             }
 
                             break;
+
+                        #endregion
+
+                        #region case 15
 
                         case 15:
 
@@ -583,6 +650,11 @@ namespace PL
 
                             break;
 
+                        #endregion
+
+                        #region case 16
+
+
                         case 16:
 
                             Console.WriteLine("Enter the amount of days");
@@ -596,6 +668,10 @@ namespace PL
 
                             break;
 
+                        #endregion
+
+                        #region case 17
+
                         case 17:
 
                             Console.Write("Enter guest request key: ");
@@ -605,6 +681,10 @@ namespace PL
 
                             break;
 
+                        #endregion
+
+                        #region case 18
+
                         case 18:
                             Console.Write("Enter hosting unit key: ");
                             key = int.Parse(Console.ReadLine());
@@ -612,6 +692,10 @@ namespace PL
                             Console.WriteLine("The amount of orders that accepted " + bl.SumOfApprovedOrder(bl.GetHostingUnit(key)));
 
                             break;
+
+                        #endregion
+
+                        #region case 19
 
                         case 19:
 
@@ -629,6 +713,10 @@ namespace PL
 
                             break;
 
+                        #endregion
+
+                        #region case 20
+
                         case 20:
 
                             foreach (var items in bl.GetGuestRequestsSumOfPeoplesByGroups())
@@ -644,6 +732,10 @@ namespace PL
 
                             break;
 
+                        #endregion
+
+                        #region case 21
+
                         case 21:
                             foreach (var items in bl.GetHostsNumOfUnitsByGroups())
                             {
@@ -657,6 +749,10 @@ namespace PL
                             }
 
                             break;
+
+                        #endregion
+
+                        #region case 22
 
                         case 22:
 
@@ -672,6 +768,9 @@ namespace PL
                             }
                            
                             break;
+
+                        #endregion
+
 
                         default:
                             Console.WriteLine("ERORR");

@@ -7,7 +7,14 @@ namespace BL
 {
     public class BL_basic : IBL
     {
-        DAL.Dal_imp dal = new DAL.Dal_imp();
+        DAL.IDAL dal;
+
+        public BL_basic() 
+        {
+            dal = DAL.FactoryDal.GetDal(); 
+        }
+
+        #region Guest Request Functions
 
         public long addGuestReq(GuestRequest guestRequest)
         {
@@ -17,11 +24,63 @@ namespace BL
                 throw new Exception("Entrance day must be before departure day!");
         }
 
+        public void updateGuestReq(GuestRequest guestRequest)
+        {
+            dal.updateGuestReq(guestRequest);
+        }
+
+        public GuestRequest GetGuestRequest(long key)
+        {
+            return dal.getGuestRequest(key);
+        }
+
+        public IEnumerable<GuestRequest> getListGuestRequest(Func<GuestRequest, bool> predicate = null)
+        {
+            return dal.getListGuestRequest(predicate);
+        }
+
+        #endregion
+
+        #region Hosting Unit Functions
+
         public long addHostingUnit(HostingUnit hostingUnit)
         {
 
             return dal.addHostingUnit(hostingUnit);
         }
+
+        public bool deleteHostingUnit(long key)
+        {
+            return deleteHostingUnit(GetHostingUnit(key));
+        }
+
+        public bool deleteHostingUnit(HostingUnit hostingUnit)
+        {
+            if (!IsTherOpenOrderForTheHostingUnit(hostingUnit))
+                return dal.deleteHostingUnit(hostingUnit);
+            else
+                throw new Exception("Unable to delete the hosting unit, there are open bookings for this unit");
+        }
+
+        public void updateHostingUnit(HostingUnit hostingUnit)
+        {
+            dal.updateHostingUnit(hostingUnit);
+        }
+
+        public HostingUnit GetHostingUnit(long key)
+        {
+            return dal.getHostingUnit(key);
+        }
+
+        public IEnumerable<HostingUnit> getListHostingUnit(Func<HostingUnit, bool> predicate = null)
+        {
+            return dal.getListHostingUnit(predicate);
+        }
+
+
+        #endregion
+
+        #region Order Functions
 
         public long addOrder(Order order)
         {
@@ -42,26 +101,6 @@ namespace BL
 
             return dal.addOrder(order);
         }
-
-        public bool deleteHostingUnit(long key)
-        {
-           return deleteHostingUnit(GetHostingUnit(key));
-        }
-
-        public bool deleteHostingUnit(HostingUnit hostingUnit)
-        {
-            if (!IsTherOpenOrderForTheHostingUnit(hostingUnit))
-                return dal.deleteHostingUnit(hostingUnit);
-            else
-                throw new Exception("Unable to delete the hosting unit, there are open bookings for this unit");
-        }     
-
-        public void updateHostingUnit(HostingUnit hostingUnit)
-        {
-            dal.updateHostingUnit(hostingUnit);
-        }
-
-
 
         public void updateOrder(long key, OrderStatusEnum status)
         {
@@ -92,14 +131,14 @@ namespace BL
 
                 for (int i = 0; i < length; i++)
                 {
-                    unit.Diary[EntryDate.Month-1, EntryDate.Day-1] = false;
+                    unit.Diary[EntryDate.Month - 1, EntryDate.Day - 1] = false;
                     EntryDate = EntryDate.AddDays(1);
                 }
                 dal.updateHostingUnit(unit);
 
                 GuestRequest guestRequest = dal.getGuestReqByOrder(order);
 
-                string PrivateName = guestRequest.PrivateName, FamilyName =  guestRequest.FamilyName;
+                string PrivateName = guestRequest.PrivateName, FamilyName = guestRequest.FamilyName;
 
                 foreach (var item in dal.getListGuestRequest())
                 {
@@ -121,10 +160,71 @@ namespace BL
             dal.updateOrder(order);
         }
 
-        public void updateGuestReq(GuestRequest guestRequest)
+        public Order GetOrder(long key)
         {
-            dal.updateGuestReq(guestRequest);
+            return dal.GetOrder(key);
         }
+
+        public IEnumerable<Order> getListOrders(Func<Order, bool> predicate = null)
+        {
+            return dal.getListOrders(predicate);
+        }
+
+        #endregion
+
+        #region Bank Branchs Unit Functions
+
+
+        public List<BankBranch> getListBankBranchs()
+        {
+            return dal.getListBankBranchs();
+        }
+
+        #endregion
+
+        #region Host Functions
+
+        public Host GetHost(long key)
+        {
+            return dal.getHost(key);
+        }
+
+        public long addHost(Host host)
+        {
+            return dal.addHost(host);
+        }
+
+        public void updateHost(long key)
+        {
+            dal.addHost(GetHost(key));
+        }
+
+        public void updateHost(Host host)
+        {
+            Host newHost = host, prevHost = GetHost(host.HostKey);
+
+
+            if (host.CollectionClearance == false && prevHost.CollectionClearance == true)
+                foreach (var item in getListHostingUnit())
+                {
+                    if (item.Owner.HostKey == host.HostKey)
+                    {
+                        if (IsTherOpenOrderForTheHostingUnit(item))
+                            throw new Exception("You can not cancel the collection clearance: The host: " + host.HostKey + " owns a hosting unit " + item.HostingUnitKey + " that has an open order");
+                    }
+                }
+            dal.updateHost(host);
+        }
+
+        public IEnumerable<Host> getListHosts(Func<Host, bool> predicate = null)
+        {
+            return dal.getListHosts(predicate);
+        }
+
+        #endregion
+
+        #region Other Functions
+
 
         public bool CheckAvailability(HostingUnit hostingUnit , DateTime date , int length)
         {
@@ -146,46 +246,6 @@ namespace BL
             GuestRequest guestRequest = dal.getGuestReqByOrder(order);
 
             return CheckAvailability(hostingUnit, guestRequest.EntryDate, daysDistance(guestRequest.EntryDate , guestRequest.ReleaseDate) );
-        }
-
-        public List<BankBranch> getListBankBranchs()
-        {
-            return dal.getListBankBranchs();
-        }
-
-        public HostingUnit GetHostingUnit (long key)
-        {
-            return dal.getHostingUnit(key);
-        }
-
-        public IEnumerable<HostingUnit> getListHostingUnit(Func<HostingUnit, bool> predicate = null)
-        {
-            return dal.getListHostingUnit(predicate);
-        }
-
-        public GuestRequest GetGuestRequest(long key)
-        {
-            return dal.getGuestRequest(key);
-        }
-
-        public IEnumerable<GuestRequest> getListGuestRequest(Func<GuestRequest, bool> predicate = null)
-        {
-            return dal.getListGuestRequest(predicate);
-        }
-
-        public Order GetOrder(long key)
-        {
-            return dal.GetOrder(key);
-        }
-
-        public Host GetHost(long key)
-        {
-            return dal.getHost(key);
-        }
-
-        public IEnumerable<Order> getListOrders(Func<Order, bool> predicate = null)
-        {
-            return dal.getListOrders(predicate);
         }
 
         public bool IsTherOpenOrderForTheHostingUnit(HostingUnit hostingUnit)
@@ -264,37 +324,6 @@ namespace BL
                    group hostingUnit by hostingUnit.Area;
         }
 
-        public long addHost(Host host)
-        {
-            return dal.addHost(host);
-        }
-
-
-        public void updateHost(long key)
-        {
-            dal.addHost(GetHost(key));
-        }
-
-        public void updateHost(Host host)
-        {
-            Host newHost = host, prevHost = GetHost(host.HostKey);
-
-
-            if (host.CollectionClearance == false && prevHost.CollectionClearance == true)
-                foreach (var item in getListHostingUnit())
-                {
-                    if (item.Owner.HostKey == host.HostKey)
-                    {
-                        if (IsTherOpenOrderForTheHostingUnit(item))
-                            throw new Exception("You can not cancel the collection clearance: The host: "+host.HostKey+ " owns a hosting unit "+item.HostingUnitKey+ " that has an open order");
-                    }
-                }   
-            dal.updateHost(host);
-        }
-
-        public IEnumerable<Host> getListHosts(Func<Host, bool> predicate = null)
-        {
-            return dal.getListHosts(predicate);
-        }
+        #endregion
     }
 }

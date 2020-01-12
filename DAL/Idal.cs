@@ -1,31 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BE;
 
 namespace DAL
 {
     public interface IDAL
     {
-        long addHost(BE.Host host);
-        void updateHost(BE.Host host);
+        long addHost(Host host);
 
-        long addGuestReq(BE.GuestRequest guestRequest);
-        void updateGuestReq(BE.GuestRequest guestRequest);
+        void updateHost(Host host);
 
-        long addHostingUnit(BE.HostingUnit hostingUnit);
-        bool deleteHostingUnit(BE.HostingUnit hostingUnit);
-        void updateHostingUnit(BE.HostingUnit hostingUnit);
+        Host getHost(long key);
 
-        long addOrder(BE.Order order);
-        void updateOrder(BE.Order order);
+        IEnumerable<Host> getListHosts(Func<Host, bool> predicate = null);
 
-        IEnumerable<BE.HostingUnit> getListHostingUnit(Func<BE.HostingUnit, bool> predicate = null);
-        IEnumerable<BE.GuestRequest> getListGuestRequest(Func<BE.GuestRequest, bool> predicate = null);
-        IEnumerable<BE.Order> getListOrders(Func<BE.Order, bool> predicate = null);
-        IEnumerable<BE.Host> getListHosts(Func<BE.Host, bool> predicate = null);
 
-        List<BE.BankBranch> getListBankBranchs();
+
+        long addGuestReq(GuestRequest guestRequest);
+
+        IEnumerable<GuestRequest> getListGuestRequest(Func<GuestRequest, bool> predicate = null);
+
+        GuestRequest getGuestRequest(long key);
+
+        void updateGuestReq(GuestRequest guestRequest);
+
+        GuestRequest getGuestReqByOrder(BE.Order order);
+
+
+
+        long addHostingUnit(HostingUnit hostingUnit);
+
+        bool deleteHostingUnit(HostingUnit hostingUnit);
+
+        IEnumerable<HostingUnit> getListHostingUnit(Func<HostingUnit, bool> predicate = null);
+
+        HostingUnit getHostingUnit(long key);
+
+        void updateHostingUnit(HostingUnit hostingUnit);
+
+        HostingUnit getHostingUnitByOrder(BE.Order order);
+
+
+
+        long addOrder(Order order);
+
+        Order GetOrder(long key);
+
+        IEnumerable<Order> getListOrders(Func<Order, bool> predicate = null);
+
+        void updateOrder(Order order);
+
+
+        List<BankBranch> getListBankBranchs();
+
     }
 }

@@ -1,47 +1,93 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BE;
 
 namespace BL
 {
     public interface IBL
     {
-        void updateHost(BE.Host host);
-        long addHost(BE.Host host);
+        #region Guest Request Functions
 
-        long addGuestReq(BE.GuestRequest guestRequest);
-        void updateGuestReq(BE.GuestRequest guestRequest);
+        long addGuestReq(GuestRequest guestRequest);
 
-        long addHostingUnit(BE.HostingUnit hostingUnit);
-        bool deleteHostingUnit(BE.HostingUnit hostingUnit);
-        void updateHostingUnit(BE.HostingUnit hostingUnit);
+        void updateGuestReq(GuestRequest guestRequest);
 
-        long addOrder(BE.Order order);
-        void updateOrder(BE.Order order);
+        GuestRequest GetGuestRequest(long key);
 
-        IEnumerable<BE.HostingUnit> getListHostingUnit(Func<BE.HostingUnit, bool> predicate = null);
-        IEnumerable<BE.GuestRequest> getListGuestRequest(Func<BE.GuestRequest, bool> predicate = null);
-        IEnumerable<BE.Order> getListOrders(Func<BE.Order, bool> predicate = null);
-        IEnumerable<BE.Host> getListHosts(Func<BE.Host, bool> predicate = null);
-        List<BE.BankBranch> getListBankBranchs();
+        IEnumerable<GuestRequest> getListGuestRequest(Func<GuestRequest, bool> predicate = null);
+
+        #endregion
+
+        #region Hosting Unit Functions
+
+        long addHostingUnit(HostingUnit hostingUnit);
+
+        bool deleteHostingUnit(long key);
+
+        bool deleteHostingUnit(HostingUnit hostingUnit);
+
+        void updateHostingUnit(HostingUnit hostingUnit);
+
+        HostingUnit GetHostingUnit(long key);
+
+        IEnumerable<HostingUnit> getListHostingUnit(Func<HostingUnit, bool> predicate = null);
 
 
-        IEnumerable<BE.HostingUnit> GetAvailableHostingUnits(DateTime date, int length);
+        #endregion
 
-        int daysDistance(DateTime d1 , DateTime d2);
-        int daysDistance(DateTime d1);
+        #region Order Functions
 
-        IEnumerable<BE.Order> ordersBiggestThan(int length);
+        long addOrder(Order order);
 
-        int getSumOrders(BE.GuestRequest guestRequest);
+        void updateOrder(long key, OrderStatusEnum status);
 
-        int SumOfApprovedOrder(BE.HostingUnit hostingUnit);
+        void updateOrder(Order order);
 
-        IEnumerable<IGrouping<BE.AreaEnum, BE.GuestRequest>> GetGuestRequestsAreaByGroups();
-        IEnumerable<IGrouping<int, BE.GuestRequest>> GetGuestRequestsSumOfPeoplesByGroups();
-        IEnumerable<IGrouping<int, BE.Host>> GetHostsNumOfUnitsByGroups();
-        IEnumerable<IGrouping<BE.AreaEnum, BE.HostingUnit>> GetHostingUnitsAreaByGroups();
+        Order GetOrder(long key);
+
+        IEnumerable<Order> getListOrders(Func<Order, bool> predicate = null);
+
+        #endregion
+
+        #region Bank Branchs Unit Functions
+
+        List<BankBranch> getListBankBranchs();
+
+        #endregion
+
+        #region Host Functions
+
+        Host GetHost(long key);
+
+        long addHost(Host host);
+
+        void updateHost(long key);
+
+        void updateHost(Host host);
+
+        IEnumerable<Host> getListHosts(Func<Host, bool> predicate = null);
+
+        #endregion
+
+        #region Other Functions
+
+        IEnumerable<HostingUnit> GetAvailableHostingUnits(DateTime date, int length);
+
+        IEnumerable<Order> ordersBiggestThan(int length);
+
+        int getSumOrders(GuestRequest guestRequest);
+
+        int SumOfApprovedOrder(HostingUnit hostingUnit);
+
+        IEnumerable<IGrouping<AreaEnum, GuestRequest>> GetGuestRequestsAreaByGroups();
+
+        IEnumerable<IGrouping<int, GuestRequest>> GetGuestRequestsSumOfPeoplesByGroups();
+
+        IEnumerable<IGrouping<int, Host>> GetHostsNumOfUnitsByGroups();
+
+        IEnumerable<IGrouping<AreaEnum, HostingUnit>> GetHostingUnitsAreaByGroups();
+
+        #endregion
     }
 }

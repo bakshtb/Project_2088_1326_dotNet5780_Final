@@ -44,6 +44,7 @@
     <Compile Include="Cloning.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Dal_imp.cs" />
+    <Compile Include="FactoryDal.cs" />
     <Compile Include="IDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
