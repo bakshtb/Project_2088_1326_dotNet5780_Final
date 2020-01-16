@@ -20,12 +20,12 @@ namespace BE
 
         public override string ToString()
         {
-            string ret = "Hosting Unit Key: " + HostingUnitKey
-                        + "\nGuest Request Key: " + GuestRequestKey
-                        + "\nOrder Key: " + OrderKey
-                        + "\nStatus: " + Status
-                        + "\nCreate Date: " + CreateDate.ToString()
-                        + "\nOrder Date: " + OrderDate.ToString();
+            string ret = "מספר יחידת אירוח: " + HostingUnitKey
+                        + "\nמספר בקשה: " + GuestRequestKey
+                        + "\nמספר הזמנה: " + OrderKey
+                        + "\nסטטוס: " + Status
+                        + "\nתארי יצירה: " + CreateDate.ToString()
+                        + "\nתאריך הזמנה: " + OrderDate.ToString();
             return ret;
         }
     }

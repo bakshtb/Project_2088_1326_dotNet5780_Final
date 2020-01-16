@@ -68,6 +68,8 @@ namespace BL
 
         IEnumerable<Host> getListHosts(Func<Host, bool> predicate = null);
 
+        IEnumerable<HostingUnit> GetHostingUnitsOfHost(long key);
+
         #endregion
 
         #region Other Functions
@@ -89,5 +91,7 @@ namespace BL
         IEnumerable<IGrouping<AreaEnum, HostingUnit>> GetHostingUnitsAreaByGroups();
 
         #endregion
+
+        
     }
 }

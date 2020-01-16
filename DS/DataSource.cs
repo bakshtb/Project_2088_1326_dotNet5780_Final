@@ -32,15 +32,15 @@ namespace DS
 
             tempGuestRequestList.Add(new BE.GuestRequest()
             {
-                PrivateName = "Itzhak",
-                FamilyName = "Avrahamson",
+                PrivateName = "יצחק",
+                FamilyName = "אברהמסון",
                 MailAddress = "Itzhak@gmail.com",
                 Status = BE.GuestReqStatusEnum.not_addressed,
                 RegistrationDate = new DateTime(1948, 01, 01),
                 EntryDate = new DateTime(2019, 1, 2),
                 ReleaseDate = new DateTime(2019, 1, 5),
                 Area = 0,
-                SubArea = "Jerusalem",
+                
                 Type = 0,
                 Adults = 2,
                 Children = 2,
@@ -53,15 +53,15 @@ namespace DS
             tempGuestRequestList.Add(new BE.GuestRequest()
             {
 
-                PrivateName = "Yahakov",
-                FamilyName = "Itzhakson",
+                PrivateName = "יעקןב",
+                FamilyName = "יצחקסון",
                 MailAddress = "Yahakov@gmail.com",
                 Status = BE.GuestReqStatusEnum.not_addressed,
                 RegistrationDate = new DateTime(1950, 01, 01),
                 EntryDate = new DateTime(2018, 10, 10),
                 ReleaseDate = new DateTime(2018, 11, 10),
                 Area = BE.AreaEnum.north_Israel,
-                SubArea = "Beer Sheva",
+                
                 Type = 0,
                 Adults = 3,
                 Children = 2,
@@ -73,15 +73,15 @@ namespace DS
             tempGuestRequestList.Add(new BE.GuestRequest()
             {
 
-                PrivateName = "Reuven",
-                FamilyName = "Yakovson",
+                PrivateName = "ראובן",
+                FamilyName = "יעקובסון",
                 MailAddress = "Reuven@gmail.com",
                 Status = BE.GuestReqStatusEnum.not_addressed,
                 RegistrationDate = new DateTime(1955, 01, 01),
                 EntryDate = new DateTime(2017, 10, 10),
                 ReleaseDate = new DateTime(2017, 11, 10),
                 Area = 0,
-                SubArea = "Hevron",
+                
                 Type = 0,
                 Adults = 2,
                 Children = 2,
@@ -93,36 +93,36 @@ namespace DS
 
             tempHostList.Add(new BE.Host()
             {
-                HostKey = 12344321,
-                PrivateName = "Yeuda",
-                FamilyName = "Yakovson",
+                HostKey = 2113020,
+                PrivateName = "יהודה",
+                FamilyName = "יעקבוסון",
                 FhoneNumber = 0504763953,
                 MailAddress = "Yeuda@gmail.com",
                 BankBranchDetails = new BE.BankBranch
                 {
                     BankNumber = 1,
-                    BankName = "Yahav",
+                    BankName = "יהב",
                     BranchNumber = 7543,
-                    BranchAddress = "Yafo 16",
-                    BranchCity = "Tel Aviv",
+                    BranchAddress = "יפו 16",
+                    BranchCity = "תל אביב",
                 },
                 BankAccountNumber = 344565,
-                CollectionClearance = false
+                CollectionClearance = true
             });
             tempHostList.Add(new BE.Host()
             {
                 HostKey = 87654321,
-                PrivateName = "Levi",
-                FamilyName = "Yakovson",
+                PrivateName = "לוי",
+                FamilyName = "יעקובסון",
                 FhoneNumber = 0533367345,
                 MailAddress = "Levi@gmail.com",
                 BankBranchDetails = new BE.BankBranch
                 {
                     BankNumber = 1,
-                    BankName = "Leumi",
+                    BankName = "לאומי",
                     BranchNumber = 4321,
-                    BranchAddress = "King David St 18",
-                    BranchCity = "Jerusalem",
+                    BranchAddress = "המלך דוד 18",
+                    BranchCity = "ירושלים",
                 },
                 BankAccountNumber = 654321,
                 CollectionClearance = true
@@ -130,17 +130,17 @@ namespace DS
             tempHostList.Add(new BE.Host()
             {
                 HostKey = 12345678,
-                PrivateName = "Shimon",
-                FamilyName = "Yakovson",
+                PrivateName = "שמעון",
+                FamilyName = "יעקובסון",
                 FhoneNumber = 0543456654,
                 MailAddress = "Shimon@gmail.com",
                 BankBranchDetails = new BE.BankBranch
                 {
                     BankNumber = 1,
-                    BankName = "Pepper",
+                    BankName = "פפר",
                     BranchNumber = 1234,
-                    BranchAddress = "Vitzman St 24",
-                    BranchCity = "Tel Aviv",
+                    BranchAddress = "רחוב ויצמן 24",
+                    BranchCity = "תל אביב",
                 },
                 BankAccountNumber = 123456,
                 CollectionClearance = true
@@ -153,7 +153,7 @@ namespace DS
                 OrderKey = 10000000,
                 Status = BE.OrderStatusEnum.Not_yet_addressed,
                 CreateDate = new DateTime(2020, 1, 1),
-                OrderDate = new DateTime(2020, 1, 1),
+                OrderDate = new DateTime(2020, 10, 1),
                 isClosed = false,
                 cost = 1000
             });
@@ -181,31 +181,25 @@ namespace DS
             });
 
             tempHostingUnitList.Add(new BE.HostingUnit()
-            {
-
+            {   
                 Owner = tempHostList[0],
-                HostingUnitName = "Shimom's Tzimer",
-                Diary = new bool[12, 31],
+                HostingUnitName = "הצימר של שמעון",
+                
                 Area = BE.AreaEnum.Jerusalem_area,
-                SubArea = "Jerusalem"
             });
             tempHostingUnitList.Add(new BE.HostingUnit()
-            {
-
+            {                
                 Owner = tempHostList[1],
-                HostingUnitName = "Levi's Tzimer",
-                Diary = new bool[2, 31],
+                HostingUnitName = "הצימר של לוי",
+                
                 Area = BE.AreaEnum.All_Israel,
-                SubArea = "Heifa"
             });
             tempHostingUnitList.Add(new BE.HostingUnit()
             {
-
                 Owner = tempHostList[2],
-                HostingUnitName = "Yeuda's Tzimer",
-                Diary = new bool[12, 31],
+                HostingUnitName = "הצימר של יהודה",
+                
                 Area = BE.AreaEnum.Central_Israel,
-                SubArea = "Tel-Aviv"
             });
         }
 

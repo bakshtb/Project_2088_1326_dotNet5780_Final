@@ -13,7 +13,6 @@ namespace PL
 
             BL.IBL bl = BL.FactoryBL.GetBL();
 
-
             int coise = -1;
             int key , num;
             int tempEnum;
@@ -44,7 +43,7 @@ namespace PL
                 "\n\t21. Print a hosts list that grouped by the number of hosting units they hold" +
                 "\n\t22. Print List of hosting units grouped according to the required area.");
                 
-                try
+                //try
                 {
                     coise = int.Parse(Console.ReadLine());
 
@@ -92,7 +91,7 @@ namespace PL
                             request.Area = (BE.AreaEnum)(tempEnum -1);
 
                             Console.Write("subArea = ");
-                            request.SubArea = Console.ReadLine();
+                            
 
                             do
                             {
@@ -459,7 +458,7 @@ namespace PL
                             request.Area = (BE.AreaEnum)(tempEnum - 1);
 
                             Console.Write("subArea = ");
-                            request.SubArea = Console.ReadLine();
+                            
 
                             do
                             {
@@ -777,11 +776,11 @@ namespace PL
                             break;
                     }
                 }
-                catch (Exception ex)
+                //catch (Exception ex)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("\n\tERORR: " + ex.Message + "\n");
-                    Console.ForegroundColor = ConsoleColor.White;
+                    //Console.ForegroundColor = ConsoleColor.Red;
+                    //Console.WriteLine("\n\tERORR: " + ex.Message + "\n");
+                    //Console.ForegroundColor = ConsoleColor.White;
                 }
 
 

@@ -6,23 +6,82 @@
         xmlns:local="clr-namespace:PLWPF"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="תוכנה לניהול והתאמת נופש " Height="450" Width="800">
-    <Grid>
+        Title="תוכנה לניהול והתאמת נופש " Height="450" Width="608">
+    <Grid x:Name="MainWindowsGrid" Margin="0,0,10,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+        <Button x:Name="btnGuest"  Grid.Row="0"  HorizontalAlignment="Left" Width="130" Height="130" Margin="35,5,0,10" Click="btnGuest_Click" >
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Height="130" Width="130" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Ellipse x:Name="GuestEllipse" HorizontalAlignment="Center" Width="110" Height="110" Stroke="Black"  />
+                        <StackPanel Width="95" Height="95">
+                            <Image Source="Pictures/Guest.png" Width="75" Height="75" />
+                            <TextBlock FlowDirection="RightToLeft" Height="15" Width="90" TextAlignment="Center" FontSize="14"><Run Text="אורח"/></TextBlock>
+                        </StackPanel>
 
-        <Image Stretch="Fill" Source="/Pictures/background.png" Grid.RowSpan="3" Margin="0,86,0,10" HorizontalAlignment="Center" Width="380"/>
-        <Button x:Name="btnGuestRequest" Content="דרישות לקוח" Grid.Column="1" Margin="48,40,48,41" Grid.Row="0" Click="btnGuestRequest_Click" />
-        <Button x:Name="btnHostingUnit" Content="יחידת אירוח" Grid.Column="1" Margin="48,40,48,41" Grid.Row="1" Click="btnHostingUnit_Click"/>
-        <Button x:Name="btnAdmin" Content="מנהל האתר" Grid.Column="1" Margin="48,40,48,41" Grid.Row="2" Click="btnAdmin_Click"/>
+                    </Grid>
 
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Fill" TargetName="GuestEllipse" Value="AliceBlue"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <Button x:Name="btnHost" Grid.Row="1"  HorizontalAlignment="Left" Width="130" Height="130" Margin="35,5,0,10" Click="btnHost_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Height="130" Width="130" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Ellipse x:Name="HostEllipse" HorizontalAlignment="Center" Width="110" Height="110" Stroke="Black"  />
+                        <StackPanel Width="95" Height="95">
+                            <Image Source="Pictures/Host.png" Width="75" Height="75" />
+                            <TextBlock FlowDirection="RightToLeft" Height="15" Width="90" TextAlignment="Center" FontSize="14"><Run Text="מארח"/></TextBlock>
+                        </StackPanel>
+
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Fill" TargetName="HostEllipse" Value="AliceBlue"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <Button x:Name="btnAdmin" Grid.Row="2"  HorizontalAlignment="Left" Width="130" Height="130" Margin="35,5,0,10" Click="btnAdmin_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Height="130" Width="130" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Ellipse x:Name="AdminEllipse" HorizontalAlignment="Center" Width="110" Height="110" Stroke="Black"  />
+                        <StackPanel Width="95" Height="95">
+                            <Image Source="Pictures/Admin.png" Width="75" Height="75" />
+                            <TextBlock FlowDirection="RightToLeft" Height="15" Width="90" TextAlignment="Center" FontSize="14"><Run Text="מנהל"/></TextBlock>
+                        </StackPanel>
+
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Fill" TargetName="AdminEllipse" Value="AliceBlue"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <Image Stretch="Fill" Source="/Pictures/background.png" Grid.RowSpan="2" Margin="216,0,2,0" Grid.Row="1"/>
+        <Label Content="ברוכים הבאים " HorizontalAlignment="Left" Margin="254,0,0,0" VerticalAlignment="Center" Height="90" Width="304" FontSize="48"/>
+        <Label Content="Label" HorizontalAlignment="Left" Margin="940,0,0,0" VerticalAlignment="Center"/>
     </Grid>
 </Window>

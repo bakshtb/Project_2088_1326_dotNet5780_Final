@@ -6,9 +6,7 @@
         xmlns:local="clr-namespace:PLWPF"
         mc:Ignorable="d"
         Title="AdminWindow" Height="450" Width="800">
-    <Grid>
-        <DatePicker HorizontalAlignment="Left" Margin="210,0,0,0" VerticalAlignment="Center"/>
-        <Calendar HorizontalAlignment="Left" Margin="346,150,0,0" VerticalAlignment="Top"/>
+    <Grid/>
 
-    </Grid>
+
 </Window>

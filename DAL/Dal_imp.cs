@@ -27,7 +27,7 @@ namespace DAL
             Host tempHost = getListHosts().FirstOrDefault(host1 => host1.HostKey == host.HostKey);
 
             if (tempHost != null)
-                throw new Exception("There is already a host with the same ID");
+                throw new Exception("יש כבר מארח עם אותו תעודת זהות");
             else
             {
                 DS.DataSource.HostList.Add(host.Copy());
@@ -39,7 +39,7 @@ namespace DAL
         {
             int index = DS.DataSource.HostList.FindIndex(h => h.HostKey == host.HostKey);
             if (index == -1)
-                throw new Exception("host with the same key not found...");
+                throw new Exception("התעודת זהות שהוזנה לא מייצגת מארח במערכת");
 
             DS.DataSource.HostList[index] = (host).Copy();
         }
@@ -49,7 +49,7 @@ namespace DAL
             Host host = getListHosts().FirstOrDefault(h => h.HostKey == key);
 
             if (host == null)
-                throw new Exception("Wrong host ID");
+                throw new Exception("מספר תעודת זהות לא נכון");
             else
                 return host.Copy();
         }
@@ -69,6 +69,7 @@ namespace DAL
         public long addGuestReq(GuestRequest guestRequest)
         {
             guestRequest.GuestRequestKey = Configuration.GuestRequestKey++;
+            guestRequest.RegistrationDate = DateTime.Today;
             DS.DataSource.GuestRequestList.Add(guestRequest.Copy());
             return guestRequest.GuestRequestKey;
         }
@@ -86,7 +87,7 @@ namespace DAL
             GuestRequest guestRequest = getListGuestRequest().FirstOrDefault(req => req.GuestRequestKey == key);
 
             if (guestRequest == null)
-                throw new Exception("Wrong guest request key");
+                throw new Exception("מספר בקשה לא נכון");
             else
                 return guestRequest.Copy();
         }
@@ -95,7 +96,7 @@ namespace DAL
         {
             int index = DS.DataSource.GuestRequestList.FindIndex(s => s.GuestRequestKey == guestRequest.GuestRequestKey);
             if (index == -1)
-                throw new Exception("hosting Unit with the same key not found...");
+                throw new Exception("היחידת האירוח המבוקשת לא נימצאה");
 
             DS.DataSource.GuestRequestList[index] = (guestRequest).Copy();
         }
@@ -114,14 +115,16 @@ namespace DAL
 
             hostingUnit.HostingUnitKey = Configuration.HostingUnitKey++;
 
-            hostingUnit.Diary = new bool[12, 31];
-            for (int i = 0; i < 12; i++)
-            {
-                for (int j = 0; j < 31; j++)
-                {
-                    hostingUnit.Diary[i, j] = true;
-                }
-            }
+            hostingUnit.AllDates = new List<DateTime>();
+
+            //hostingUnit.Diary = new bool[12, 31];
+            //for (int i = 0; i < 12; i++)
+            //{
+            //    for (int j = 0; j < 31; j++)
+            //    {
+            //        hostingUnit.Diary[i, j] = true;
+            //    }
+            //}
 
             DS.DataSource.HostingUnitList.Add(hostingUnit.Copy());
             return hostingUnit.HostingUnitKey;
@@ -146,7 +149,7 @@ namespace DAL
             HostingUnit hostingUnit = getListHostingUnit().FirstOrDefault(unit => unit.HostingUnitKey == key);
 
             if (hostingUnit == null)
-                throw new Exception("Wrong hosting unit key");
+                throw new Exception("מספר יחידת אירוח לא נכון");
             else
                 return hostingUnit.Copy();
         }
@@ -155,7 +158,7 @@ namespace DAL
         {
             int index = DS.DataSource.HostingUnitList.FindIndex(s => s.HostingUnitKey == hostingUnit.HostingUnitKey);
             if (index == -1)
-                throw new Exception("hosting Unit with the same key not found...");
+                throw new Exception("יחדית האירוח לא נימצאה");
 
             DS.DataSource.HostingUnitList[index] = (hostingUnit).Copy();
         }
@@ -182,7 +185,7 @@ namespace DAL
             Order Order = getListOrders().FirstOrDefault(order => order.OrderKey == key);
 
             if (Order == null)
-                throw new Exception("Wrong order key");
+                throw new Exception("מספר הזמנה לא נכון");
             else
                 return Order.Copy();
         }
@@ -199,7 +202,7 @@ namespace DAL
         {
             int index = DS.DataSource.OrderList.FindIndex(s => s.OrderKey == order.OrderKey);
             if (index == -1)
-                throw new Exception("Order with the same key not found...");
+                throw new Exception("ההזמנה לא נמצאה");
 
             DS.DataSource.OrderList[index] = (order).Copy();
         }
@@ -215,42 +218,42 @@ namespace DAL
                 new BankBranch
                 {
                     BankNumber = 12,
-                    BankName = "Bank Hapoalim",
+                    BankName = "בנק הפועלים",
                     BranchNumber = 101,
-                    BranchAddress = "50 Rothschild Blvd",
-                    BranchCity = "TEL AVIV - YAFO"
+                    BranchAddress = "שדרות רוטשילד 50",
+                    BranchCity = "תל אביב"
                 },
                 new BankBranch
                 {
                     BankNumber = 10,
-                    BankName = "Bank Leumi Le-Israel",
+                    BankName = "בנק לאומי לישראל",
                     BranchNumber = 101,
-                    BranchAddress = "Yehuda Halevy St",
-                    BranchCity = "TEL AVIV - YAFO",
+                    BranchAddress = "רחוב יהודה הלוי",
+                    BranchCity = "תל אביב",
                 },
                 new BankBranch
                 {
                     BankNumber = 4,
-                    BankName = "Bank Yahav",
+                    BankName = "בנק יהב",
                     BranchNumber = 101,
-                    BranchAddress = "Yirmiyahu St",
-                    BranchCity = "JERUSALEM",
+                    BranchAddress = "רחוב ירמיהו",
+                    BranchCity = "ירושלים",
                 },
                 new BankBranch
                 {
                     BankNumber = 54,
-                    BankName = "Bank of Jerusalem",
+                    BankName = "בנק ירושלים",
                     BranchNumber = 101,
-                    BranchAddress = "2, Hanegev St., Airport city",
-                    BranchCity = "JERUSALEM",
+                    BranchAddress = "מרכז העיר",
+                    BranchCity = "ירושלים",
                 },
                 new BankBranch
                 {
                     BankNumber = 11,
-                    BankName = "Israel Discount Bank Ltd",
+                    BankName = "בנק דיסקונט",
                     BranchNumber = 101,
-                    BranchAddress = "Yehuda Halevy St",
-                    BranchCity = "TEL AVIV - YAFO",
+                    BranchAddress = "רחוב יהודה הלוי",
+                    BranchCity = "תל אביב",
                 }
             };
 

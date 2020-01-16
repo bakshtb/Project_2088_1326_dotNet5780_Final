@@ -14,8 +14,6 @@ namespace DAL
 
         IEnumerable<Host> getListHosts(Func<Host, bool> predicate = null);
 
-
-
         long addGuestReq(GuestRequest guestRequest);
 
         IEnumerable<GuestRequest> getListGuestRequest(Func<GuestRequest, bool> predicate = null);

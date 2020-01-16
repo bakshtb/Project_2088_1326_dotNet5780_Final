@@ -1,0 +1,60 @@
+﻿<Window x:Class="PLWPF.HostSignUpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PLWPF"
+        mc:Ignorable="d"
+        Title="HostSignUpWindow" Height="473" Width="555">
+    <Grid x:Name="HostSignUpGrid" HorizontalAlignment="Center" Width="536">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="67*"/>
+            <RowDefinition Height="33*"/>
+            <RowDefinition Height="33*"/>
+            <RowDefinition Height="33*"/>
+            <RowDefinition Height="33*"/>
+            <RowDefinition Height="33*"/>
+            <RowDefinition Height="99*"/>
+
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="שם פרטי:"  Grid.Column="3" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Center" Width="100" FontSize="16" FlowDirection="RightToLeft" Height="32" Margin="2,0,0,0"/>
+        <Label Content="שם משפחה:" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Width="99" FontSize="16" FlowDirection="RightToLeft" Height="32"/>
+        <Label Content="מייל:" Grid.Column="3" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Center" Width="100" FontSize="16" FlowDirection="RightToLeft" Height="32" Margin="2,0,0,0"/>
+        <Label Content="מס' ת.ז." Grid.Column="2" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center" Width="100" FontSize="16" FlowDirection="RightToLeft" Height="32" Margin="153,0,0,0" Grid.ColumnSpan="2"/>
+        <Label Content="מספר טלפון:" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center" Width="99" FontSize="16" FlowDirection="RightToLeft" Height="32" Grid.Column="1"/>
+        <Label Content="האם אושרה ההרשאה לחיוב חשבון?" Grid.Column="2" Grid.Row="4" VerticalAlignment="Center" FontSize="16" FlowDirection="RightToLeft" Height="32" Grid.ColumnSpan="2" Margin="2,0,14,0"/>
+        <Label Content="סניף בנק:" Grid.Column="3" HorizontalAlignment="Left" Grid.Row="5" VerticalAlignment="Center" Width="100" FontSize="16" FlowDirection="RightToLeft" Height="32" Margin="1,0,0,0"/>
+        <Label Content="מספר חשבון בנק:" HorizontalAlignment="Left" Grid.Row="5" VerticalAlignment="Top" Width="135" FontSize="16" FlowDirection="RightToLeft" Height="33" Grid.ColumnSpan="2" Margin="131,3,0,0"/>
+        <TextBox Grid.Column="2" HorizontalAlignment="Center" Text="{Binding PrivateName}" TextWrapping="Wrap" VerticalAlignment="Center" Width="140" Height="21" Grid.Row="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FlowDirection="RightToLeft" FontSize="16"/>
+        <TextBox HorizontalAlignment="Center" Text="{Binding FamilyName}" TextWrapping="Wrap" VerticalAlignment="Center" Width="140" Height="21" Grid.Row="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FlowDirection="RightToLeft" FontSize="16"/>
+        <TextBox Text="{Binding MailAddress}" TextWrapping="Wrap" VerticalAlignment="Center" Height="21" Grid.Row="2" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FlowDirection="RightToLeft" FontSize="16" Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Left" Width="268" Margin="12,0,0,0"/>
+        <TextBox Grid.Column="2" HorizontalAlignment="Center" Text="{Binding HostKey}" TextWrapping="Wrap" VerticalAlignment="Center" Width="140" Height="21" Grid.Row="3" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FlowDirection="RightToLeft" FontSize="16"/>
+        <TextBox Grid.Column="0" HorizontalAlignment="Center" Text="{Binding FhoneNumber}" TextWrapping="Wrap" VerticalAlignment="Center" Width="140" Height="21" Grid.Row="3" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FlowDirection="RightToLeft" FontSize="16"/>
+        <Label Content="הוספת פרטי מארח" VerticalAlignment="Top" Height="50" FlowDirection="RightToLeft" FontSize="36" Grid.ColumnSpan="4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="114,10,115,0"/>
+        <RadioButton x:Name="rbtnYes" Content="כן" IsChecked="{Binding CollectionClearance}" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="4" VerticalAlignment="Center" FlowDirection="RightToLeft" Margin="96,0,0,0"/>
+        <RadioButton x:Name="rbtnNo" Content="לא"  HorizontalAlignment="Center" Grid.Row="4" VerticalAlignment="Center" FlowDirection="RightToLeft" Grid.Column="1"/>
+        <ComboBox x:Name="cmbBankBranch" Grid.Column="2"  HorizontalAlignment="Center" Grid.Row="5" VerticalAlignment="Center" Width="140" FlowDirection="RightToLeft"/>
+        <TextBox HorizontalAlignment="Left" Text="{Binding BankAccountNumber}" TextWrapping="Wrap" VerticalAlignment="Center" Width="102" Height="21" Grid.Row="5" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FlowDirection="RightToLeft" FontSize="16" Margin="1,0,0,0"/>
+
+        <Button x:Name="btnSignUp1"  HorizontalAlignment="Left" Width="141" Grid.Row="6" Height="137" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Column="1" Margin="66,0,0,0" Click="btnSignUp1_Click"  >
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Height="130" Width="130" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Ellipse HorizontalAlignment="Center" Width="110" Height="110" Stroke="Black"  />
+                        <StackPanel Width="95" Height="95">
+                            <Image Source="Pictures/sign up.png" Width="91" Height="75" />
+                            <TextBlock FlowDirection="RightToLeft" Height="15" Width="90" TextAlignment="Center" FontSize="14"><Run Text="הרשמה"/></TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</Window>

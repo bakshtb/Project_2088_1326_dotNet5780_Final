@@ -21,7 +21,7 @@ namespace BL
             if (guestRequest.EntryDate < guestRequest.ReleaseDate )
                 return dal.addGuestReq(guestRequest);
             else
-                throw new Exception("Entrance day must be before departure day!");
+                throw new Exception("תאריך כניסה צריך להיות לפני תאריך היציאה");
         }
 
         public void updateGuestReq(GuestRequest guestRequest)
@@ -59,7 +59,7 @@ namespace BL
             if (!IsTherOpenOrderForTheHostingUnit(hostingUnit))
                 return dal.deleteHostingUnit(hostingUnit);
             else
-                throw new Exception("Unable to delete the hosting unit, there are open bookings for this unit");
+                throw new Exception("לא ניתן למחוק את יחידת האירוח, יש הזמנות פתוחות עבורה");
         }
 
         public void updateHostingUnit(HostingUnit hostingUnit)
@@ -78,6 +78,8 @@ namespace BL
         }
 
 
+        
+
         #endregion
 
         #region Order Functions
@@ -88,16 +90,16 @@ namespace BL
                                         select hostingUnit.HostingUnitKey == order.HostingUnitKey).Count() != 0;
 
             if(!isHostingUnitExists)
-                throw new Exception("The hosting unit does not exist");
+                throw new Exception("היחידת אירוח לא נמצאה");
 
             bool isGuestRequestExists = (from guestRequest in getListGuestRequest()
                                         select guestRequest.GuestRequestKey == order.GuestRequestKey).Count() != 0;
 
             if(!isGuestRequestExists)
-                throw new Exception("The guest request does not exist");
+                throw new Exception("הבקשה לא נמצאה");
 
             if (!isOrderDateAvailable(order))
-                throw new Exception("The requested date is not available");
+                throw new Exception("התאריכים לא זמינים");
 
             return dal.addOrder(order);
         }
@@ -112,12 +114,12 @@ namespace BL
         public void updateOrder(Order order)
         {
             if (order.isClosed)
-                throw new Exception("Order status cannot be changed after it is closed.");
+                throw new Exception("ההזמנה נסגרה, לא ניתן לשנות את הסטטוס שלה");
 
             if (order.Status == OrderStatusEnum.Closes_with_customer_response || order.Status == OrderStatusEnum.Closes_out_of_customer_disrespect)
             {
                 if (!isOrderDateAvailable(order))
-                    throw new Exception("dates are no longer available!");
+                    throw new Exception("התאריכים כבר לא זמינים");
                 else
                     order.isClosed = true;
             }
@@ -127,11 +129,15 @@ namespace BL
                 HostingUnit unit = dal.getHostingUnitByOrder(order);
                 GuestRequest request = dal.getGuestReqByOrder(order);
                 DateTime EntryDate = request.EntryDate, ReleaseDate = request.ReleaseDate;
-                int length = (ReleaseDate - EntryDate).Days;
+                int length = daysDistance(EntryDate , ReleaseDate);
 
                 for (int i = 0; i < length; i++)
                 {
-                    unit.Diary[EntryDate.Month - 1, EntryDate.Day - 1] = false;
+
+                    unit.AllDates.Add(EntryDate);
+
+                    //unit.Diary[EntryDate.Month - 1, EntryDate.Day - 1] = false;
+
                     EntryDate = EntryDate.AddDays(1);
                 }
                 dal.updateHostingUnit(unit);
@@ -150,7 +156,7 @@ namespace BL
             if (order.Status == OrderStatusEnum.mail_has_been_sent)
             {
                 if (dal.getHostingUnitByOrder(order).Owner.CollectionClearance == false)
-                    throw new Exception("It is necessary to approve collection clearance ");
+                    throw new Exception("לא ניתן לשלוח מייל כל עוד ולא אושרה ההרשאה לחיוב");
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("\tAn email was sent to the applicant");
                 Console.ForegroundColor = ConsoleColor.White;
@@ -210,7 +216,7 @@ namespace BL
                     if (item.Owner.HostKey == host.HostKey)
                     {
                         if (IsTherOpenOrderForTheHostingUnit(item))
-                            throw new Exception("You can not cancel the collection clearance: The host: " + host.HostKey + " owns a hosting unit " + item.HostingUnitKey + " that has an open order");
+                            throw new Exception("לא ניתו לבטל את ההרשאה לחיוב חשבון, למארח שמספרו:  " + host.HostKey + " יש יחידת אירוח " + item.HostingUnitKey + " שיש עבורה הזמנות פתוחות");
                     }
                 }
             dal.updateHost(host);
@@ -221,6 +227,13 @@ namespace BL
             return dal.getListHosts(predicate);
         }
 
+        public IEnumerable<HostingUnit> GetHostingUnitsOfHost(long key)
+        {
+            return from item in getListHostingUnit()
+                   where item.Owner.HostKey == key
+                   select item;
+        }
+
         #endregion
 
         #region Other Functions
@@ -228,16 +241,32 @@ namespace BL
 
         public bool CheckAvailability(HostingUnit hostingUnit , DateTime date , int length)
         {
-            bool isAvailable = true;
 
-            DateTime temp = date;
 
-            for (int i = 0; i < length && isAvailable; i++)
+
+            //bool isAvailable = true;
+
+            List<DateTime> list = hostingUnit.AllDates;
+            List<DateTime> tempList = new List<DateTime>();
+
+            for (int i = 0; i < length; i++)
             {
-                isAvailable = hostingUnit.Diary[temp.Month - 1, temp.Day - 1];
-                temp = temp.AddDays(1);
+                if (list.Where(dt => dt == date).Count() != 0)
+                    return false;
+
+                date = date.AddDays(1);
             }
-            return isAvailable;
+
+
+            //DateTime temp = date;
+
+            //for (int i = 0; i < length && isAvailable; i++)
+            //{
+            //    isAvailable = hostingUnit.Diary[temp.Month - 1, temp.Day - 1];
+            //    temp = temp.AddDays(1);
+            //}
+
+            return true ;
         }
 
         public bool isOrderDateAvailable(Order order)

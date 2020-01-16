@@ -22,26 +22,47 @@ namespace BE
     public enum GuestReqStatusEnum { closed, not_addressed }
 
 
-    public static class EnumToString
+    public static class HebrewEnum
     {
-        public static IEnumerable<string> ToFriendlyString()
+        public static IEnumerable<string> getListStrings<T>()
         {
+            if (typeof(T) == typeof(AreaEnum))
+                return new List<string> { "כל הארץ", "צפון", "מרכז", "דרום ישראל", "ירושלים \nוהסביבה" };
+            else if (typeof(T) == typeof(optionsEnum))
+                return new List<string> { "הכרחי", "אפשרי", "לא מעוניין" };
+            else if (typeof(T) == typeof(GuestReqTypeEnum))
+                return new List<string> { "בית מלון", "צימר", "וילה" };
+            else if (typeof(T) == typeof(OrderStatusEnum))
+                return new List<string> { "טרם טופל", "נשלח מייל", "נסגר מחוסר הענות של הלקוח", "נסגר בהיענות של הלקוח" };
+            else if (typeof(T) == typeof(GuestReqStatusEnum))
+                return new List<string> { "נסגר", "לא טופל" };
+            else
+                return null;
+        }
 
-            return new List<string> { "כל הארץ", "מרכז הארץ" };
+        public static string Area(AreaEnum myEnum)
+        {
+            return getListStrings<AreaEnum>().ToList()[(int)myEnum];
+        }        
 
-            //switch (areaEnum)
-            //{
-            //    case AreaEnum.All_Israel:
-            //        return "כל הארץ";
-            //    case AreaEnum.Central_Israel:
-            //        return "מרכז הארץ";
-            //    case AreaEnum.Jerusalem_area:
-            //        return "איזור ירושלים";
-            //    case AreaEnum.north_Israel:
-            //        return "צפון הארץ";
-            //    default:
-            //        return "דרום הארץ";
-            //}
+        public static string options(optionsEnum myEnum)
+        {
+            return getListStrings<optionsEnum>().ToList()[(int)myEnum];
+        }        
+
+        public static string GuestReqType(GuestReqTypeEnum myEnum)
+        {
+            return getListStrings<GuestReqTypeEnum>().ToList()[(int)myEnum];
+        }
+       
+        public static string OrderStatus(OrderStatusEnum myEnum)
+        {
+            return getListStrings<OrderStatusEnum>().ToList()[(int)myEnum];
+        }
+
+        public static string GuestReqStatus(GuestReqStatusEnum myEnum)
+        {
+            return getListStrings<GuestReqStatusEnum>().ToList()[(int)myEnum];
         }
     }
 }

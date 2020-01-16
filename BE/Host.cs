@@ -20,14 +20,11 @@ namespace BE
 
         public override string ToString()
         {
-            string ret = "Host Key:" + HostKey
-                        + "\nPrivate Name:" + PrivateName
-                        + "\nFamily Name:" + FamilyName
-                        + "\nFhone Number:" + FhoneNumber
-                        + "\nMail Address:" + MailAddress
-                        + "\nBank Branch Details:" + BankBranchDetails.ToString()
-                        + "\nBank Account Number:" + BankAccountNumber
-                        + "\nCollection Clearance:" + CollectionClearance.ToString();
+            string ret = "מספר ת.ז. " + HostKey
+                        + "\nשם פרטי: " + PrivateName
+                        + "\nשם משפחה: " + FamilyName
+                        + "\nמספר טלפון: " + FhoneNumber
+                        + "\nמייל: " + MailAddress;
             return ret;
         }
     }

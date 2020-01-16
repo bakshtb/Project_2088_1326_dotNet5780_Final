@@ -20,12 +20,16 @@ namespace PLWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        public static BL.IBL bl;
         public MainWindow()
         {
-            InitializeComponent();
+            bl = BL.FactoryBL.GetBL();
+            InitializeComponent();              
         }
 
-        private void btnGuestRequest_Click(object sender, RoutedEventArgs e)
+
+        private void btnGuest_Click(object sender, RoutedEventArgs e)
         {
             Window GuestRequest = new GuestRequestWindow();
             this.Hide();
@@ -33,11 +37,11 @@ namespace PLWPF
             this.Show();
         }
 
-        private void btnHostingUnit_Click(object sender, RoutedEventArgs e)
+        private void btnHost_Click(object sender, RoutedEventArgs e)
         {
-            Window HostingUnit = new HostingUnitWindow();
+            Window Host = new HostWindow();
             this.Hide();
-            HostingUnit.ShowDialog();
+            Host.ShowDialog();
             this.Show();
         }
 

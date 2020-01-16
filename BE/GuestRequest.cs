@@ -18,7 +18,6 @@ namespace BE
         public DateTime EntryDate { get; set; }
         public DateTime ReleaseDate { get; set; }
         public AreaEnum Area { get; set; }
-        public string SubArea { get; set; }
         public GuestReqTypeEnum Type { get; set; }
         public int Adults { get; set; }
         public int Children { get; set; }
@@ -28,14 +27,25 @@ namespace BE
         public optionsEnum ChildrensAttractions { get; set; }
 
 
+
         public override string ToString()
         {
-            string ret = "Guest Request Key: " + GuestRequestKey + "\nPrivate Name: " + PrivateName + "\nFamily Name: " + FamilyName
-                         + "\nMail Address: " + MailAddress + "\nAdults: " + Adults + "\nChildren: " + Children
-                         + "\nRegistrationDate: " + RegistrationDate.ToString() + "\nEntryDate: " + EntryDate.ToString() + "\nReleaseDate: " + ReleaseDate.ToString()
-                         + "\nStatus: " + Status + "\nArea: " + Area
-                         + "\nSub Area: " + SubArea + "\nType: " + Type + "\nPool: " + Pool
-                         + "\nJacuzzi: " + Jacuzzi + "\nGarden: " + Garden + "\nChildrens Attractions: " + ChildrensAttractions;
+            string ret =   "בקשה מספר: " + GuestRequestKey
+                         + "\nשם פרטי: " + PrivateName
+                         + "\nשם משפחה: " + FamilyName
+                         + "\nמייל: " + MailAddress
+                         + "\nמספר מבוגרים: " + Adults
+                         + "\nמספר ילדים: " + Children
+                         + "\nתאריך רישום: " + RegistrationDate.ToString()
+                         + "\nתאריך כניסה: " + EntryDate.ToString()
+                         + "\nתאריך יציאה: " + ReleaseDate.ToString()
+                         + "\nסטטוס: " + Status
+                         + "\nאיזור: " + Area
+                         + "\nסוג: " + Type 
+                         + "\nבריכה: " + Pool
+                         + "\nג'קוזי: " + Jacuzzi
+                         + "\nגינה: " + Garden 
+                         + "\nאטרקציות לילדים: " + ChildrensAttractions;
             return ret;
         }
     }
