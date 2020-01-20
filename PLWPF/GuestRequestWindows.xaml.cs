@@ -43,6 +43,7 @@ namespace PLWPF
             {
                 MainWindow.bl.addGuestReq(guestRequest);
                 MessageBox.Show("בקשתך נקלטה בהצלחה", "", MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None, MessageBoxOptions.RtlReading);
+                MessageBox.Show(guestRequest.ToString());
                 this.Close();
             }
             catch (Exception ex)

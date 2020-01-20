@@ -10,7 +10,7 @@ namespace BE
     public class Host
     {
         public int HostKey { get; set; }
-        public int FhoneNumber { get; set; }
+        public string FhoneNumber { get; set; }
         public int BankAccountNumber { get; set; }
         public string PrivateName { get; set; }
         public string FamilyName { get; set; }

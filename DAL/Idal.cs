@@ -12,6 +12,9 @@ namespace DAL
 
         Host getHost(long key);
 
+        bool deleteHost(long key);
+
+
         IEnumerable<Host> getListHosts(Func<Host, bool> predicate = null);
 
         long addGuestReq(GuestRequest guestRequest);
@@ -36,11 +39,11 @@ namespace DAL
 
         void updateHostingUnit(HostingUnit hostingUnit);
 
-        HostingUnit getHostingUnitByOrder(BE.Order order);
-
-
+        HostingUnit getHostingUnitByOrder(BE.Order order);        
 
         long addOrder(Order order);
+
+        void deleteOrder(long key);
 
         Order GetOrder(long key);
 

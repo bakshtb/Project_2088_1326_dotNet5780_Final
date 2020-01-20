@@ -30,22 +30,23 @@ namespace BE
 
         public override string ToString()
         {
-            string ret =   "בקשה מספר: " + GuestRequestKey
+            string ret = "בקשה מספר: " + GuestRequestKey
                          + "\nשם פרטי: " + PrivateName
-                         + "\nשם משפחה: " + FamilyName
+                         + "\t\tשם משפחה: " + FamilyName
                          + "\nמייל: " + MailAddress
-                         + "\nמספר מבוגרים: " + Adults
+                         + "\tמספר מבוגרים: " + Adults
                          + "\nמספר ילדים: " + Children
-                         + "\nתאריך רישום: " + RegistrationDate.ToString()
-                         + "\nתאריך כניסה: " + EntryDate.ToString()
-                         + "\nתאריך יציאה: " + ReleaseDate.ToString()
-                         + "\nסטטוס: " + Status
-                         + "\nאיזור: " + Area
-                         + "\nסוג: " + Type 
-                         + "\nבריכה: " + Pool
-                         + "\nג'קוזי: " + Jacuzzi
-                         + "\nגינה: " + Garden 
-                         + "\nאטרקציות לילדים: " + ChildrensAttractions;
+                         + "\t\tתאריך רישום: " + RegistrationDate.ToString("dd/MM/yyyy")
+                         + "\nתאריך כניסה: " + EntryDate.ToString("dd/MM/yyyy")
+                         + "\tתאריך יציאה: " + ReleaseDate.ToString("dd/MM/yyyy")
+                         + "\nסטטוס: " + HebrewEnum.GuestReqStatus(Status)
+                         + "\t\tאיזור: " + HebrewEnum.Area(Area)
+                         + "\nסוג: " + HebrewEnum.GuestReqType(Type)
+                         + "\t\tבריכה: " + HebrewEnum.options(Pool)
+                         + "\nג'קוז: " + HebrewEnum.options(Jacuzzi)
+                         + "\t\tגינה: " + HebrewEnum.options(Garden)
+                         + "\nאטרקציות לילדים: " + HebrewEnum.options(ChildrensAttractions);
+
             return ret;
         }
     }

@@ -96,16 +96,8 @@ namespace DS
                 HostKey = 2113020,
                 PrivateName = "יהודה",
                 FamilyName = "יעקבוסון",
-                FhoneNumber = 0504763953,
-                MailAddress = "Yeuda@gmail.com",
-                BankBranchDetails = new BE.BankBranch
-                {
-                    BankNumber = 1,
-                    BankName = "יהב",
-                    BranchNumber = 7543,
-                    BranchAddress = "יפו 16",
-                    BranchCity = "תל אביב",
-                },
+                FhoneNumber = "0504763953",
+                MailAddress = "Yeuda@gmail.com",                
                 BankAccountNumber = 344565,
                 CollectionClearance = true
             });
@@ -114,16 +106,8 @@ namespace DS
                 HostKey = 87654321,
                 PrivateName = "לוי",
                 FamilyName = "יעקובסון",
-                FhoneNumber = 0533367345,
-                MailAddress = "Levi@gmail.com",
-                BankBranchDetails = new BE.BankBranch
-                {
-                    BankNumber = 1,
-                    BankName = "לאומי",
-                    BranchNumber = 4321,
-                    BranchAddress = "המלך דוד 18",
-                    BranchCity = "ירושלים",
-                },
+                FhoneNumber = "0533367345",
+                MailAddress = "Levi@gmail.com",                
                 BankAccountNumber = 654321,
                 CollectionClearance = true
             });
@@ -132,16 +116,8 @@ namespace DS
                 HostKey = 12345678,
                 PrivateName = "שמעון",
                 FamilyName = "יעקובסון",
-                FhoneNumber = 0543456654,
-                MailAddress = "Shimon@gmail.com",
-                BankBranchDetails = new BE.BankBranch
-                {
-                    BankNumber = 1,
-                    BankName = "פפר",
-                    BranchNumber = 1234,
-                    BranchAddress = "רחוב ויצמן 24",
-                    BranchCity = "תל אביב",
-                },
+                FhoneNumber = "0543456654",
+                MailAddress = "Shimon@gmail.com",                
                 BankAccountNumber = 123456,
                 CollectionClearance = true
             });
@@ -155,6 +131,7 @@ namespace DS
                 CreateDate = new DateTime(2020, 1, 1),
                 OrderDate = new DateTime(2020, 10, 1),
                 isClosed = false,
+                isSendMail = false,
                 cost = 1000
             });
             tempOrderList.Add(new BE.Order()
@@ -163,9 +140,10 @@ namespace DS
                 GuestRequestKey = 10000001,
                 OrderKey = 10000001,
                 Status = BE.OrderStatusEnum.Closes_with_customer_response,
-                CreateDate = new DateTime(2020, 2, 2),
-                OrderDate = new DateTime(2020, 2, 2),
+                CreateDate = new DateTime(2020, 1, 2),
+                OrderDate = new DateTime(2020, 1, 3),
                 isClosed = true,
+                isSendMail = true,
                 cost = 2000
             });
             tempOrderList.Add(new BE.Order()
@@ -177,6 +155,7 @@ namespace DS
                 CreateDate = new DateTime(2020, 3, 3),
                 OrderDate = new DateTime(2020, 3, 3),
                 isClosed = false,
+                isSendMail = true,
                 cost = 3000
             });
 

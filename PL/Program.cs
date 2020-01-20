@@ -243,8 +243,8 @@ namespace PL
 
                             hostingUnit.Area = (BE.AreaEnum)(tempEnum - 1);
 
-                            Console.Write("hosting unit sub area = ");
-                            hostingUnit.SubArea = Console.ReadLine();
+                            
+                            
 
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("\tHosting unit NO: " + bl.addHostingUnit(hostingUnit) + " added successfully!");
@@ -409,9 +409,7 @@ namespace PL
 
                             hostingUnit.Area = (BE.AreaEnum)(tempEnum - 1);
 
-                            Console.Write("hosting unit sub area = ");
-                            hostingUnit.SubArea = Console.ReadLine();
-
+                            
                             bl.updateHostingUnit(hostingUnit);
 
                             Console.ForegroundColor = ConsoleColor.Green;

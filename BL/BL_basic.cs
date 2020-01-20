@@ -78,11 +78,19 @@ namespace BL
         }
 
 
-        
+
 
         #endregion
 
         #region Order Functions
+
+        public IEnumerable<Order> getOrdersOfHost(Host host)
+        {
+            return from hostingUnit in GetHostingUnitsOfHost(host.HostKey)
+                   from order in getListOrders()
+                   where order.HostingUnitKey == hostingUnit.HostingUnitKey
+                   select order;
+        }
 
         public long addOrder(Order order)
         {
@@ -101,6 +109,10 @@ namespace BL
             if (!isOrderDateAvailable(order))
                 throw new Exception("התאריכים לא זמינים");
 
+            order.isClosed = false;
+            order.Status = OrderStatusEnum.Not_yet_addressed;
+            order.CreateDate = DateTime.Now;
+
             return dal.addOrder(order);
         }
 
@@ -111,7 +123,12 @@ namespace BL
             updateOrder(order);
         }
 
-        public void updateOrder(Order order)
+        public void deleteOrder(long key)
+        {
+            dal.deleteOrder(key);
+        }
+
+            public void updateOrder(Order order)
         {
             if (order.isClosed)
                 throw new Exception("ההזמנה נסגרה, לא ניתן לשנות את הסטטוס שלה");
@@ -136,19 +153,17 @@ namespace BL
 
                     unit.AllDates.Add(EntryDate);
 
-                    //unit.Diary[EntryDate.Month - 1, EntryDate.Day - 1] = false;
-
                     EntryDate = EntryDate.AddDays(1);
                 }
                 dal.updateHostingUnit(unit);
 
                 GuestRequest guestRequest = dal.getGuestReqByOrder(order);
 
-                string PrivateName = guestRequest.PrivateName, FamilyName = guestRequest.FamilyName;
+                string PrivateName = guestRequest.PrivateName, FamilyName = guestRequest.FamilyName , MailAddress = guestRequest.MailAddress;
 
                 foreach (var item in dal.getListGuestRequest())
                 {
-                    if (item.FamilyName == FamilyName && item.PrivateName == PrivateName)
+                    if (item.FamilyName == FamilyName && item.PrivateName == PrivateName && item.MailAddress == MailAddress)
                         item.Status = GuestReqStatusEnum.closed;
                 }
             }
@@ -157,9 +172,9 @@ namespace BL
             {
                 if (dal.getHostingUnitByOrder(order).Owner.CollectionClearance == false)
                     throw new Exception("לא ניתן לשלוח מייל כל עוד ולא אושרה ההרשאה לחיוב");
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\tAn email was sent to the applicant");
-                Console.ForegroundColor = ConsoleColor.White;
+                // ("מייל נשלח ללקוח");
+                order.OrderDate = DateTime.Now;
+                order.isSendMail = true;
             }
 
             order.cost += configuration.fee;
@@ -211,15 +226,17 @@ namespace BL
 
 
             if (host.CollectionClearance == false && prevHost.CollectionClearance == true)
-                foreach (var item in getListHostingUnit())
+                foreach (var item in GetHostingUnitsOfHost(host.HostKey))
                 {
-                    if (item.Owner.HostKey == host.HostKey)
-                    {
-                        if (IsTherOpenOrderForTheHostingUnit(item))
-                            throw new Exception("לא ניתו לבטל את ההרשאה לחיוב חשבון, למארח שמספרו:  " + host.HostKey + " יש יחידת אירוח " + item.HostingUnitKey + " שיש עבורה הזמנות פתוחות");
-                    }
+                    if (IsTherOpenOrderForTheHostingUnit(item))
+                        throw new Exception("לא ניתו לבטל את ההרשאה לחיוב חשבון, למארח שמספרו:  " + host.HostKey + " יש יחידת אירוח " + item.HostingUnitKey + " שיש עבורה הזמנות פתוחות");
                 }
             dal.updateHost(host);
+        }
+
+        public bool deleteHost(long key)
+        {
+            return dal.deleteHost(key);
         }
 
         public IEnumerable<Host> getListHosts(Func<Host, bool> predicate = null)

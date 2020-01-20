@@ -11,7 +11,7 @@
 
     <Grid x:Name="GuestRequestGrid" Height="572.4" Width="742.2" VerticalAlignment="Center" HorizontalAlignment="Center">
         <Grid.Background>
-            <ImageBrush ImageSource="/Pictures/back1.png"/>
+            <ImageBrush ImageSource="/Pictures/background grid guest request.png"/>
         </Grid.Background>
         <Grid.RowDefinitions>
 
@@ -19,102 +19,51 @@
             <RowDefinition Height="36*"/>
             <RowDefinition Height="27*"/>
             <RowDefinition Height="37*"/>
-            <RowDefinition Height="27*"/>
-            <RowDefinition Height="154*"/>
+            <RowDefinition Height="26*"/>
+            <RowDefinition Height="36*"/>
+            <RowDefinition Height="28*"/>
+            <RowDefinition Height="36*"/>
+            <RowDefinition Height="55*"/>
             <RowDefinition Height="108*"/>
 
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
 
-            <ColumnDefinition Width="77*"/>
-            <ColumnDefinition Width="80*"/>
+            <ColumnDefinition Width="76*"/>
+            <ColumnDefinition Width="184*"/>
             <ColumnDefinition Width="19*"/>
-            <ColumnDefinition Width="85*"/>
+            <ColumnDefinition Width="185*"/>
+            <ColumnDefinition Width="19*"/>
+
+            <ColumnDefinition Width="83*"/>
             <ColumnDefinition Width="18*"/>
-            <ColumnDefinition Width="87*"/>
-            <ColumnDefinition Width="13*"/>
-            <ColumnDefinition Width="85*"/>
-            <ColumnDefinition Width="17*"/>
-            <ColumnDefinition Width="87*"/>
-            <ColumnDefinition Width="17*"/>
-            <ColumnDefinition Width="84*"/>
-            <ColumnDefinition Width="73*"/>
+            <ColumnDefinition Width="82*"/>
+            <ColumnDefinition Width="76*"/>
 
         </Grid.ColumnDefinitions>
-        <TextBox Text="{Binding PrivateName}" TextWrapping="Wrap" Background="{x:Null}" BorderBrush="{x:Null}" FlowDirection="RightToLeft" Padding="10,1,10,0" FontSize="16" BorderThickness="0,0,0,0" RenderTransformOrigin="0.5,0.5" Grid.Column="8" HorizontalAlignment="Left" Width="192" VerticalAlignment="Center" Height="36" Grid.Row="1" Grid.ColumnSpan="4" Margin="13,6,0,0"/>
-        <TextBox HorizontalAlignment="Right" Text="{Binding FamilyName}" TextWrapping="Wrap" VerticalAlignment="Center" Width="184" Height="36" Background="{x:Null}" BorderBrush="{x:Null}" FlowDirection="RightToLeft" Padding="10,1,10,0" FontSize="16" BorderThickness="0,0,0,0" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="4" Margin="0,6,16,0"/>
-        <TextBox Text="{Binding Adults}" HorizontalAlignment="Center"  TextWrapping="Wrap" VerticalAlignment="Center" Width="86" Height="37" Background="{x:Null}" BorderBrush="{x:Null}" FlowDirection="RightToLeft" FontSize="16" BorderThickness="0,0,0,0" Grid.Row="3" Grid.Column="11" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <TextBox  Text="{Binding Children}" HorizontalAlignment="Center"  TextWrapping="Wrap" VerticalAlignment="Center" Width="90" Height="37" Background="{x:Null}" BorderBrush="{x:Null}" FlowDirection="RightToLeft" FontSize="16" BorderThickness="0,0,0,0" Grid.Row="3" Grid.Column="9" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-        <TextBox HorizontalAlignment="Right" Text="{Binding MailAddress}"  TextWrapping="Wrap" VerticalAlignment="Center" Width="182" Height="36" Background="{x:Null}" BorderBrush="{x:Null}" FlowDirection="LeftToRight" Padding="10,1,10,0" FontSize="16" BorderThickness="0,0,0,0" Grid.Row="1" Grid.ColumnSpan="4" Margin="0,6,3,0"/>
-        <ListBox x:Name="lsvArea" SelectedIndex="{Binding AreaEnum}"  BorderBrush="{x:Null}" Background="{x:Null}" FlowDirection="RightToLeft" HorizontalAlignment="Center" Width="92" Padding="6,15,4,0" ScrollViewer.CanContentScroll="False" VerticalAlignment="Center" Height="154" Grid.Row="5" Grid.Column="11"/>
-        <ListBox x:Name="lsvType" SelectedIndex="{Binding Type}" BorderBrush="{x:Null}" Background="{x:Null}" FlowDirection="RightToLeft" HorizontalAlignment="Center" Width="89" Padding="10,15,10,0" ScrollViewer.CanContentScroll="False" Grid.Row="4" Grid.Column="9" Grid.RowSpan="2" Height="154" VerticalAlignment="Top" Margin="0,27,0,0"/>
-        <ListBox x:Name="lsvGarden" SelectedIndex="{Binding Garden}" BorderBrush="{x:Null}" Background="{x:Null}" FlowDirection="RightToLeft" HorizontalAlignment="Center" Width="85" Padding="10,15,10,0" ScrollViewer.CanContentScroll="False" VerticalAlignment="Center" Height="154" Grid.Row="5" Grid.Column="3"/>
-        <ListBox x:Name="lsvPool" SelectedIndex="{Binding Pool}" BorderBrush="{x:Null}" Background="{x:Null}" FlowDirection="RightToLeft" Padding="10,15,10,0" ScrollViewer.CanContentScroll="False" VerticalAlignment="Center" Height="154" Grid.Row="5" Grid.Column="7" HorizontalAlignment="Center" Width="85"/>
-        <ListBox  x:Name="lsvJacuzzi" SelectedIndex="{Binding Jacuzzi}" BorderBrush="{x:Null}" Background="{x:Null}" FlowDirection="RightToLeft" HorizontalAlignment="Center" Width="85" Padding="10,15,10,0" ScrollViewer.CanContentScroll="False" VerticalAlignment="Center" Height="154" Grid.Row="5" Grid.Column="5"/>
-        <ListBox x:Name="lsvChildrensAttractions" SelectedIndex="{Binding ChildrensAttractions}" BorderBrush="{x:Null}" Background="{x:Null}" FlowDirection="RightToLeft" HorizontalAlignment="Center" Width="85" Padding="10,15,10,0" ScrollViewer.CanContentScroll="False" VerticalAlignment="Center" Height="154" Grid.Row="5" Grid.Column="1"/>
-        <DatePicker x:Name="dpEntryDate" SelectedDate="{Binding EntryDate, Mode=OneWayToSource}" Validation.ErrorTemplate="{x:Null}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="184" BorderBrush="{x:Null}" FlowDirection="LeftToRight" Padding="10,8,8,0" Height="37" Grid.Row="3" Grid.ColumnSpan="4" Margin="77,0,0,0"/>
-        <DatePicker x:Name="dpReleaseDate" SelectedDate="{Binding ReleaseDate, Mode=OneWayToSource}" Validation.ErrorTemplate="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="183" BorderBrush="{x:Null}" FlowDirection="LeftToRight" Padding="10,8,8,0" Height="37" BorderThickness="0,0,0,0" Grid.Row="3" Grid.Column="5" Grid.ColumnSpan="3"/>
+        <TextBox Text="{Binding PrivateName}" TextWrapping="Wrap" Background="{x:Null}" BorderBrush="{x:Null}" FlowDirection="RightToLeft" Padding="10,5,10,0" FontSize="16" BorderThickness="0,0,0,0" RenderTransformOrigin="0.5,0.5" Grid.Column="5" VerticalAlignment="Center" Height="36" Grid.Row="1" HorizontalAlignment="Right" Width="183" Grid.ColumnSpan="4" Margin="0,0,75,0"/>
+        <TextBox HorizontalAlignment="Center" Text="{Binding FamilyName}" TextWrapping="Wrap" VerticalAlignment="Center" Width="187" Height="36" Background="{x:Null}" BorderBrush="{x:Null}" FlowDirection="RightToLeft" Padding="10,5,10,0" FontSize="16" BorderThickness="0,0,0,0" Grid.Column="3" Grid.Row="1"/>
+        <TextBox HorizontalAlignment="Center" Text="{Binding MailAddress}"  TextWrapping="Wrap" VerticalAlignment="Center" Width="183" Height="36" Background="{x:Null}" BorderBrush="{x:Null}" FlowDirection="LeftToRight" Padding="10,5,10,0" FontSize="16" BorderThickness="0,0,0,0" Grid.Row="1" Grid.Column="1"/>
+        <TextBox Text="{Binding Adults, Mode=OneWayToSource}" Validation.ErrorTemplate="{x:Null}" HorizontalAlignment="Center"  TextWrapping="Wrap" VerticalAlignment="Center" Width="84" Height="37" Background="{x:Null}" BorderBrush="{x:Null}" FlowDirection="RightToLeft" FontSize="16" BorderThickness="0,0,0,0" Grid.Row="3" Grid.Column="7" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <TextBox  Text="{Binding Children, Mode=OneWayToSource    }" Validation.ErrorTemplate="{x:Null}" HorizontalAlignment="Center"  TextWrapping="Wrap" VerticalAlignment="Center" Width="81" Height="37" Background="{x:Null}" BorderBrush="{x:Null}" FlowDirection="RightToLeft" FontSize="16" BorderThickness="0,0,0,0" Grid.Row="3" Grid.Column="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <ComboBox x:Name="lsvArea" SelectedIndex="{Binding Area}"  BorderBrush="{x:Null}" Background="{x:Null}" FlowDirection="RightToLeft" HorizontalAlignment="Left" Width="184" Padding="8,8,5,0" ScrollViewer.CanContentScroll="False" VerticalAlignment="Center" Height="36" Grid.Row="5" Grid.Column="4" BorderThickness="0,0,0,0" Grid.ColumnSpan="5" Margin="19,0,0,0" FontSize="16"/>
+        <ComboBox x:Name="lsvType" SelectedIndex="{Binding Type}" BorderBrush="{x:Null}" Background="{x:Null}" FlowDirection="RightToLeft" HorizontalAlignment="Center" Width="184" Padding="8,8,5,0" ScrollViewer.CanContentScroll="False" Grid.Row="5" Grid.Column="3" Height="36" VerticalAlignment="Center" BorderThickness="0,0,0,0" FontSize="16"/>
+        <ComboBox x:Name="lsvGarden" SelectedIndex="{Binding Garden}" BorderBrush="{x:Null}" Background="{x:Null}" FlowDirection="RightToLeft" HorizontalAlignment="Center" Width="186" Padding="8,8,5,0" ScrollViewer.CanContentScroll="False" VerticalAlignment="Center" Height="36" Grid.Row="7" Grid.Column="3" BorderThickness="0,0,0,0" FontSize="16"/>
+        <ComboBox x:Name="lsvPool" SelectedIndex="{Binding Pool}" BorderBrush="{x:Null}" Background="{x:Null}" FlowDirection="RightToLeft" Padding="8,8,5,0" ScrollViewer.CanContentScroll="False" VerticalAlignment="Center" Height="36" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" Width="183" BorderThickness="0,0,0,0" FontSize="16"/>
+        <ComboBox  x:Name="lsvJacuzzi" SelectedIndex="{Binding Jacuzzi}" BorderBrush="{x:Null}" Background="{x:Null}" FlowDirection="RightToLeft" HorizontalAlignment="Left" Width="184" Padding="8,8,5,0" ScrollViewer.CanContentScroll="False" VerticalAlignment="Center" Height="36" Grid.Row="7" Grid.Column="4" BorderThickness="0,0,0,0" Grid.ColumnSpan="5" Margin="19,0,0,0" FontSize="16"/>
+        <ComboBox x:Name="lsvChildrensAttractions" SelectedIndex="{Binding ChildrensAttractions}" BorderBrush="{x:Null}" Background="{x:Null}" FlowDirection="RightToLeft" HorizontalAlignment="Center" Width="184" Padding="8,8,5,0" ScrollViewer.CanContentScroll="False" VerticalAlignment="Center" Height="36" Grid.Row="7" BorderThickness="0,0,0,0" Grid.Column="1" FontSize="16"/>
+        <DatePicker x:Name="dpEntryDate" SelectedDate="{Binding EntryDate, Mode=OneWayToSource}" Validation.ErrorTemplate="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="184" BorderBrush="{x:Null}" FlowDirection="LeftToRight" Padding="10,8,8,0" Height="37" Grid.Row="3" Grid.Column="3"/>
+        <DatePicker x:Name="dpReleaseDate" SelectedDate="{Binding ReleaseDate, Mode=OneWayToSource}" Validation.ErrorTemplate="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="183" BorderBrush="{x:Null}" FlowDirection="LeftToRight" Padding="10,8,8,0" Height="37" BorderThickness="0,0,0,0" Grid.Row="3" Grid.Column="1"/>
 
-        <Button x:Name="btnAdd" Content="הגש" HorizontalAlignment="Center" Margin="0,18,0,0" VerticalAlignment="Top" Height="60" Width="140" BorderBrush="{x:Null}" Foreground="White" BorderThickness="0,0,0,0" FlowDirection="RightToLeft" FontSize="16" Click="btnAdd_Click_1" Grid.Row="6" Grid.Column="1">
+        <Button x:Name="btnAdd" HorizontalAlignment="Left" Margin="46,35,0,0" VerticalAlignment="Top" Height="47" Width="161" BorderBrush="{x:Null}" Foreground="White" BorderThickness="0,0,0,0" FlowDirection="RightToLeft" FontSize="20" Click="btnAdd_Click_1" Grid.Row="9" Grid.ColumnSpan="2" Content="הגש">
             <Button.Background>
                 <ImageBrush ImageSource="/Pictures/Button.png"/>
             </Button.Background>
+
         </Button>
-        <Grid Grid.Column="6" Grid.ColumnSpan="6" Margin="13,22,0,0">
-            <TextBlock HorizontalAlignment="Center" Margin="0,86,0,0" Text="הוספת בקשת לקוח" TextWrapping="Wrap" VerticalAlignment="Top" Width="270" Height="40" FlowDirection="RightToLeft" FontSize="22"/>
-            <Image HorizontalAlignment="Left" Height="62" Margin="219,20,0,0" VerticalAlignment="Top" Width="61" Source="Pictures/request (2).png"/>
+        <Grid Grid.Column="2" Grid.ColumnSpan="7" Margin="10,22,38,0">
+            <TextBlock HorizontalAlignment="Left" Margin="123,81,0,0" Text="הוספת בקשת לקוח" TextWrapping="Wrap" VerticalAlignment="Top" Width="270" Height="40" FlowDirection="RightToLeft" FontSize="22"/>
+            <Image HorizontalAlignment="Left" Height="62" Margin="332,10,0,0" VerticalAlignment="Top" Width="61" Source="Pictures/request (2).png"/>
         </Grid>
-
-
     </Grid>
-
-
-
-
-    <!--
-        
-       
-       
-        
-       
-        
-
-        
-        
-       
-
-
-       
-       
-        
-        
-
-        <Button x:Name="btnRequest"  Grid.Row="8"  HorizontalAlignment="Center" Width="144" Margin="0,5,0,6" Grid.RowSpan="3" Click="btnAdd_Click" Grid.ColumnSpan="2" Grid.Column="1" >
-            <Button.Template>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid Height="130" Width="130" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <Ellipse x:Name="RequestEllipse" HorizontalAlignment="Center" Width="110" Height="110" Stroke="Black"  />
-                        <StackPanel Width="95" Height="95">
-                            <Image Source="Pictures/request.png" Width="91" Height="75" />
-                            <TextBlock FlowDirection="RightToLeft" Height="15" Width="90" TextAlignment="Center" FontSize="14"><Run Text="הוספה"/></TextBlock>
-                        </StackPanel>
-
-                    </Grid>
-
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Fill" TargetName="RequestEllipse" Value="AliceBlue"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
-
-    </Grid>
-    -->
-
-
-
-
 </Window>

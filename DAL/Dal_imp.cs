@@ -11,8 +11,12 @@ namespace DAL
     {
         public Dal_imp()
         {
+            
+
             for (int i = 0; i < 3; i++)
             {
+                DS.DataSource.tempHostList[i].BankBranchDetails = getListBankBranchs()[i];
+
                 addGuestReq(DS.DataSource.tempGuestRequestList[i]);
                 addHostingUnit(DS.DataSource.tempHostingUnitList[i]);
                 addOrder(DS.DataSource.tempOrderList[i]);
@@ -62,12 +66,18 @@ namespace DAL
             return (DS.DataSource.HostList.Where(predicate)).Copy();
         }
 
+        public bool deleteHost(long key)
+        {
+            return DS.DataSource.HostList.Remove(DS.DataSource.HostList.FirstOrDefault(HU => HU.HostKey == key));
+        }
+
         #endregion
 
         #region Guest Request Functions
 
         public long addGuestReq(GuestRequest guestRequest)
         {
+            guestRequest.Status = GuestReqStatusEnum.not_addressed;
             guestRequest.GuestRequestKey = Configuration.GuestRequestKey++;
             guestRequest.RegistrationDate = DateTime.Today;
             DS.DataSource.GuestRequestList.Add(guestRequest.Copy());
@@ -117,15 +127,6 @@ namespace DAL
 
             hostingUnit.AllDates = new List<DateTime>();
 
-            //hostingUnit.Diary = new bool[12, 31];
-            //for (int i = 0; i < 12; i++)
-            //{
-            //    for (int j = 0; j < 31; j++)
-            //    {
-            //        hostingUnit.Diary[i, j] = true;
-            //    }
-            //}
-
             DS.DataSource.HostingUnitList.Add(hostingUnit.Copy());
             return hostingUnit.HostingUnitKey;
 
@@ -133,7 +134,7 @@ namespace DAL
 
         public bool deleteHostingUnit(HostingUnit hostingUnit)
         {
-            return DS.DataSource.HostingUnitList.Remove(hostingUnit);
+            return DS.DataSource.HostingUnitList.Remove(DS.DataSource.HostingUnitList.FirstOrDefault(HU => HU.HostingUnitKey == hostingUnit.HostingUnitKey));
         }
 
         public IEnumerable<HostingUnit> getListHostingUnit(Func<HostingUnit, bool> predicate = null)
@@ -173,8 +174,7 @@ namespace DAL
         #region Order Functions
 
         public long addOrder(Order order)
-        {
-            order.Status = OrderStatusEnum.Not_yet_addressed;
+        {            
             order.OrderKey = Configuration.OrderKey++;
             DS.DataSource.OrderList.Add(order.Copy());
             return order.OrderKey;
@@ -190,12 +190,19 @@ namespace DAL
                 return Order.Copy();
         }
 
+        public void deleteOrder(long key)
+        {
+            DS.DataSource.OrderList.Remove(DS.DataSource.OrderList.FirstOrDefault(or => or.OrderKey == key));
+        }
+
         public IEnumerable<Order> getListOrders(Func<Order, bool> predicate = null)
         {
             if (predicate == null)
                 return (DS.DataSource.OrderList).Copy();
 
-            return (DS.DataSource.OrderList.Where(predicate)).Copy();
+            return from item in DS.DataSource.OrderList
+                   where predicate(item)
+                   select item.Copy();//(DS.DataSource.OrderList.Where(predicate)).Copy();
         }
 
         public void updateOrder(Order order)

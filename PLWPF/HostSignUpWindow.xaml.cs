@@ -25,18 +25,17 @@ namespace PLWPF
             
         }
 
-        private void btnSignUp1_Click(object sender, RoutedEventArgs e)
+
+        private void btnAdd_Click_1(object sender, RoutedEventArgs e)
         {
             try
-            {               
-                if(cmbBankBranch.SelectedIndex >= 0)
+            {
+                if (cmbBankBranch.SelectedIndex >= 0)
                     host.BankBranchDetails = MainWindow.bl.getListBankBranchs()[cmbBankBranch.SelectedIndex];
-                else 
+                else
                     throw new Exception("נא לבחור סניף בנק");
 
                 MainWindow.bl.addHost(host);
-
-                MessageBox.Show(host.ToString());
 
                 Window HostSignIn = new HostSignInWindow(host.HostKey);
                 this.Hide();

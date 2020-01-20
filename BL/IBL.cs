@@ -44,9 +44,13 @@ namespace BL
 
         void updateOrder(Order order);
 
+        void deleteOrder(long key);
+
         Order GetOrder(long key);
 
         IEnumerable<Order> getListOrders(Func<Order, bool> predicate = null);
+
+        IEnumerable<Order> getOrdersOfHost(Host host);
 
         #endregion
 
@@ -65,6 +69,8 @@ namespace BL
         void updateHost(long key);
 
         void updateHost(Host host);
+
+        bool deleteHost(long key);
 
         IEnumerable<Host> getListHosts(Func<Host, bool> predicate = null);
 

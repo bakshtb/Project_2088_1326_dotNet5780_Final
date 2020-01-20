@@ -13,7 +13,7 @@ namespace BE
         public Host Owner { get; set; }
         public string HostingUnitName { get; set; }
         public AreaEnum Area { get; set; }
-        public string SubArea { get; set; }
+
 
 
         public List<DateTime> AllDates { get; set; }
