@@ -91,7 +91,7 @@ namespace BL
         public bool deleteHostingUnit(HostingUnit hostingUnit)
         {
             if (!IsTherOpenOrderForTheHostingUnit(hostingUnit))
-                return dal.deleteHostingUnit(hostingUnit);
+                return dal.deleteHostingUnit(hostingUnit.HostingUnitKey);
             else
                 throw new Exception("לא ניתן למחוק את יחידת האירוח, יש הזמנות פתוחות עבורה");
         }
