@@ -25,9 +25,8 @@ namespace PLWPF
         public MainWindow()
         {
             bl = BL.FactoryBL.GetBL();
-            InitializeComponent();              
+            InitializeComponent();           
         }
-
 
         private void btnGuest_Click(object sender, RoutedEventArgs e)
         {
@@ -47,7 +46,7 @@ namespace PLWPF
 
         private void btnAdmin_Click(object sender, RoutedEventArgs e)
         {
-            Window Admin = new AdminWindow();
+            Window Admin = new AdminSignInWindow();
             this.Hide();
             Admin.ShowDialog();
             this.Show();

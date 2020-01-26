@@ -8,12 +8,12 @@ namespace BL
 {
     public class FactoryBL
     {
-        static IBL bl = null; 
-
+        static IBL bl = null;
         public static IBL GetBL() 
-        { 
-            bl = new BL_basic();
-            return bl;
+        {
+            if (bl == null)
+                bl = new BL_basic();
+            return bl; 
         }
     }
 }

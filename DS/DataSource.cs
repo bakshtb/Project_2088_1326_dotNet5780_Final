@@ -9,6 +9,7 @@ namespace DS
     
     public static class DataSource
     {
+        public static BE.Admin admin;
         public static List<BE.GuestRequest> GuestRequestList;
         public static List<BE.HostingUnit> HostingUnitList;
         public static List<BE.Order> OrderList;
@@ -18,8 +19,11 @@ namespace DS
         public static List<BE.Order> tempOrderList;
         public static List<BE.Host> tempHostList;
 
+        
+
         static DataSource()
         {
+            admin = new BE.Admin();
             GuestRequestList = new List<BE.GuestRequest>();
             HostingUnitList = new List<BE.HostingUnit>();
             OrderList = new List<BE.Order>();
@@ -29,12 +33,14 @@ namespace DS
             tempOrderList = new List<BE.Order>();
             tempHostingUnitList = new List<BE.HostingUnit>();
 
+            admin.adminPass = "";
+            admin.Profits = 0;            
 
             tempGuestRequestList.Add(new BE.GuestRequest()
             {
                 PrivateName = "יצחק",
                 FamilyName = "אברהמסון",
-                MailAddress = "Itzhak@gmail.com",
+                MailAddress = "bakshtb@gmail.com",
                 Status = BE.GuestReqStatusEnum.not_addressed,
                 RegistrationDate = new DateTime(1948, 01, 01),
                 EntryDate = new DateTime(2019, 1, 2),
@@ -131,20 +137,18 @@ namespace DS
                 CreateDate = new DateTime(2020, 1, 1),
                 OrderDate = new DateTime(2020, 10, 1),
                 isClosed = false,
-                isSendMail = false,
-                cost = 1000
+                isSendMail = false
             });
             tempOrderList.Add(new BE.Order()
             {
                 HostingUnitKey = 10000001,
                 GuestRequestKey = 10000001,
                 OrderKey = 10000001,
-                Status = BE.OrderStatusEnum.Closes_with_customer_response,
+                Status = BE.OrderStatusEnum.Closes_out_of_customer_disrespect,
                 CreateDate = new DateTime(2020, 1, 2),
                 OrderDate = new DateTime(2020, 1, 3),
                 isClosed = true,
-                isSendMail = true,
-                cost = 2000
+                isSendMail = true
             });
             tempOrderList.Add(new BE.Order()
             {
@@ -155,8 +159,7 @@ namespace DS
                 CreateDate = new DateTime(2020, 3, 3),
                 OrderDate = new DateTime(2020, 3, 3),
                 isClosed = false,
-                isSendMail = true,
-                cost = 3000
+                isSendMail = true
             });
 
             tempHostingUnitList.Add(new BE.HostingUnit()

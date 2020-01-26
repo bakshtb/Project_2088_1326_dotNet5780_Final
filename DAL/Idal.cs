@@ -6,7 +6,7 @@ namespace DAL
 {
     public interface IDAL
     {
-        long addHost(Host host);
+        void addHost(Host host);
 
         void updateHost(Host host);
 
@@ -17,7 +17,7 @@ namespace DAL
 
         IEnumerable<Host> getListHosts(Func<Host, bool> predicate = null);
 
-        long addGuestReq(GuestRequest guestRequest);
+        void addGuestReq(GuestRequest guestRequest);
 
         IEnumerable<GuestRequest> getListGuestRequest(Func<GuestRequest, bool> predicate = null);
 
@@ -25,13 +25,13 @@ namespace DAL
 
         void updateGuestReq(GuestRequest guestRequest);
 
-        GuestRequest getGuestReqByOrder(BE.Order order);
+        
 
 
 
-        long addHostingUnit(HostingUnit hostingUnit);
+        void addHostingUnit(HostingUnit hostingUnit);
 
-        bool deleteHostingUnit(HostingUnit hostingUnit);
+        bool deleteHostingUnit(long key);
 
         IEnumerable<HostingUnit> getListHostingUnit(Func<HostingUnit, bool> predicate = null);
 
@@ -39,9 +39,9 @@ namespace DAL
 
         void updateHostingUnit(HostingUnit hostingUnit);
 
-        HostingUnit getHostingUnitByOrder(BE.Order order);        
 
-        long addOrder(Order order);
+
+        void addOrder(Order order);
 
         void deleteOrder(long key);
 
@@ -54,5 +54,12 @@ namespace DAL
 
         List<BankBranch> getListBankBranchs();
 
+        void setAdminPass(string pass);
+
+        string getAdminPass();
+
+        void AddProfitToAdmin(int amount);
+
+        int getAdminProfit();
     }
 }

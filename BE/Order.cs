@@ -16,8 +16,7 @@ namespace BE
         public DateTime CreateDate { get; set; }
         public DateTime OrderDate { get; set; }
         public bool isClosed { get; set; }
-        public bool isSendMail { get; set; }
-        public int cost { get; set; }
+        public bool isSendMail { get; set; }        
 
         public override string ToString()
         {

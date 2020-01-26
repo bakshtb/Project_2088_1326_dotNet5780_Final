@@ -17,33 +17,33 @@ namespace PLWPF
     /// <summary>
     /// Interaction logic for HostUserControl.xaml
     /// </summary>
-    public partial class HostUserControl : UserControl
+    public partial class HostingUnitUserControl : UserControl
     {
-        public HostUserControl(HostingUnit hostingUnit)
+        public HostingUnitUserControl(HostingUnit hostingUnit , bool isWriteHostdetails = false)
         {
             InitializeComponent();
 
             UserControlGird.DataContext = hostingUnit;
 
-            tbxHost.Text = hostingUnit.ToString();
             txbName.Text = hostingUnit.HostingUnitName;
+
+            tbxHostingUnit.Text = hostingUnit.ToString();
+
+            calendar.Margin = new Thickness(161, 0, 0, 0);
+
+            if (isWriteHostdetails)
+            {
+                tbxHost.Text =  hostingUnit.Owner.ToString();
+                
+                calendar.Margin = new Thickness(322, 0, 0, 0);
+            }
+
+
 
             calendar.DisplayDateStart = DateTime.Now;
             calendar.DisplayDateEnd = DateTime.Now.AddMonths(11);
             calendar.DisplayDate = DateTime.Now;
 
-            //for (int i = 0; i < 12; i++)
-            //{
-            //    for (int j = 0; j < 31; j++)
-            //    {
-            //        if (hostingUnit.Diary[i,j] == false)
-            //        {
-            //            calendar.BlackoutDates.Add(new CalendarDateRange(new DateTime(DateTime.Now.Year , j+1 , i+1)));
-            //        }
-
-
-            //    }
-            //}
             foreach (DateTime d in hostingUnit.AllDates)
             {
                 calendar.BlackoutDates.Add(new CalendarDateRange(d));

@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace BE
 {
-    class Configuration
+    public class Configuration
     {
         public static long GuestRequestKey { get; set; } = 10000000;
         public static long HostingUnitKey { get; set; } = 10000000;
+        public static int fee = 10;
     }
 }

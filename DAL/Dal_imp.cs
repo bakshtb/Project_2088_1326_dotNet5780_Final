@@ -11,8 +11,6 @@ namespace DAL
     {
         public Dal_imp()
         {
-            
-
             for (int i = 0; i < 3; i++)
             {
                 DS.DataSource.tempHostList[i].BankBranchDetails = getListBankBranchs()[i];
@@ -26,7 +24,7 @@ namespace DAL
 
         #region Host Functions
 
-        public long addHost(Host host)
+        public void addHost(Host host)
         {
             Host tempHost = getListHosts().FirstOrDefault(host1 => host1.HostKey == host.HostKey);
 
@@ -35,7 +33,7 @@ namespace DAL
             else
             {
                 DS.DataSource.HostList.Add(host.Copy());
-                return host.HostKey;
+                
             }
         }
 
@@ -75,13 +73,13 @@ namespace DAL
 
         #region Guest Request Functions
 
-        public long addGuestReq(GuestRequest guestRequest)
+        public void addGuestReq(GuestRequest guestRequest)
         {
             guestRequest.Status = GuestReqStatusEnum.not_addressed;
             guestRequest.GuestRequestKey = Configuration.GuestRequestKey++;
             guestRequest.RegistrationDate = DateTime.Today;
             DS.DataSource.GuestRequestList.Add(guestRequest.Copy());
-            return guestRequest.GuestRequestKey;
+           
         }
 
         public IEnumerable<GuestRequest> getListGuestRequest(Func<GuestRequest, bool> predicate = null)
@@ -111,16 +109,13 @@ namespace DAL
             DS.DataSource.GuestRequestList[index] = (guestRequest).Copy();
         }
 
-        public GuestRequest getGuestReqByOrder(BE.Order order)//return guest req by Order.
-        {
-            return (getGuestRequest((order.GuestRequestKey))).Copy();
-        }
+
 
         #endregion
 
         #region Hosting Unit Functions
 
-        public long addHostingUnit(HostingUnit hostingUnit)
+        public void addHostingUnit(HostingUnit hostingUnit)
         {
 
             hostingUnit.HostingUnitKey = Configuration.HostingUnitKey++;
@@ -128,13 +123,13 @@ namespace DAL
             hostingUnit.AllDates = new List<DateTime>();
 
             DS.DataSource.HostingUnitList.Add(hostingUnit.Copy());
-            return hostingUnit.HostingUnitKey;
+            
 
         }
 
-        public bool deleteHostingUnit(HostingUnit hostingUnit)
+        public bool deleteHostingUnit(long key)
         {
-            return DS.DataSource.HostingUnitList.Remove(DS.DataSource.HostingUnitList.FirstOrDefault(HU => HU.HostingUnitKey == hostingUnit.HostingUnitKey));
+            return DS.DataSource.HostingUnitList.Remove(DS.DataSource.HostingUnitList.FirstOrDefault(HU => HU.HostingUnitKey == key));
         }
 
         public IEnumerable<HostingUnit> getListHostingUnit(Func<HostingUnit, bool> predicate = null)
@@ -164,20 +159,17 @@ namespace DAL
             DS.DataSource.HostingUnitList[index] = (hostingUnit).Copy();
         }
 
-        public HostingUnit getHostingUnitByOrder(BE.Order order)//return Hosting Unit by Order.
-        {
-            return (getHostingUnit(order.HostingUnitKey)).Copy();
-        }
+
 
         #endregion
 
         #region Order Functions
 
-        public long addOrder(Order order)
-        {            
+        public void addOrder(Order order)
+        {
             order.OrderKey = Configuration.OrderKey++;
             DS.DataSource.OrderList.Add(order.Copy());
-            return order.OrderKey;
+           
         }
 
         public Order GetOrder(long key)
@@ -267,6 +259,28 @@ namespace DAL
             return ret.Copy();
         }
 
+
+
         #endregion
+
+        public void setAdminPass(string pass)
+        {
+            DS.DataSource.admin.adminPass = pass;
+        }
+
+        public string getAdminPass()
+        {
+            return DS.DataSource.admin.adminPass;
+        }
+
+        public void AddProfitToAdmin(int amount)
+        {
+            DS.DataSource.admin.Profits += amount;
+        }
+
+        public int getAdminProfit()
+        {
+            return DS.DataSource.admin.Profits;
+        }
     }
 }

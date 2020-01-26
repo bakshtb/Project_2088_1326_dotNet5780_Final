@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Linq;
 using BE;
 
 namespace PLWPF
@@ -18,16 +19,28 @@ namespace PLWPF
     /// </summary>
     public partial class HostSignInWindow : Window
     {
+        public static BL.IBL bl;
+
         Host host;
         HostingUnit hostingUnit;
         Order order;
         long Hostkey;
 
-        IEnumerable<Order> listOrders;
-        IEnumerable<HostingUnit> listHostingUnits;
+        List<Order> listOrders;
+        List<object> ReadableListOrders;
+
+        List<HostingUnit> listHostingUnits;
+        List<object> ReadableListHostingUnits;
+
+        List<GuestRequest> listGuestRequest;
+        List<object> ReadableListGuestRequest;
+
+        bool isReturn;
 
         public HostSignInWindow(long key)
         {
+            bl = BL.FactoryBL.GetBL();
+
             InitializeComponent();
 
             Hostkey = key;
@@ -37,16 +50,37 @@ namespace PLWPF
             order = new Order();
 
             cmbHostingUnitArea.ItemsSource = HebrewEnum.getListStrings<AreaEnum>();
-            cmbOrderStatus.ItemsSource = HebrewEnum.getListStrings<OrderStatusEnum>();
+            cmbOrderUpdateStatus.ItemsSource = HebrewEnum.getListStrings<OrderStatusEnum>();
 
             refreshHostingUnits();
 
             refreshOrder();
+
+            refreshGuestRequests();
+
+            refreshErrorLabels();
         }
+
+        private void refreshErrorLabels()
+        {
+            lblErrorHostingUnitArea.Visibility = Visibility.Hidden;
+            lblErrorHostingUnitName.Visibility = Visibility.Hidden;
+            lblErrorUpdateHostingUnitName.Visibility = Visibility.Hidden;
+            lblErrorUpdateHostingUnitArea.Visibility = Visibility.Hidden;
+            lblErrorHostingUnitDelete.Visibility = Visibility.Hidden;
+            lblErrorUpdateHostingUnitSelecta.Visibility = Visibility.Hidden;
+            lblErrorName.Visibility = Visibility.Hidden;
+            lblErrorFamilyName.Visibility = Visibility.Hidden;
+            lblErrorMail.Visibility = Visibility.Hidden;
+            lblErrorPhone.Visibility = Visibility.Hidden;
+            lblErrorPhone.Visibility = Visibility.Hidden;
+            lblErrorBank.Visibility = Visibility.Hidden;
+        }
+
 
         private void refreshHost()
         {
-            host = MainWindow.bl.GetHost(Hostkey);
+            host = bl.GetHost(Hostkey);
 
             HostUpdateGrid.DataContext = host;
 
@@ -62,10 +96,10 @@ namespace PLWPF
             else
                 txpBankInfo.Text += "לא";
 
-            cmbUpdateHostBranch.ItemsSource = MainWindow.bl.getListBankBranchs();
+            cmbUpdateHostBranch.ItemsSource = bl.getListBankBranchs();
 
             int i = 0;
-            foreach (var item in MainWindow.bl.getListBankBranchs())
+            foreach (var item in bl.getListBankBranchs())
             {
                 if (item.BankNumber == host.BankBranchDetails.BankNumber && item.BranchNumber == host.BankBranchDetails.BranchNumber)
                     cmbUpdateHostBranch.SelectedIndex = i;
@@ -77,14 +111,17 @@ namespace PLWPF
         {
             hostingUnit = new HostingUnit();
             HostingUnitAddGrid.DataContext = hostingUnit;
-            HostingUnitUpdateGrid.DataContext = hostingUnit;
+            HostingUnitUpdateGrid.DataContext = hostingUnit;            
 
 
-            listHostingUnits = MainWindow.bl.GetHostingUnitsOfHost(Hostkey);
+            listHostingUnits = bl.GetHostingUnitsOfHost(Hostkey).ToList();
+            ReadableListHostingUnits = bl.GetReadableListOfHostingUnits(listHostingUnits);
 
-            cmbUpdateHostingUnit.ItemsSource = listHostingUnits;
-            cmbDeleteHostingUnit.ItemsSource = listHostingUnits;
+            
 
+            lsvUpdateHostingUnit.ItemsSource = ReadableListHostingUnits;
+            lsvDeleteHostingUnit.ItemsSource = ReadableListHostingUnits;
+            lsvOrderHostingUnit.ItemsSource = ReadableListHostingUnits;
 
             HostingUnitListGrid.Children.Clear();
             HostingUnitListGrid.RowDefinitions.Clear();
@@ -92,7 +129,7 @@ namespace PLWPF
             int i = 0;
             foreach (var host in listHostingUnits)
             {
-                HostUserControl h = new HostUserControl(host);
+                HostingUnitUserControl h = new HostingUnitUserControl(host);
                 HostingUnitListGrid.Children.Add(h);
 
                 var rowDefinition = new RowDefinition();
@@ -101,47 +138,102 @@ namespace PLWPF
 
                 Grid.SetRow(h, i++);
             }
-
         }
 
         private void refreshOrder()
         {
-            listOrders = MainWindow.bl.getOrdersOfHost(host);
-            lbxOrderGuestRequest.ItemsSource = MainWindow.bl.getListGuestRequest();
-            lbxOrderHostingUnit.ItemsSource = MainWindow.bl.GetHostingUnitsOfHost(Hostkey);
-            cmbOrderUpdate.ItemsSource = listOrders;
-            cmbOrderDelete.ItemsSource = listOrders;
-            lsvOrders.ItemsSource = listOrders;
-            cmbOrderDelete.ItemsSource = listOrders;
+            listOrders = bl.getOrdersOfHost(host).ToList();
+
+            lsvOrderGuerstRequest.ItemsSource = bl.GetReadableListOfGuestRequest();
+
+            ReadableListOrders = bl.GetReadableListOfOrder(listOrders).ToList();
+
+            lsvOrderStatus.ItemsSource = ReadableListOrders;
+            lsvOrderDelete.ItemsSource = ReadableListOrders;
+            lsvOrders.ItemsSource = ReadableListOrders;
         }
 
+
+        private void refreshGuestRequests()
+        {
+            listGuestRequest = bl.getListGuestRequest().ToList();
+            ReadableListGuestRequest = bl.GetReadableListOfGuestRequest().ToList();
+        }
 
         private void btnAddHostingUnit_Click(object sender, RoutedEventArgs e)
         {
-            hostingUnit.Owner = host;
-            HostingUnitAddGrid.DataContext = hostingUnit;
+            refreshErrorLabels();
+            isReturn = false;
+            if(txbHostingUnitName.Text == "")
+            {
+                lblErrorHostingUnitName.Visibility = Visibility.Visible;
+                isReturn = true;
+            }
+            if (cmbHostingUnitArea.SelectedIndex < 0)
+            {
+                lblErrorHostingUnitArea.Visibility = Visibility.Visible;
+                isReturn = true;
+            }
+            if (isReturn)
+                return;
 
-            MainWindow.bl.addHostingUnit(hostingUnit);
-            refreshHostingUnits();
+
+            try
+            {
+                hostingUnit.Owner = host;
+                HostingUnitAddGrid.DataContext = hostingUnit;
+                bl.addHostingUnit(hostingUnit);
+                refreshHostingUnits();
+                MessageBox.Show("נוסף בהצלחה", "", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.RtlReading);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "שגיאה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.RtlReading);
+            }
+            
         }
 
-        private void cmbUpdateHostingUnit_DropDownClosed(object sender, EventArgs e)
+        private void lsvUpdateHostingUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmbUpdateHostingUnit.SelectedIndex != -1)
+            if (lsvUpdateHostingUnit.SelectedIndex != -1)
             {
-                hostingUnit = (HostingUnit)cmbUpdateHostingUnit.SelectedItem;
+                hostingUnit = listHostingUnits[lsvUpdateHostingUnit.SelectedIndex];
                 HostingUnitUpdateGrid.DataContext = hostingUnit;
 
-                txbHostingUnitUpdateArea.Text = HebrewEnum.Area(hostingUnit.Area);
+                cmbHostingUnitUpdateArea.Text = HebrewEnum.Area(hostingUnit.Area);
             }
         }
 
         private void btnUpdateHostingUnit_Click(object sender, RoutedEventArgs e)
         {
+            isReturn = false;
+            refreshErrorLabels();
+
+            if(txbHostingUnitUpdateName.Text == "")
+            {
+                isReturn = true;
+                lblErrorUpdateHostingUnitName.Visibility = Visibility.Visible;
+            }
+            if (cmbHostingUnitUpdateArea.CaretIndex < 0)
+            {
+                isReturn = true;
+                lblErrorUpdateHostingUnitArea.Visibility = Visibility.Visible;
+            }
+            if(lsvUpdateHostingUnit.SelectedIndex < 0)
+            {
+                isReturn = true;
+                lblErrorUpdateHostingUnitSelecta.Visibility = Visibility.Visible;
+            }
+
+            if (isReturn)
+                return;
+
+
             try
             {
-                MainWindow.bl.updateHostingUnit(hostingUnit);
+                bl.updateHostingUnit(hostingUnit);
                 refreshHostingUnits();
+                MessageBox.Show("עודכן בהצלחה", "", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.RtlReading);
             }
             catch (Exception ex)
             {
@@ -151,12 +243,19 @@ namespace PLWPF
 
         private void btnDeleteHostingUnit_Click(object sender, RoutedEventArgs e)
         {
+            if(lsvDeleteHostingUnit.SelectedIndex < 0)
+            {
+                lblErrorHostingUnitDelete.Visibility = Visibility.Visible;
+                return;
+            }
+
             try
             {
-                hostingUnit = (HostingUnit)cmbDeleteHostingUnit.SelectedItem;
+                hostingUnit = listHostingUnits[lsvDeleteHostingUnit.SelectedIndex];
 
-                MainWindow.bl.deleteHostingUnit(hostingUnit);
+                bl.deleteHostingUnit(hostingUnit);
                 refreshHostingUnits();
+                MessageBox.Show("נמחק בהצלחה", "", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.RtlReading);
             }
             catch (Exception ex)
             {
@@ -166,11 +265,46 @@ namespace PLWPF
 
         private void btnHostUpdate_Click(object sender, RoutedEventArgs e)
         {
+            
+
+            refreshErrorLabels();
+            bool isReturn = false;
+            if (txbName.Text == "" || bl.isHaveDigit(txbName.Text))
+            {
+                lblErrorName.Visibility = Visibility.Visible;
+                isReturn = true;
+            }
+            if (txbFamilyName.Text == "" || bl.isHaveDigit(txbFamilyName.Text))
+            {
+                lblErrorFamilyName.Visibility = Visibility.Visible;
+                isReturn = true;
+            }
+            if (!txbMail.Text.ToString().Contains("@"))
+            {
+                lblErrorMail.Visibility = Visibility.Visible;
+                isReturn = true;
+            }
+            if (bl.isNotDigit(txbPhone.Text))
+            {
+                lblErrorPhone.Visibility = Visibility.Visible;
+                isReturn = true;
+            }           
+            if (bl.isNotDigit(txbBank.Text))
+            {
+                lblErrorBank.Visibility = Visibility.Visible;
+                isReturn = true;
+            }
+           
+            if (isReturn)
+                return;
+
+
             try
             {
                 host.BankBranchDetails = (BankBranch)cmbUpdateHostBranch.SelectedItem;
-                MainWindow.bl.updateHost(host);
+                bl.updateHost(host);
                 refreshHost();
+                MessageBox.Show("עודכן בהצלחה", "", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.RtlReading);
             }
             catch (Exception ex)
             {
@@ -182,7 +316,7 @@ namespace PLWPF
         {
             try
             {
-                MainWindow.bl.deleteHost(host.HostKey);
+                bl.deleteHost(host.HostKey);
                 this.Close();
             }
             catch (Exception ex)
@@ -193,21 +327,24 @@ namespace PLWPF
 
         private void btnAddOrder_Click(object sender, RoutedEventArgs e)
         {
+
+
             try
             {
-                if (lbxOrderGuestRequest.SelectedIndex >= 0 && lbxOrderHostingUnit.SelectedIndex >= 0)
+                if (lsvOrderGuerstRequest.SelectedIndex >= 0 && lsvOrderHostingUnit.SelectedIndex >= 0)
                 {
-                    order.GuestRequestKey = ((GuestRequest)lbxOrderGuestRequest.SelectedItem).GuestRequestKey;
-                    order.HostingUnitKey = ((HostingUnit)lbxOrderHostingUnit.SelectedItem).HostingUnitKey;
+                    order.GuestRequestKey = listGuestRequest[lsvOrderGuerstRequest.SelectedIndex].GuestRequestKey;
+                    order.HostingUnitKey = listHostingUnits[lsvOrderHostingUnit.SelectedIndex].HostingUnitKey;
                     
 
-                    MainWindow.bl.addOrder(order);
+                    bl.addOrder(order);
 
                     refreshOrder();
+                    MessageBox.Show("נוסף בהצלחה", "", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.RtlReading);
                 }
 
                 else
-                    throw new Exception("נא לבחור סניף בנק");
+                    throw new Exception("נא לבחור יחידת אירוח ובקשת לקוח");
 
             }
             catch (Exception ex)
@@ -218,35 +355,69 @@ namespace PLWPF
 
         private void btnOrderUpdate_Click(object sender, RoutedEventArgs e)
         {
+
             try
             {
-                order = MainWindow.bl.GetOrder(((Order)cmbOrderUpdate.SelectedItem).OrderKey);
-                order.Status = (OrderStatusEnum)cmbOrderStatus.SelectedIndex;
-                MainWindow.bl.updateOrder(order);
-                refreshOrder();
-                cmbOrderStatus.SelectedIndex = -1;
+                if (lsvOrderStatus.SelectedIndex < 0)
+                {
+                    MessageBox.Show("נא לבחור הזמנה לצורך העידכון!", "שגיאה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.RtlReading);
+                }
+                else
+                {
+                    string pass = "";
+
+                    order = listOrders[lsvOrderStatus.SelectedIndex];
+                    order.Status = (OrderStatusEnum)cmbOrderUpdateStatus.SelectedIndex;
+
+                    if (order.Status == OrderStatusEnum.mail_has_been_sent)
+                    {
+                        HostMailPassWindow passWin = new HostMailPassWindow();
+
+                        pass = passWin.Prompt();
+                    }
+
+                    bl.updateOrder(order, pass);
+                    refreshHost();
+                    refreshHostingUnits();
+                    refreshOrder();
+                    lsvOrderStatus.SelectedIndex = -1;
+                    MessageBox.Show("עודכן בהצלחה", "", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.RtlReading);
+
+                }
             }
+
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "שגיאה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.RtlReading);
+                if (ex.ToString().Contains("5.7.0 Authentication Required"))
+                {
+                    MailProblemWindow problemWin = new MailProblemWindow();
+                    problemWin.ShowDialog();
+                }
+                else
+                    MessageBox.Show(ex.Message, "שגיאה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.RtlReading);
             }          
         }
 
-        private void cmbOrderUpdate_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void lsvOrderStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmbOrderUpdate.SelectedIndex != -1)
+            if (lsvOrderStatus.SelectedIndex != -1)
             {
-                cmbOrderStatus.SelectedItem = HebrewEnum.OrderStatus(((Order)cmbOrderUpdate.SelectedItem).Status);
+                cmbOrderUpdateStatus.SelectedItem = HebrewEnum.OrderStatus(listOrders[lsvOrderStatus.SelectedIndex].Status);
             }
         }
 
         private void btnOrderDelete_Click(object sender, RoutedEventArgs e)
         {
+            if (lsvOrderDelete.SelectedIndex <0)
+            {
+                MessageBox.Show("נא לבחור יחידת אירוח", "שגיאה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.RtlReading);
+            }
             try
             {
-                MainWindow.bl.deleteOrder(((Order)cmbOrderDelete.SelectedItem).OrderKey);
+                bl.deleteOrder(listOrders[lsvOrderDelete.SelectedIndex].OrderKey);
                 refreshOrder();
-                cmbOrderDelete.SelectedIndex = -1;
+                lsvOrderDelete.SelectedIndex = -1;
+                MessageBox.Show("נמחק בהצלחה", "", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.RtlReading);
             }
             catch (Exception ex)
             {

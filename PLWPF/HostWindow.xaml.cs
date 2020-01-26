@@ -18,24 +18,36 @@ namespace PLWPF
     /// </summary>
     public partial class HostWindow : Window
     {
+        public static BL.IBL bl;
+
         Host host;
         public HostWindow()
         {
+            bl = BL.FactoryBL.GetBL();
+
             InitializeComponent();
 
             txbID.Focus();
 
             host = new Host();
-            
+
+            lblErrorID.Visibility = Visibility.Hidden;
         }
         
 
         private void signIn()
         {
+            lblErrorID.Visibility = Visibility.Hidden;
+            if (txbID.Text == "" || bl.isNotDigit(txbID.Text))
+            {
+                lblErrorID.Visibility = Visibility.Visible;
+                return;
+            }
+
             try
             {
                 host.HostKey = int.Parse(txbID.Text);
-                MainWindow.bl.GetHost(host.HostKey);
+                bl.GetHost(host.HostKey);
                 Window HostSignIn = new HostSignInWindow(host.HostKey);
                 this.Hide();
                 HostSignIn.ShowDialog();

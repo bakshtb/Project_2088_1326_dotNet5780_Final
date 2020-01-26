@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Remove="Pictures\Admin.png" />
+    <None Remove="Pictures\AdminSignInTextBox.png" />
     <None Remove="Pictures\back - Copy.png" />
     <None Remove="Pictures\back.png" />
     <None Remove="Pictures\back1 - Copy1.png" />
@@ -21,11 +22,11 @@
     <None Remove="Pictures\Grid.png" />
     <None Remove="Pictures\Guest.png" />
     <None Remove="Pictures\Host.png" />
+    <None Remove="Pictures\HostSignInTextBox.png" />
     <None Remove="Pictures\request %282%29.png" />
     <None Remove="Pictures\request.png" />
     <None Remove="Pictures\sign in.png" />
     <None Remove="Pictures\sign up.png" />
-    <None Remove="Pictures\signInTextBox.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +36,7 @@
 
   <ItemGroup>
     <Resource Include="Pictures\Admin.png" />
+    <Resource Include="Pictures\AdminSignInTextBox.png" />
     <Resource Include="Pictures\background grid guest request.png" />
     <Resource Include="Pictures\background grid host sign up.png" />
     <Resource Include="Pictures\background.png">
@@ -52,7 +54,7 @@
     </Resource>
     <Resource Include="Pictures\sign in.png" />
     <Resource Include="Pictures\sign up.png" />
-    <Resource Include="Pictures\signInTextBox.png" />
+    <Resource Include="Pictures\HostSignInTextBox.png" />
   </ItemGroup>
 
 </Project>

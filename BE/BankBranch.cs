@@ -17,11 +17,9 @@ namespace BE
 
         public override string ToString()
         {
-            string ret = "מספר בנק: " + BankNumber
-                       + "\nבנק: " + BankName
+            string ret = "בנק: " + BankNumber + " - " + BankName
                        + "\nסניף: " + BranchNumber
-                       + "\nכתובת: " + BranchAddress
-                       + "\nעיר: " + BranchCity;
+                       + "\nכתובת: " + BranchAddress + " , " + BranchCity;
             return ret;
         }
     }

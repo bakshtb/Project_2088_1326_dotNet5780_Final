@@ -9,7 +9,7 @@ namespace BL
     {
         #region Guest Request Functions
 
-        long addGuestReq(GuestRequest guestRequest);
+        void addGuestReq(GuestRequest guestRequest);
 
         void updateGuestReq(GuestRequest guestRequest);
 
@@ -17,11 +17,15 @@ namespace BL
 
         IEnumerable<GuestRequest> getListGuestRequest(Func<GuestRequest, bool> predicate = null);
 
+        GuestRequest getGuestReqByOrder(Order order);
+
+        IEnumerable<object> GetReadableListOfGuestRequest(IEnumerable<GuestRequest> fromList = null);
+
         #endregion
 
         #region Hosting Unit Functions
 
-        long addHostingUnit(HostingUnit hostingUnit);
+        void addHostingUnit(HostingUnit hostingUnit);
 
         bool deleteHostingUnit(long key);
 
@@ -33,16 +37,20 @@ namespace BL
 
         IEnumerable<HostingUnit> getListHostingUnit(Func<HostingUnit, bool> predicate = null);
 
+        HostingUnit getHostingUnitByOrder(Order order);
+
+        List<object> GetReadableListOfHostingUnits(IEnumerable<HostingUnit> fromList = null);
+
 
         #endregion
 
         #region Order Functions
 
-        long addOrder(Order order);
+        void addOrder(Order order);
 
         void updateOrder(long key, OrderStatusEnum status);
 
-        void updateOrder(Order order);
+        void updateOrder(Order order , string pass = "");
 
         void deleteOrder(long key);
 
@@ -51,6 +59,8 @@ namespace BL
         IEnumerable<Order> getListOrders(Func<Order, bool> predicate = null);
 
         IEnumerable<Order> getOrdersOfHost(Host host);
+
+        IEnumerable<object> GetReadableListOfOrder(IEnumerable<Order> fromList = null);
 
         #endregion
 
@@ -64,7 +74,7 @@ namespace BL
 
         Host GetHost(long key);
 
-        long addHost(Host host);
+        void addHost(Host host);
 
         void updateHost(long key);
 
@@ -76,6 +86,8 @@ namespace BL
 
         IEnumerable<HostingUnit> GetHostingUnitsOfHost(long key);
 
+        List<object> GetReadableListOfHosts(IEnumerable<Host> fromList = null);
+
         #endregion
 
         #region Other Functions
@@ -84,9 +96,15 @@ namespace BL
 
         IEnumerable<Order> ordersBiggestThan(int length);
 
-        int getSumOrders(GuestRequest guestRequest);
+        int getSumMaildedOrders();
 
-        int SumOfApprovedOrder(HostingUnit hostingUnit);
+        int getSumMaildedOrdersOfGuestRequest(GuestRequest guestRequest);
+
+        int SumOfApprovedOrderOfHostingUnit(HostingUnit hostingUnit);
+
+        int SumOfApprovedOrderOfHost(Host host);
+
+        int SumOfApprovedOrderOfAllHosts();
 
         IEnumerable<IGrouping<AreaEnum, GuestRequest>> GetGuestRequestsAreaByGroups();
 
@@ -96,8 +114,17 @@ namespace BL
 
         IEnumerable<IGrouping<AreaEnum, HostingUnit>> GetHostingUnitsAreaByGroups();
 
+        bool isHaveDigit(string st);
+
+        bool isNotDigit(string st);
+
         #endregion
 
-        
+
+        void setAdminPass(string pass);
+
+        string getAdminPass();
+
+        int getAdminProfit();
     }
 }

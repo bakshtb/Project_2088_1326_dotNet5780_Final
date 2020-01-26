@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL
+namespace BE
 {
-    class configuration
+    public class Admin
     {
-        public static int fee = 10;
+        public string adminPass { get; set; }
+        public int Profits { get; set; }
     }
 }

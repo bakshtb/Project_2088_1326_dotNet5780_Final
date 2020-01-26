@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BL_basic.cs" />
-    <Compile Include="configuration.cs" />
     <Compile Include="FactoryBL.cs" />
     <Compile Include="IBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

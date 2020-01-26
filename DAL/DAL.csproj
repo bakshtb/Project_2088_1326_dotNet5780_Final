@@ -44,9 +44,11 @@
     <Compile Include="Cloning.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Dal_imp.cs" />
+    <Compile Include="Dal_XML_imp.cs" />
     <Compile Include="FactoryDal.cs" />
     <Compile Include="IDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XMLHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BE\BE.csproj">

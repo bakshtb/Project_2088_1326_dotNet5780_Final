@@ -6,7 +6,128 @@
         xmlns:local="clr-namespace:PLWPF"
         mc:Ignorable="d"
         Title="מנהל" Height="450" Width="800">
-    <Grid/>
+    <Grid>
+        <TabControl FlowDirection="RightToLeft">
+            <TabItem Header="רשימת בקשות">
+                <Grid Background="#FFE5E5E5">
+                    <ListView x:Name="lsvAdminGuestRequest">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="מספר בקשה" Width="auto" DisplayMemberBinding="{Binding GuestRequestKey}" />
+                                <GridViewColumn Header="שם פרטי" Width="auto" DisplayMemberBinding="{Binding PrivateName}" />
+                                <GridViewColumn Header="שם משפחה" Width="auto" DisplayMemberBinding="{Binding FamilyName}" />
+                                <GridViewColumn Header="מייל" Width="auto" DisplayMemberBinding="{Binding MailAddress}" />
+                                <GridViewColumn Header="מספר מבוגרים" Width="auto" DisplayMemberBinding="{Binding Adults}" />
+                                <GridViewColumn Header="מספר ילדים" Width="auto" DisplayMemberBinding="{Binding Children}" />
+                                <GridViewColumn Header="תאריך רישום" Width="auto" DisplayMemberBinding="{Binding RegistrationDate}" />
+                                <GridViewColumn Header="תאריך כניסה" Width="auto" DisplayMemberBinding="{Binding EntryDate}" />
+                                <GridViewColumn Header="תאריך יציאה" Width="auto" DisplayMemberBinding="{Binding ReleaseDate}" />
+                                <GridViewColumn Header="סוג" Width="auto" DisplayMemberBinding="{Binding Type}" />
+                                <GridViewColumn Header="איזור" Width="auto" DisplayMemberBinding="{Binding Area}" />
+                                <GridViewColumn Header="סטטוס" Width="auto" DisplayMemberBinding="{Binding Status}" />
+                                <GridViewColumn Header="בירכה" Width="auto" DisplayMemberBinding="{Binding Pool}" />
+                                <GridViewColumn Header="ג'קוזי" Width="auto" DisplayMemberBinding="{Binding Jacuzzi}" />
+                                <GridViewColumn Header="גינה" Width="auto" DisplayMemberBinding="{Binding Garden}" />
+                                <GridViewColumn Header="אטרקציות לילדים" Width="auto" DisplayMemberBinding="{Binding ChildrensAttractions}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
+            <TabItem Header="רשימת יחידות אירוח">
+                <ScrollViewer>
+                    <Grid x:Name="AdminHostingUnitGrid" Background="#FFE5E5E5"></Grid>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="רשימת הזמנות">
+                <Grid Background="#FFE5E5E5">
+                    <ListView x:Name="lsvAdminOrders" MouseDoubleClick="lsvAdminOrders_MouseDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="מספר הזמנה" Width="auto" DisplayMemberBinding="{Binding OrderKey}" />
+                                <GridViewColumn Header="מספר יחדית אירוח" Width="auto" DisplayMemberBinding="{Binding HostingUnitKey}" />
+                                <GridViewColumn Header="מספר בקשה" Width="auto" DisplayMemberBinding="{Binding GuestRequestKey}" />
+                                <GridViewColumn Header="תאריך יצירה" Width="auto" DisplayMemberBinding="{Binding CreateDate}" />
+                                <GridViewColumn Header="סטטוס" Width="auto" DisplayMemberBinding="{Binding Status}" />
+                                <GridViewColumn Header="תאריך משלוח מייל ללקוח" Width="auto" DisplayMemberBinding="{Binding OrderDate}" />
+
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
+
+
+            <TabItem Header="רשימת מארחים">
+                <Grid Background="#FFE5E5E5">
+                    <ListView x:Name="lsvAdminHosts" MouseDoubleClick="lsvAdminOrders_MouseDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="מספר מארח" Width="auto" DisplayMemberBinding="{Binding HostKey}" />
+                                <GridViewColumn Header="שם פרטי" Width="auto" DisplayMemberBinding="{Binding PrivateName}" />
+                                <GridViewColumn Header="שם משפחה" Width="auto" DisplayMemberBinding="{Binding FamilyName}" />
+                                <GridViewColumn Header="מייל" Width="auto" DisplayMemberBinding="{Binding MailAddress}" />
+                                <GridViewColumn Header="מספר טלפון" Width="auto" DisplayMemberBinding="{Binding FhoneNumber}" />
+                                <GridViewColumn Header="הרשאה לחיוב חשבון" Width="auto" DisplayMemberBinding="{Binding CollectionClearance}" />
+                                <GridViewColumn Header="מספר חשבון בנק" Width="auto" DisplayMemberBinding="{Binding BankAccountNumber}" />
+                                <GridViewColumn Header="פירוט סניף בנק" Width="auto" DisplayMemberBinding="{Binding BankBranchDetails}" />
+                                <GridViewColumn Header="מספר הזמנות שאושרו" Width="auto" DisplayMemberBinding="{Binding SumOfApprovedOrder}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header=" הגדרות ונתונים">
+                <Grid Background="#FFE5E5E5">
+                    <GroupBox Header="שינוי סיסמת מנהל" Margin="10,10,0,0" HorizontalAlignment="Left" Width="240" Height="154" VerticalAlignment="Top">
+                        <StackPanel>
+                            <TextBlock  Text="הכנס סיסמה:" TextWrapping="Wrap" Margin="10,6,10,0"/>
+                            <PasswordBox x:Name="psbAdminPass" Margin="10,0,10,0"/>
+                            <TextBlock HorizontalAlignment="Left"  Text="אימות סיסמה:" Margin="10,0,10,0" />
+                            <PasswordBox x:Name="psbVerificationAdminPass" Margin="10,0,10,0" />
+                            <Button x:Name="btnUpdatePass" Content="עדכן" Width="122" Height="23" Click="btnUpdatePass_Click" HorizontalAlignment="Right" Margin="10,10,10,0"/>
+                        </StackPanel>
+
+                    </GroupBox>
+                    <GroupBox Header="שינוי גובה עמלה" Margin="267,10,0,0" Height="154" VerticalAlignment="Top" HorizontalAlignment="Left" Width="240">
+
+                        <StackPanel Height="126">
+                            <TextBlock  Text="הכנס גובה עמלה:" TextWrapping="Wrap" Margin="10,6,10,0"/>
+                            <TextBox x:Name="txbUpdateFee" Margin="10,0,10,0"/>
+                            <Button  x:Name="btnUpdateFee" Content="עדכן" Width="122" Height="23" HorizontalAlignment="Right" Margin="10,40,10,0" Click="btnUpdateFee_Click"/>
+                        </StackPanel>
+
+                    </GroupBox>
+                    <GroupBox Header="נתונים סטטיסטים:" Margin="523,10,10,0" Height="214" VerticalAlignment="Top">
+                        <Canvas>
+                            <TextBlock Canvas.Left="10" Canvas.Top="113" TextWrapping="Wrap" Text="מספר הזמנות כולל:"/>
+                            <TextBlock x:Name="txbNumOfSuccessfulOrders" Canvas.Left="202" Canvas.Top="135" TextWrapping="Wrap" Text="0"/>
+                            <TextBlock Canvas.Left="10" Canvas.Top="134" TextWrapping="Wrap" Text="מספר הזמנות שנסגרו בהצלחה:"/>
+                            <TextBlock x:Name="txbNumOfProfit" Canvas.Left="202" Canvas.Top="153" TextWrapping="Wrap" Text="0"/>
+                            <TextBlock Canvas.Left="12" Canvas.Top="153" TextWrapping="Wrap" Text="סך רווחים (בשקלים):"/>
+                            <TextBlock x:Name="txbNumOfHostes" Canvas.Left="202" Canvas.Top="66" TextWrapping="Wrap" Text="0"/>
+                            <TextBlock Canvas.Left="12" Canvas.Top="71" TextWrapping="Wrap" Text="מספר מארחים"/>
+                            <TextBlock x:Name="txbNumOfHostingUnits" Canvas.Left="202" Canvas.Top="92" TextWrapping="Wrap" Text="0"/>
+                            <TextBlock Canvas.Left="12" TextWrapping="Wrap" Text="מספר בקשות שנשלחו עבורם מייל:" Canvas.Top="34"/>
+                            <TextBlock x:Name="txbSumMaildedGuestRequests" Canvas.Left="202" TextWrapping="Wrap" Text="0" Canvas.Top="42"/>
+                            <TextBlock Canvas.Left="10" Canvas.Top="92" TextWrapping="Wrap" Text="מספר יחידות אירוח:"/>
+                            <TextBlock x:Name="txbNumOfOrders" Canvas.Left="202" Canvas.Top="113" TextWrapping="Wrap" Text="0"/>
+                            <TextBlock Canvas.Left="12" TextWrapping="Wrap" Text="מספר בקשות:" Canvas.Top="13"/>
+                            <TextBlock x:Name="txbNumOfGuestRequests" Canvas.Left="202" TextWrapping="Wrap" Text="0" Canvas.Top="13"/>
+                            <TextBlock Canvas.Left="12" TextWrapping="Wrap" Text="(ועדיין לא נסגרו)" Canvas.Top="50"/>
+
+
+
+                        </Canvas>
+                    </GroupBox>
+
+
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
 
 
 </Window>

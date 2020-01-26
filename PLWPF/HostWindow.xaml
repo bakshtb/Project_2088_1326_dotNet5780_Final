@@ -29,8 +29,9 @@
                 </TransformGroup>
             </TextBox.RenderTransform>
             <TextBox.Background>
-                <ImageBrush TileMode="None" ImageSource="Pictures/signInTextBox.png"/>
+                <ImageBrush TileMode="None" ImageSource="Pictures/HostSignInTextBox.png"/>
             </TextBox.Background>
         </TextBox>
+        <Label x:Name="lblErrorID" Content="אנא הכנס מספר תעודת זהות!" HorizontalAlignment="Left" Margin="133,193,0,0" VerticalAlignment="Top" Foreground="Red" FontSize="10" Height="23" FlowDirection="RightToLeft"/>
     </Grid>
 </Window>

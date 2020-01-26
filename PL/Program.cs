@@ -160,7 +160,7 @@ namespace PL
                             request.ChildrensAttractions = (BE.optionsEnum)(tempEnum - 1);
 
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("\tGuest request NO: " + bl.addGuestReq(request) + " added successfully!");
+                            //Console.WriteLine("\tGuest request NO: " + bl.addGuestReq(request) + " added successfully!");
                             Console.ForegroundColor = ConsoleColor.White;
 
                             break;
@@ -174,7 +174,7 @@ namespace PL
                             Console.Write("Host ID = ");
                             host.HostKey = int.Parse(Console.ReadLine());
                             Console.Write("Host fhone number = ");
-                            host.FhoneNumber = int.Parse(Console.ReadLine());
+                            host.FhoneNumber = (Console.ReadLine());
                             Console.Write("Host bank account number = ");
                             host.BankAccountNumber = int.Parse(Console.ReadLine());
                             Console.Write("Host private name = ");
@@ -208,7 +208,7 @@ namespace PL
                             host.BankBranchDetails = bl.getListBankBranchs()[num - 1];
 
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("\tHosting unit NO: " + bl.addHost(host) + " added successfully!");
+                            //Console.WriteLine("\tHosting unit NO: " + bl.addHost(host) + " added successfully!");
                             Console.ForegroundColor = ConsoleColor.White;
 
                             break;
@@ -247,7 +247,7 @@ namespace PL
                             
 
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("\tHosting unit NO: " + bl.addHostingUnit(hostingUnit) + " added successfully!");
+                            //Console.WriteLine("\tHosting unit NO: " + bl.addHostingUnit(hostingUnit) + " added successfully!");
                             Console.ForegroundColor = ConsoleColor.White;
 
                             break;
@@ -271,7 +271,7 @@ namespace PL
                             order.OrderDate = DateTime.Parse(Console.ReadLine()); ;
 
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("\torder NO: " + bl.addOrder(order) + " added successfully!");
+                            //Console.WriteLine("\torder NO: " + bl.addOrder(order) + " added successfully!");
                             Console.ForegroundColor = ConsoleColor.White;
 
                             break;
@@ -336,7 +336,7 @@ namespace PL
                             host= bl.GetHost(key);
 
                             Console.Write("Host fhone number = ");
-                            host.FhoneNumber = int.Parse(Console.ReadLine());
+                            host.FhoneNumber = (Console.ReadLine());
                             Console.Write("Host bank account number = ");
                             host.BankAccountNumber = int.Parse(Console.ReadLine());
                             Console.Write("Host private name = ");
@@ -674,7 +674,7 @@ namespace PL
                             Console.Write("Enter guest request key: ");
                             key = int.Parse(Console.ReadLine());
 
-                            Console.WriteLine("The amount of orders sent to the customer is " + bl.getSumOrders(bl.GetGuestRequest(key)));
+                            //Console.WriteLine("The amount of orders sent to the customer is " + bl.getSumOrders(bl.GetGuestRequest(key)));
 
                             break;
 
@@ -686,7 +686,7 @@ namespace PL
                             Console.Write("Enter hosting unit key: ");
                             key = int.Parse(Console.ReadLine());
 
-                            Console.WriteLine("The amount of orders that accepted " + bl.SumOfApprovedOrder(bl.GetHostingUnit(key)));
+                            //Console.WriteLine("The amount of orders that accepted " + bl.SumOfApprovedOrder(bl.GetHostingUnit(key)));
 
                             break;
 
