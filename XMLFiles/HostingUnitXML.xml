@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HostingUnits>
+  <HostingUnit>
+    <HostingUnitKey>10000000</HostingUnitKey>
+    <AllDates>31/01/2020$01/02/2020$02/02/2020$03/02/2020$04/02/2020$</AllDates>
+    <Area>Central_Israel</Area>
+    <HostingUnitName> the gefen</HostingUnitName>
+    <Owner>
+      <OwnerPrivateName>יחזקאל </OwnerPrivateName>
+      <OwnerFamilyName>באטוויניק</OwnerFamilyName>
+      <OwnerFhoneNumber>0532824787</OwnerFhoneNumber>
+      <OwnerHostKey>312731326</OwnerHostKey>
+      <OwnerMailAddress>chezkibot@gmail.com</OwnerMailAddress>
+      <OwnerCollectionClearance>True</OwnerCollectionClearance>
+      <OwnerBankAccountNumber>73957</OwnerBankAccountNumber>
+      <BankBranch>
+        <BankName>בנק דיסקונט לישראל בע"מ</BankName>
+        <BankNumber>11</BankNumber>
+        <BranchAddress>דרך  העמק 41 מרכז דודג'</BranchAddress>
+        <BranchCity>נצרת עילית</BranchCity>
+        <BranchNumber>5</BranchNumber>
+      </BankBranch>
+    </Owner>
+  </HostingUnit>
+  <HostingUnit>
+    <HostingUnitKey>10000001</HostingUnitKey>
+    <AllDates></AllDates>
+    <Area>Central_Israel</Area>
+    <HostingUnitName>presige</HostingUnitName>
+    <Owner>
+      <OwnerPrivateName>יחזקאל </OwnerPrivateName>
+      <OwnerFamilyName>באטוויניק</OwnerFamilyName>
+      <OwnerFhoneNumber>0532824787</OwnerFhoneNumber>
+      <OwnerHostKey>312731326</OwnerHostKey>
+      <OwnerMailAddress>chezkibot@gmail.com</OwnerMailAddress>
+      <OwnerCollectionClearance>true</OwnerCollectionClearance>
+      <OwnerBankAccountNumber>73957</OwnerBankAccountNumber>
+      <BankBranch>
+        <BankName>בנק דיסקונט לישראל בע"מ</BankName>
+        <BankNumber>11</BankNumber>
+        <BranchAddress>דרך  העמק 41 מרכז דודג'</BranchAddress>
+        <BranchCity>נצרת עילית</BranchCity>
+        <BranchNumber>5</BranchNumber>
+      </BankBranch>
+    </Owner>
+  </HostingUnit>
+  <HostingUnit>
+    <HostingUnitKey>10000002</HostingUnitKey>
+    <AllDates></AllDates>
+    <Area>north_Israel</Area>
+    <HostingUnitName>בית ראש הממשלה</HostingUnitName>
+    <Owner>
+      <OwnerPrivateName>ביבי</OwnerPrivateName>
+      <OwnerFamilyName>נתניהו</OwnerFamilyName>
+      <OwnerFhoneNumber>073628476</OwnerFhoneNumber>
+      <OwnerHostKey>847024728</OwnerHostKey>
+      <OwnerMailAddress>bibinet@gmai.com</OwnerMailAddress>
+      <OwnerCollectionClearance>true</OwnerCollectionClearance>
+      <OwnerBankAccountNumber>349023</OwnerBankAccountNumber>
+      <BankBranch>
+        <BankName>בנק לאומי לישראל בע"מ</BankName>
+        <BankNumber>10</BankNumber>
+        <BranchAddress> אל קודס  0 </BranchAddress>
+        <BranchCity>קלנסווה</BranchCity>
+        <BranchNumber>613</BranchNumber>
+      </BankBranch>
+    </Owner>
+  </HostingUnit>
+  <HostingUnit>
+    <HostingUnitKey>10000003</HostingUnitKey>
+    <AllDates></AllDates>
+    <Area>Jerusalem_area</Area>
+    <HostingUnitName>בית הנשיא</HostingUnitName>
+    <Owner>
+      <OwnerPrivateName>ביבי</OwnerPrivateName>
+      <OwnerFamilyName>נתניהו</OwnerFamilyName>
+      <OwnerFhoneNumber>073628476</OwnerFhoneNumber>
+      <OwnerHostKey>847024728</OwnerHostKey>
+      <OwnerMailAddress>bibinet@gmai.com</OwnerMailAddress>
+      <OwnerCollectionClearance>true</OwnerCollectionClearance>
+      <OwnerBankAccountNumber>349023</OwnerBankAccountNumber>
+      <BankBranch>
+        <BankName>בנק לאומי לישראל בע"מ</BankName>
+        <BankNumber>10</BankNumber>
+        <BranchAddress> אל קודס  0 </BranchAddress>
+        <BranchCity>קלנסווה</BranchCity>
+        <BranchNumber>613</BranchNumber>
+      </BankBranch>
+    </Owner>
+  </HostingUnit>
+</HostingUnits>

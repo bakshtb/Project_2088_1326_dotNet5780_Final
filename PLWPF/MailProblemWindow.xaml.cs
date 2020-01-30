@@ -15,13 +15,15 @@ namespace PLWPF
 {
     /// <summary>
     /// Interaction logic for MailProblemWindow.xaml
-    /// </summary>
+    /// </summary>    
     public partial class MailProblemWindow : Window
     {
+        
         public MailProblemWindow()
         {
             InitializeComponent();
         }
+
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             System.Diagnostics.Process.Start("cmd", "/c start https://myaccount.google.com/lesssecureapps");

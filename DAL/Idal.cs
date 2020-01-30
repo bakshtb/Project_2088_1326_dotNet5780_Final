@@ -5,7 +5,7 @@ using BE;
 namespace DAL
 {
     public interface IDAL
-    {
+    {        
         void addHost(Host host);
 
         void updateHost(Host host);
@@ -14,8 +14,9 @@ namespace DAL
 
         bool deleteHost(long key);
 
-
         IEnumerable<Host> getListHosts(Func<Host, bool> predicate = null);
+
+
 
         void addGuestReq(GuestRequest guestRequest);
 
@@ -24,8 +25,6 @@ namespace DAL
         GuestRequest getGuestRequest(long key);
 
         void updateGuestReq(GuestRequest guestRequest);
-
-        
 
 
 
@@ -43,13 +42,14 @@ namespace DAL
 
         void addOrder(Order order);
 
-        void deleteOrder(long key);
+        bool deleteOrder(long key);
 
         Order GetOrder(long key);
 
         IEnumerable<Order> getListOrders(Func<Order, bool> predicate = null);
 
         void updateOrder(Order order);
+
 
 
         List<BankBranch> getListBankBranchs();
@@ -61,5 +61,9 @@ namespace DAL
         void AddProfitToAdmin(int amount);
 
         int getAdminProfit();
+
+        void setFee(int fee);
+
+        int getFee();
     }
 }

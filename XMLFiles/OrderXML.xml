@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Orders>
+  <Order>
+    <HostingUnitKey>10000000</HostingUnitKey>
+    <GuestRequestKey>10000001</GuestRequestKey>
+    <OrderKey>10000000</OrderKey>
+    <Status>Closes_with_customer_response</Status>
+    <CreateDate>1/30/2020 3:53:18 PM</CreateDate>
+    <OrderDate>1/30/2020 3:53:34 PM</OrderDate>
+    <isClosed>True</isClosed>
+    <isSendMail>True</isSendMail>
+  </Order>
+</Orders>

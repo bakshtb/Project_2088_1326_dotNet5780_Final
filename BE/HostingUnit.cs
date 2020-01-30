@@ -15,7 +15,7 @@ namespace BE
         public AreaEnum Area { get; set; }
 
 
-
+        //contains all reserved dates
         public List<DateTime> AllDates { get; set; }
 
         public override string ToString()

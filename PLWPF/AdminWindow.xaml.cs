@@ -19,13 +19,20 @@ namespace PLWPF
     /// </summary>
     public partial class AdminWindow : Window
     {
+        public static BL.IBL bl;
         public AdminWindow()
         {
-            InitializeComponent();
+            bl = BL.FactoryBL.GetBL();
+
+            InitializeComponent();            
 
             lsvAdminGuestRequest.ItemsSource = MainWindow.bl.GetReadableListOfGuestRequest();
 
             lsvAdminHosts.ItemsSource = MainWindow.bl.GetReadableListOfHosts();
+
+            cmbGuestRequestArea.ItemsSource = HebrewEnum.getListStrings<AreaEnum>();
+
+            cmbHotingUnitArea.ItemsSource = HebrewEnum.getListStrings<AreaEnum>();
 
             int i = 0;
             foreach (var host in MainWindow.bl.getListHostingUnit())
@@ -53,10 +60,6 @@ namespace PLWPF
 
         private void lsvAdminOrders_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-        //    HostingUnit hostingUnit = MainWindow.bl.GetHostingUnit(lsvAdminOrders.SelectedItem)
-        //    GuestRequest guestRequest= MainWindow.bl.getGuestReqByOrder((Order)lsvAdminOrders.SelectedItem);
-
-        //    MessageBox.Show("מידע על ההזמנה:" + "\nבקשת לקוח:\n\n" + guestRequest.ToString() + "מידע על יחידת האירוח:\n " + hostingUnit.ToString(), "מידע", MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None, MessageBoxOptions.RtlReading);
 
         }
 
@@ -85,7 +88,80 @@ namespace PLWPF
                 MessageBox.Show("נא להזין מספר!", "", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.RtlReading);
             }
             else
-                BE.Configuration.fee = int.Parse(txbUpdateFee.Text);
+                bl.setFee(int.Parse(txbUpdateFee.Text));
         }
-    }
+
+        private void cmbGuestRequestArea_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {          
+            foreach (var items in bl.GetGuestRequestsAreaByGroups())
+            {
+                if (items.Key == (AreaEnum)cmbGuestRequestArea.SelectedIndex)
+                {
+                    lsvGuestRequestArea.ItemsSource = bl.GetReadableListOfGuestRequest(items);
+                    return;
+                }               
+            }
+            lsvGuestRequestArea.ItemsSource = null;
+        }
+
+        private void txbGuestRequestNumOfGuests_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int sum = 0;
+
+
+            if (!int.TryParse(txbGuestRequestNumOfGuests.Text, out sum) && txbGuestRequestNumOfGuests.Text != "")
+            {
+                MessageBox.Show("קלט לא תקין", "שגיאה");
+                txbGuestRequestNumOfGuests.Text = "";
+                return;
+            }
+
+            foreach (var items in bl.GetGuestRequestsSumOfPeoplesByGroups())
+            {
+                if (items.Key == sum)
+                {
+                    lsvGuestRequestNumOfGuests.ItemsSource = bl.GetReadableListOfGuestRequest(items);
+                    return;
+                }
+            }
+            lsvGuestRequestNumOfGuests.ItemsSource = null;
+        }
+
+       
+        private void txbHostsNumOfHostingUnits_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int sum = 0;
+
+
+            if (!int.TryParse(txbHostsNumOfHostingUnits.Text, out sum) && txbHostsNumOfHostingUnits.Text != "")
+            {
+                MessageBox.Show("קלט לא תקין", "שגיאה");
+                txbHostsNumOfHostingUnits.Text = "";
+                return;
+            }
+
+            foreach (var items in bl.GetHostsNumOfUnitsByGroups())
+            {
+                if (items.Key == sum)
+                {
+                    lsvHostsNumOfHostingUnits.ItemsSource = bl.GetReadableListOfHosts(items);
+                    return;
+                }
+            }
+            lsvHostsNumOfHostingUnits.ItemsSource = null;
+        }
+
+        private void cmbHotingUnitArea_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            foreach (var items in bl.GetHostingUnitsAreaByGroups())
+            {
+                if (items.Key == (AreaEnum)cmbHotingUnitArea.SelectedIndex)
+                {
+                    lsvHotingUnitArea.ItemsSource = bl.GetReadableListOfHostingUnits(items);
+                    return;
+                }
+            }
+            lsvHotingUnitArea.ItemsSource = null;
+        }       
+    }  
 }

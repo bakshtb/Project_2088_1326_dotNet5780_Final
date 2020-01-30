@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Threading;
 
 namespace BL
 {
@@ -12,8 +13,12 @@ namespace BL
 
         public BL_basic() 
         {
-            dal = DAL.FactoryDal.GetDal(); 
+            dal = DAL.FactoryDal.GetDal();
+
+            Thread thread = new Thread(thread_toDo);
+            thread.Start();
         }
+        
 
         #region Guest Request Functions
 
@@ -45,6 +50,7 @@ namespace BL
             return (dal.getGuestRequest((order.GuestRequestKey)));
         }
 
+     
         public IEnumerable<object> GetReadableListOfGuestRequest(IEnumerable<GuestRequest> fromList = null)
         {
             if (fromList == null)
@@ -61,7 +67,7 @@ namespace BL
                        Status = HebrewEnum.GuestReqStatus(item.Status),
                        RegistrationDate = item.RegistrationDate.ToString("dd/MM/yyyy"),
                        EntryDate = item.EntryDate.ToString("dd/MM/yyyy"),
-                       ReleaseDate = item.RegistrationDate.ToString("dd/MM/yyyy"),
+                       ReleaseDate = item.ReleaseDate.ToString("dd/MM/yyyy"),
                        Area = HebrewEnum.Area(item.Area),
                        Type = HebrewEnum.GuestReqType(item.Type),
                        Adults = item.Adults,
@@ -161,6 +167,10 @@ namespace BL
             if (!isOrderDateAvailable(order))
                 throw new Exception("התאריכים לא זמינים");
 
+            if (getGuestReqByOrder(order).Status == GuestReqStatusEnum.closed)
+            {
+                throw new Exception("לא ניתן להוסיף את ההזמנה, בקשת הלקוח נסגרה");
+            }
             order.isClosed = false;
             order.Status = OrderStatusEnum.Not_yet_addressed;
             order.CreateDate = DateTime.Now;
@@ -180,7 +190,7 @@ namespace BL
             dal.deleteOrder(key);
         }
 
-        public void updateOrder(Order order, string pass = "")
+        public void updateOrder(Order order)
         {
             HostingUnit unit = getHostingUnitByOrder(order);
             GuestRequest request = getGuestReqByOrder(order);
@@ -190,73 +200,44 @@ namespace BL
             if (order.isClosed)
                 throw new Exception("ההזמנה נסגרה, לא ניתן לשנות את הסטטוס שלה");
 
-            if (order.Status == OrderStatusEnum.Closes_with_customer_response || order.Status == OrderStatusEnum.Closes_out_of_customer_disrespect)
+            if (order.Status == OrderStatusEnum.Closes_with_customer_response)
             {
                 if (!isOrderDateAvailable(order))
                     throw new Exception("התאריכים כבר לא זמינים");
                 else
+                {
                     order.isClosed = true;
-            }
+                    dal.AddProfitToAdmin(dal.getFee());
 
-            if (order.Status == OrderStatusEnum.Closes_with_customer_response)
-            {
-                dal.AddProfitToAdmin(Configuration.fee);
-
-                for (int i = 0; i < length; i++)
-                {
-
-                    unit.AllDates.Add(EntryDate);
-
-                    EntryDate = EntryDate.AddDays(1);
-                }
-                dal.updateHostingUnit(unit);
-
-                GuestRequest guestRequest = getGuestReqByOrder(order);
-
-                string PrivateName = guestRequest.PrivateName, FamilyName = guestRequest.FamilyName, MailAddress = guestRequest.MailAddress;
-
-                foreach (var item in dal.getListGuestRequest())
-                {
-                    if (item.FamilyName == FamilyName && item.PrivateName == PrivateName && item.MailAddress == MailAddress)
+                    for (int i = 0; i < length; i++)
                     {
-                        item.Status = GuestReqStatusEnum.closed;
-                        dal.updateGuestReq(item);
+
+                        unit.AllDates.Add(EntryDate);
+
+                        EntryDate = EntryDate.AddDays(1);
                     }
-                }
-            }
+
+                    dal.updateHostingUnit(unit);
+
+                    GuestRequest guestRequest = getGuestReqByOrder(order);
+
+                    string PrivateName = guestRequest.PrivateName, FamilyName = guestRequest.FamilyName, MailAddress = guestRequest.MailAddress;
+
+                    foreach (var item in dal.getListGuestRequest())
+                    {
+                        if (item.FamilyName == FamilyName && item.PrivateName == PrivateName && item.MailAddress == MailAddress)
+                        {
+                            item.Status = GuestReqStatusEnum.closed;
+                            dal.updateGuestReq(item);
+                        }
+                    }
+                }                    
+            }            
 
             if (order.Status == OrderStatusEnum.mail_has_been_sent)
             {
                 if (getHostingUnitByOrder(order).Owner.CollectionClearance == false)
-                    throw new Exception("לא ניתן לשלוח מייל כל עוד ולא אושרה ההרשאה לחיוב");
-
-                MailMessage mail = new MailMessage();
-
-                mail.To.Add(getGuestReqByOrder(order).MailAddress);
-
-                mail.From = new MailAddress(getHostingUnitByOrder(order).Owner.MailAddress);
-
-                mail.Subject = "הצעת נופש ממארח";
-
-                mail.Body = "פירטי יחידת האירוח:\n" + unit.ToString() + "\n\nפירטי מארח:" + unit.Owner.ToString() + "\nיש לאשר במייל חוזר למארח בכתובת: " + unit.Owner.MailAddress;
-
-                mail.IsBodyHtml = true;
-
-                SmtpClient smtp = new SmtpClient();
-
-                smtp.Host = "smtp.gmail.com";
-
-                smtp.Credentials = new System.Net.NetworkCredential(getHostingUnitByOrder(order).Owner.MailAddress, pass);
-
-                smtp.EnableSsl = true;
-                try
-                {
-                    smtp.Send(mail);
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
+                    throw new Exception("לא ניתן לשלוח מייל כל עוד ולא אושרה ההרשאה לחיוב"); 
 
                 order.OrderDate = DateTime.Now;
                 order.isSendMail = true;
@@ -289,13 +270,23 @@ namespace BL
                        OrderKey = item.OrderKey,
                        Status = HebrewEnum.OrderStatus(item.Status),
                        CreateDate = item.CreateDate.ToString("dd/MM/yyyy"),
-                       OrderDate = item.OrderDate.ToString("dd/MM/yyyy"),                       
+                       OrderDate = OrderDateToString(item.OrderDate),
                    };
+        }
+
+        private string OrderDateToString(DateTime orderDate)
+        {
+            if (orderDate != new DateTime(1, 1, 1))
+            {
+                return orderDate.ToString("dd/MM/yyyy");
+            }
+            else
+                return "לא נשלח מייל עדיין"; 
         }
 
         #endregion
 
-        #region Bank Branchs Unit Functions
+        #region Bank Branches Unit Functions
 
 
         public List<BankBranch> getListBankBranchs()
@@ -303,6 +294,42 @@ namespace BL
             return dal.getListBankBranchs();
         }
 
+        public List<BankBranch> getListBanks()
+        {
+
+            List<BankBranch> bankBranches = new List<BankBranch>();
+
+            foreach (var item in dal.getListBankBranchs())
+            {
+                if (bankBranches.FirstOrDefault(bank => bank.BankNumber == item.BankNumber) == null)
+                    bankBranches.Add(new BankBranch()
+                    {
+                        BankNumber = item.BankNumber,
+                        BankName = item.BankName
+                    });
+            }
+            return bankBranches;
+
+        }
+
+
+        public List<BankBranch> getListBankBranchs(int bankNumber)
+        {
+            List<BankBranch> bankBranches = new List<BankBranch>();
+
+            foreach (var item in dal.getListBankBranchs())
+            {
+                if (item.BankNumber == bankNumber)
+                    if (bankBranches.FirstOrDefault(branch => branch.BranchNumber == item.BranchNumber) == null)
+                        bankBranches.Add(new BankBranch()
+                        {
+                            BranchNumber = item.BranchNumber,
+                            BranchAddress = item.BranchAddress,
+                            BranchCity = item.BranchCity
+                        });
+            }
+            return bankBranches;
+        }
         #endregion
 
         #region Host Functions
@@ -326,7 +353,7 @@ namespace BL
         {
             Host newHost = host, prevHost = GetHost(host.HostKey);
 
-
+            
             if (host.CollectionClearance == false && prevHost.CollectionClearance == true)
                 foreach (var item in GetHostingUnitsOfHost(host.HostKey))
                 {
@@ -385,7 +412,6 @@ namespace BL
         public bool CheckAvailability(HostingUnit hostingUnit , DateTime date , int length)
         {
             List<DateTime> list = hostingUnit.AllDates;
-            List<DateTime> tempList = new List<DateTime>();
 
             for (int i = 0; i < length; i++)
             {
@@ -541,6 +567,54 @@ namespace BL
         public int getAdminProfit()
         {
             return dal.getAdminProfit();
+        }
+
+        public bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void setFee(int fee)
+        {
+            dal.setFee(fee);
+        }
+
+        public int getFee()
+        {
+            return dal.getFee();
+        }
+
+        private void thread_toDo()
+        {
+            var runAt = DateTime.Today + TimeSpan.FromHours(24);
+            if (runAt < DateTime.Now)
+            {
+                updateExpiredOrders();
+            }
+            else
+            {
+                var dueTime = runAt - DateTime.Now;
+                var timer = new Timer(_ => updateExpiredOrders(), null, dueTime, TimeSpan.Zero);
+            }
+        }
+
+        private void updateExpiredOrders()
+        {
+            foreach (var item in getListOrders())
+            {
+                if (daysDistance(item.OrderDate) >= 30)
+                {
+                    item.Status = OrderStatusEnum.Closes_out_of_customer_disrespect;                    
+                }
+            }
         }
     }
 }

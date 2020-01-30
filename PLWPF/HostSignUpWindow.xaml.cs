@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using BE;
 
 namespace PLWPF
@@ -13,7 +14,6 @@ namespace PLWPF
     public partial class HostSignUpWindow : Window
     {
         Host host;
-        int temp;
         public static BL.IBL bl;
         public HostSignUpWindow()
         {
@@ -24,7 +24,8 @@ namespace PLWPF
 
             this.HostSignUpGrid.DataContext = host;
 
-            cmbBankBranch.ItemsSource = MainWindow.bl.getListBankBranchs();
+            cmbBank.ItemsSource = bl.getListBanks();
+            
 
             Refresh();
         }
@@ -39,6 +40,7 @@ namespace PLWPF
             lblErrorColectionClearens.Visibility = Visibility.Hidden;
             lblErrorID.Visibility = Visibility.Hidden;
             lblErrorPhone.Visibility = Visibility.Hidden;
+            lblErrorBankNumber.Visibility = Visibility.Hidden;
         }
 
 
@@ -56,7 +58,7 @@ namespace PLWPF
                 lblErrorFamilyName.Visibility = Visibility.Visible;
                 isReturn = true;
             }
-            if (!txbMail.Text.ToString().Contains("@"))
+            if (!bl.IsValidEmail(txbMail.Text.ToString()))
             {
                 lblErrorMail.Visibility = Visibility.Visible;
                 isReturn = true;
@@ -76,6 +78,11 @@ namespace PLWPF
                 lblErrorColectionClearens.Visibility = Visibility.Visible;
                 isReturn = true;
             }
+            if (cmbBank.SelectedIndex < 0)
+            {
+                lblErrorBank.Visibility = Visibility.Visible;
+                isReturn = true;
+            }
             if (cmbBankBranch.SelectedIndex < 0)
             {
                 lblErrorBranch.Visibility = Visibility.Visible;
@@ -83,7 +90,7 @@ namespace PLWPF
             }
             if (bl.isNotDigit(txbBank.Text))
             {
-                lblErrorBank.Visibility = Visibility.Visible;
+                lblErrorBankNumber.Visibility = Visibility.Visible;
                 isReturn = true;
             }
 
@@ -93,12 +100,18 @@ namespace PLWPF
 
             try
             {
-                if (cmbBankBranch.SelectedIndex >= 0)
-                    host.BankBranchDetails = MainWindow.bl.getListBankBranchs()[cmbBankBranch.SelectedIndex];
-                else
-                    throw new Exception("נא לבחור סניף בנק");
+                BankBranch bankBranch = new BankBranch()
+                {
+                    BankNumber = ((BankBranch)cmbBank.SelectedItem).BankNumber,
+                    BankName = ((BankBranch)cmbBank.SelectedItem).BankName,
+                    BranchAddress = ((BankBranch)cmbBankBranch.SelectedItem).BranchAddress,
+                    BranchCity = ((BankBranch)cmbBankBranch.SelectedItem).BranchCity,
+                    BranchNumber = ((BankBranch)cmbBankBranch.SelectedItem).BranchNumber
+                };               
 
-                MainWindow.bl.addHost(host);
+                host.BankBranchDetails = bankBranch;
+
+                bl.addHost(host);
 
                 Window HostSignIn = new HostSignInWindow(host.HostKey);
                 this.Hide();
@@ -109,6 +122,61 @@ namespace PLWPF
             {
                 MessageBox.Show(ex.Message, "שגיאה");
             }
+        }
+
+        private void cmbBankBranch_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (cmbBank.SelectedIndex < 0)
+            {
+                MessageBox.Show("נא לבחור סניף בנק", "שגיאה");
+            }
+            else
+            {
+                string input = ((TextBox)e.OriginalSource).Text;
+
+                var list = bl.getListBankBranchs(((BankBranch)cmbBank.SelectedItem).BankNumber);
+
+                if (input != "")
+                    cmbBankBranch.ItemsSource = from item in list
+                                                where item.ToString().Contains(input)
+                                                select item;
+                else
+                    cmbBankBranch.ItemsSource = list;
+            }            
+        }
+
+        private void cmbBankBranch_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (cmbBank.SelectedIndex < 0)
+            {
+                MessageBox.Show("נא לבחור סניף בנק", "שגיאה");
+            }
+            else
+                cmbBankBranch.IsDropDownOpen = true;
+        }
+
+        private void cmbBank_GotFocus(object sender, RoutedEventArgs e)
+        {
+            cmbBank.IsDropDownOpen = true;
+        }
+
+        private void cmbBank_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            string input = ((TextBox)e.OriginalSource).Text;
+
+            var list = bl.getListBanks();
+            if (input != "")
+                cmbBank.ItemsSource = from item in list
+                                      where item.ToString().Contains(input)
+                                      select item;
+            else
+                cmbBank.ItemsSource = list;
+        }
+
+        private void cmbBank_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbBank.SelectedItem != null)
+                cmbBankBranch.ItemsSource = bl.getListBankBranchs(((BankBranch)cmbBank.SelectedItem).BankNumber);
         }
     }
 }

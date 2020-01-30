@@ -40,7 +40,7 @@ namespace PLWPF
 
 
 
-            calendar.DisplayDateStart = DateTime.Now;
+            calendar.DisplayDateStart = DateTime.Now.AddMonths(-1);
             calendar.DisplayDateEnd = DateTime.Now.AddMonths(11);
             calendar.DisplayDate = DateTime.Now;
 

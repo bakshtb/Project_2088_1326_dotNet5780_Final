@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Hosts>
+  <Host>
+    <HostKey>312731326</HostKey>
+    <name>
+      <PrivateName>יחזקאל </PrivateName>
+      <FamilyName>באטוויניק</FamilyName>
+    </name>
+    <FhoneNumber>0532824787</FhoneNumber>
+    <BankAccountNumber>73957</BankAccountNumber>
+    <MailAddress>chezkibot@gmail.com</MailAddress>
+    <CollectionClearance>true</CollectionClearance>
+    <BankBranchDetails>
+      <Bank>
+        <BankNumber>11</BankNumber>
+        <BankName>בנק דיסקונט לישראל בע"מ</BankName>
+      </Bank>
+      <BranchNumber>5</BranchNumber>
+      <Address>
+        <BranchAddress>דרך  העמק 41 מרכז דודג'</BranchAddress>
+        <BranchCity>נצרת עילית</BranchCity>
+      </Address>
+    </BankBranchDetails>
+  </Host>
+  <Host>
+    <HostKey>847024728</HostKey>
+    <name>
+      <PrivateName>ביבי</PrivateName>
+      <FamilyName>נתניהו</FamilyName>
+    </name>
+    <FhoneNumber>073628476</FhoneNumber>
+    <BankAccountNumber>349023</BankAccountNumber>
+    <MailAddress>bibinet@gmai.com</MailAddress>
+    <CollectionClearance>true</CollectionClearance>
+    <BankBranchDetails>
+      <Bank>
+        <BankNumber>10</BankNumber>
+        <BankName>בנק לאומי לישראל בע"מ</BankName>
+      </Bank>
+      <BranchNumber>613</BranchNumber>
+      <Address>
+        <BranchAddress> אל קודס  0 </BranchAddress>
+        <BranchCity>קלנסווה</BranchCity>
+      </Address>
+    </BankBranchDetails>
+  </Host>
+</Hosts>

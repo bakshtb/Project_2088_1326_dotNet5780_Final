@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BL
 {
+    /// <summary>
+    /// To make sure there won't be different instances of classes that implement IBL
+    /// </summary>
     public class FactoryBL
     {
         static IBL bl = null;

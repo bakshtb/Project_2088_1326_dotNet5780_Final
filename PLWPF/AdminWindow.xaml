@@ -125,6 +125,112 @@
 
                 </Grid>
             </TabItem>
+            <TabItem Header="שאילתות">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Header="שאילתות על בקשות לקוח" Margin="10,10,5,0" Height="386" VerticalAlignment="Top">
+                        <Grid>
+                            <TextBlock Text="הצג רשימת בקשות לקוח לאיזור:" TextWrapping="Wrap" Height="21" Margin="10,10,0,0" Canvas.Left="10" Canvas.Top="10" HorizontalAlignment="Left" Width="188" VerticalAlignment="Top"/>
+                            <ComboBox x:Name="cmbGuestRequestArea" Canvas.Left="191" Canvas.Top="10" Height="21" SelectionChanged="cmbGuestRequestArea_SelectionChanged" Margin="191,10,10,0" VerticalAlignment="Top"/>
+                            <ListView x:Name="lsvGuestRequestArea" Canvas.Top="36" Canvas.Left="10" Margin="13,36,10,202">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="מספר בקשה" Width="auto" DisplayMemberBinding="{Binding GuestRequestKey}" />
+                                        <GridViewColumn Header="שם פרטי" Width="auto" DisplayMemberBinding="{Binding PrivateName}" />
+                                        <GridViewColumn Header="שם משפחה" Width="auto" DisplayMemberBinding="{Binding FamilyName}" />
+                                        <GridViewColumn Header="מייל" Width="auto" DisplayMemberBinding="{Binding MailAddress}" />
+                                        <GridViewColumn Header="מספר מבוגרים" Width="auto" DisplayMemberBinding="{Binding Adults}" />
+                                        <GridViewColumn Header="מספר ילדים" Width="auto" DisplayMemberBinding="{Binding Children}" />
+                                        <GridViewColumn Header="תאריך רישום" Width="auto" DisplayMemberBinding="{Binding RegistrationDate}" />
+                                        <GridViewColumn Header="תאריך כניסה" Width="auto" DisplayMemberBinding="{Binding EntryDate}" />
+                                        <GridViewColumn Header="תאריך יציאה" Width="auto" DisplayMemberBinding="{Binding ReleaseDate}" />
+                                        <GridViewColumn Header="סוג" Width="auto" DisplayMemberBinding="{Binding Type}" />
+                                        <GridViewColumn Header="איזור" Width="auto" DisplayMemberBinding="{Binding Area}" />
+                                        <GridViewColumn Header="סטטוס" Width="auto" DisplayMemberBinding="{Binding Status}" />
+                                        <GridViewColumn Header="בירכה" Width="auto" DisplayMemberBinding="{Binding Pool}" />
+                                        <GridViewColumn Header="ג'קוזי" Width="auto" DisplayMemberBinding="{Binding Jacuzzi}" />
+                                        <GridViewColumn Header="גינה" Width="auto" DisplayMemberBinding="{Binding Garden}" />
+                                        <GridViewColumn Header="אטרקציות לילדים" Width="auto" DisplayMemberBinding="{Binding ChildrensAttractions}" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                            <TextBlock Text="הצג רשימת בקשות לקוח עבורם יש " TextWrapping="Wrap" Height="21" Canvas.Left="10" Canvas.Top="203" Margin="13,203,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="182"/>
+                            <ListView x:Name="lsvGuestRequestNumOfGuests"  Margin="10,229,10,10">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="מספר בקשה" Width="auto" DisplayMemberBinding="{Binding GuestRequestKey}" />
+                                        <GridViewColumn Header="שם פרטי" Width="auto" DisplayMemberBinding="{Binding PrivateName}" />
+                                        <GridViewColumn Header="שם משפחה" Width="auto" DisplayMemberBinding="{Binding FamilyName}" />
+                                        <GridViewColumn Header="מייל" Width="auto" DisplayMemberBinding="{Binding MailAddress}" />
+                                        <GridViewColumn Header="מספר מבוגרים" Width="auto" DisplayMemberBinding="{Binding Adults}" />
+                                        <GridViewColumn Header="מספר ילדים" Width="auto" DisplayMemberBinding="{Binding Children}" />
+                                        <GridViewColumn Header="תאריך רישום" Width="auto" DisplayMemberBinding="{Binding RegistrationDate}" />
+                                        <GridViewColumn Header="תאריך כניסה" Width="auto" DisplayMemberBinding="{Binding EntryDate}" />
+                                        <GridViewColumn Header="תאריך יציאה" Width="auto" DisplayMemberBinding="{Binding ReleaseDate}" />
+                                        <GridViewColumn Header="סוג" Width="auto" DisplayMemberBinding="{Binding Type}" />
+                                        <GridViewColumn Header="איזור" Width="auto" DisplayMemberBinding="{Binding Area}" />
+                                        <GridViewColumn Header="סטטוס" Width="auto" DisplayMemberBinding="{Binding Status}" />
+                                        <GridViewColumn Header="בירכה" Width="auto" DisplayMemberBinding="{Binding Pool}" />
+                                        <GridViewColumn Header="ג'קוזי" Width="auto" DisplayMemberBinding="{Binding Jacuzzi}" />
+                                        <GridViewColumn Header="גינה" Width="auto" DisplayMemberBinding="{Binding Garden}" />
+                                        <GridViewColumn Header="אטרקציות לילדים" Width="auto" DisplayMemberBinding="{Binding ChildrensAttractions}" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                            <TextBox x:Name="txbGuestRequestNumOfGuests" Canvas.Left="208" Canvas.Top="203" Text="0" TextWrapping="Wrap" Width="31" TextAlignment="Center" TextChanged="txbGuestRequestNumOfGuests_TextChanged" Margin="197,203,0,0" Height="21" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            <TextBlock Text="אורחים" TextWrapping="Wrap" Height="21" Canvas.Left="244" Canvas.Top="203" Width="121" Margin="233,203,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                        </Grid>
+
+                    </GroupBox>
+                    <GroupBox Header="שאילתות על מארחים" Margin="5,10,10,0" Height="193" VerticalAlignment="Top" Grid.Column="1">
+                        <Grid>
+
+                            <ListView x:Name="lsvHostsNumOfHostingUnits" Canvas.Top="36" Canvas.Left="10" Margin="10,36,10,10">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="מספר מארח" Width="auto" DisplayMemberBinding="{Binding HostKey}" />
+                                        <GridViewColumn Header="שם פרטי" Width="auto" DisplayMemberBinding="{Binding PrivateName}" />
+                                        <GridViewColumn Header="שם משפחה" Width="auto" DisplayMemberBinding="{Binding FamilyName}" />
+                                        <GridViewColumn Header="מייל" Width="auto" DisplayMemberBinding="{Binding MailAddress}" />
+                                        <GridViewColumn Header="מספר טלפון" Width="auto" DisplayMemberBinding="{Binding FhoneNumber}" />
+                                        <GridViewColumn Header="הרשאה לחיוב חשבון" Width="auto" DisplayMemberBinding="{Binding CollectionClearance}" />
+                                        <GridViewColumn Header="מספר חשבון בנק" Width="auto" DisplayMemberBinding="{Binding BankAccountNumber}" />
+                                        <GridViewColumn Header="פירוט סניף בנק" Width="auto" DisplayMemberBinding="{Binding BankBranchDetails}" />
+                                        <GridViewColumn Header="מספר הזמנות שאושרו" Width="auto" DisplayMemberBinding="{Binding SumOfApprovedOrder}" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                            <TextBlock Canvas.Left="10" Canvas.Top="10" Text="הצג רשימת מארחים עבורם יש " TextWrapping="Wrap" Height="21" Width="164" Margin="10,8,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            <TextBox x:Name="txbHostsNumOfHostingUnits" Canvas.Left="174" Canvas.Top="10" Text="0" TextWrapping="Wrap" Width="26" TextAlignment="Center" TextChanged="txbHostsNumOfHostingUnits_TextChanged" Margin="175,8,0,0" Height="21" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            <TextBlock Canvas.Left="205" Canvas.Top="10" Text="יחידות אירוח" TextWrapping="Wrap" Height="21" Margin="206,8,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="70"/>
+                        </Grid>
+
+                    </GroupBox>
+                    <GroupBox Header="שאילתות על יחידות אירוח" Margin="5,203,10,0" Height="193" VerticalAlignment="Top" Grid.Column="1">
+                        <Grid>
+                            <TextBlock Text="הצג רשימת יחידות אירוח לאיזור:" TextWrapping="Wrap" Margin="10,10,0,0" Height="21" VerticalAlignment="Top" HorizontalAlignment="Left" Width="160"/>
+                            <ComboBox x:Name="cmbHotingUnitArea" SelectionChanged="cmbHotingUnitArea_SelectionChanged" Margin="175,10,10,0" Height="21" VerticalAlignment="Top"/>
+                            <ListView x:Name="lsvHotingUnitArea" Margin="10,36,10,10">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="מספר הדירה" Width="auto" DisplayMemberBinding="{Binding HostingUnitKey}" />
+                                        <GridViewColumn Header="שם הדירה" Width="auto" DisplayMemberBinding="{Binding HostingUnitName}" />
+                                        <GridViewColumn Header="איזור" Width="auto" DisplayMemberBinding="{Binding Area}" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+
+                        </Grid>
+
+
+                    </GroupBox>
+
+                </Grid>
+            </TabItem>
+
 
         </TabControl>
     </Grid>

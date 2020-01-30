@@ -14,7 +14,6 @@ namespace PLWPF
     {
         GuestRequest guestRequest;
 
-        int temp;
 
         public static BL.IBL bl;
 
@@ -73,7 +72,7 @@ namespace PLWPF
                 lblErrorFamilyName.Visibility = Visibility.Visible;                
                 isReturn = true;
             }
-            if (!txbMail.Text.ToString().Contains("@"))
+            if (!bl.IsValidEmail(txbMail.Text.ToString()))
             {
                 lblErrorMail.Visibility = Visibility.Visible;
                 isReturn = true;

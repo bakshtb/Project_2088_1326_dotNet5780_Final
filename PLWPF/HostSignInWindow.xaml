@@ -34,7 +34,7 @@
                                 <TextBlock HorizontalAlignment="Left" Margin="10,127,0,0" Text="מספר טלפון:" TextWrapping="Wrap" VerticalAlignment="Top" Height="16" Width="65"/>
                                 <TextBlock HorizontalAlignment="Left" Margin="10,166,0,0" Text="מייל:" TextWrapping="Wrap" VerticalAlignment="Top" Height="16" Width="24"/>
                                 <TextBlock HorizontalAlignment="Left" Margin="10,244,0,0" Text="הרשאה לחיוב חשבון:" TextWrapping="Wrap" VerticalAlignment="Top" Height="16" Width="108"/>
-                                <TextBlock HorizontalAlignment="Left" Margin="212,127,0,0" Text="סניף בנק:" TextWrapping="Wrap" VerticalAlignment="Top" Height="16" Width="49"/>
+                                <TextBlock HorizontalAlignment="Left" Margin="191,10,0,0" Text="בנק:" TextWrapping="Wrap" VerticalAlignment="Top" Height="16" Width="49"/>
                                 <TextBlock HorizontalAlignment="Left" Margin="10,205,0,0" Text="מספר חשבון בנק:" TextWrapping="Wrap" VerticalAlignment="Top" Height="16" Width="90"/>
                                 <TextBox Text="{Binding HostKey}" HorizontalAlignment="Left" Margin="10,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="168" Height="18" IsEnabled="False"/>
                                 <TextBox x:Name="txbName" Text="{Binding PrivateName}" HorizontalAlignment="Left" Margin="10,65,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="168" Height="18"/>
@@ -42,7 +42,6 @@
                                 <TextBox x:Name="txbPhone" Text="{Binding FhoneNumber}" HorizontalAlignment="Left" Margin="10,143,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="168" Height="18"/>
                                 <TextBox x:Name="txbMail" Text="{Binding MailAddress}" HorizontalAlignment="Left" Margin="10,182,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="168" Height="18"/>
                                 <TextBox x:Name="txbBank" Text="{Binding BankAccountNumber}" Validation.ErrorTemplate="{x:Null}" HorizontalAlignment="Left" Margin="10,221,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="168" Height="18"/>
-                                <ComboBox x:Name="cmbUpdateHostBranch" HorizontalAlignment="Left" Margin="208,143,0,0" VerticalAlignment="Top" Width="168" Height="22"/>
                                 <RadioButton x:Name="rbtnYes" IsChecked="{Binding CollectionClearance}" Content="מאושר" HorizontalAlignment="Left" Margin="141,245,0,0" VerticalAlignment="Top" Height="15" Width="65"/>
                                 <RadioButton x:Name="rbtnNo" Content="לא מאושר" HorizontalAlignment="Left" Margin="221,245,0,0" VerticalAlignment="Top" Height="15" Width="72"/>
 
@@ -55,6 +54,11 @@
                                 <Label x:Name="lblErrorBank" Content="נא להכניס מספר!" HorizontalAlignment="Left" Margin="100,202,0,0" VerticalAlignment="Top" Width="84" Height="25" FlowDirection="RightToLeft" Foreground="Red" FontSize="10"/>
 
                                 <Button x:Name="btnHostUpdate" Content="עדכן" Margin="0,317,10,0" Click="btnHostUpdate_Click" Grid.RowSpan="2" HorizontalAlignment="Right" Width="133"/>
+                                <TextBlock HorizontalAlignment="Left" Margin="188,49,0,0" Text="סניף בנק:" TextWrapping="Wrap" VerticalAlignment="Top" Height="16" Width="69"/>
+                                <Label x:Name="lblErrorBranch" Content="נא לבחור סניף בנק!" HorizontalAlignment="Left" Margin="187,85,0,0" VerticalAlignment="Top" Width="132" Height="23" FlowDirection="RightToLeft" Foreground="Red" FontSize="10" RenderTransformOrigin="0.5,0.5"/>
+
+                                <ComboBox x:Name="cmbBank"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="271" FlowDirection="RightToLeft" Height="24" BorderThickness="0,0,0,0" FontSize="16" IsEditable="True" GotFocus="cmbBank_GotFocus" KeyUp="cmbBank_KeyUp" SelectionChanged="cmbBank_SelectionChanged" Margin="191,26,0,0"/>
+                                <ComboBox x:Name="cmbBankBranch"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="271" FlowDirection="RightToLeft" Height="23" BorderThickness="0,0,0,0" FontSize="16" IsEditable="True" KeyUp="cmbBankBranch_KeyUp" GotFocus="cmbBankBranch_GotFocus" Margin="191,63,0,0" />
                             </Grid>
                         </TabItem>
                         <TabItem Header="הסרה מהמערכת">
@@ -157,10 +161,10 @@
                             </Grid>
                         </TabItem>
                         <TabItem Header="הוספת הזמנה">
-                            <Grid Background="#FFE5E5E5" Height="374">
-                                <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Text="בקשת אורח" TextWrapping="Wrap" VerticalAlignment="Top" Height="16" Width="62"/>
+                            <Grid Background="#FFE5E5E5">
+                                <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Text="בקשת אורח (מוצגות רק בקשות רלוונטיות)" TextWrapping="Wrap" VerticalAlignment="Top" Height="16" Width="226"/>
                                 <TextBlock HorizontalAlignment="Left" Margin="10,159,0,0" Text="יחידת אירוח" TextWrapping="Wrap" VerticalAlignment="Top" Height="16" Width="61"/>
-                                <Button x:Name="btnAddOrder" Content="הוספה" Margin="381,331,10,10" Click="btnAddOrder_Click"/>
+                                <Button x:Name="btnAddOrder" Content="הוספה" Margin="381,0,10,10" Click="btnAddOrder_Click" Height="33" VerticalAlignment="Bottom"/>
                                 <ListView x:Name="lsvOrderGuerstRequest" Margin="0,34,0,0" Height="120" VerticalAlignment="Top">
                                     <ListView.View>
                                         <GridView>
@@ -196,6 +200,23 @@
 
                             </Grid>
                         </TabItem>
+                        <TabItem Header="שליחת מייל">
+                            <Grid Background="#FFE5E5E5">
+                                <Button x:Name="btnOrderSendMail" Content="שלח מייל" Margin="113,0,10,10" Click="btnOrderSendMail_Click" Height="33" VerticalAlignment="Bottom" Grid.Column="1"/>
+                                <ListView x:Name="lsvSendMail" Margin="0,0,0,59" Grid.ColumnSpan="2">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Header="מספר הזמנה" Width="auto" DisplayMemberBinding="{Binding OrderKey}" />
+                                            <GridViewColumn Header="מספר יחדית אירוח" Width="auto" DisplayMemberBinding="{Binding HostingUnitKey}" />
+                                            <GridViewColumn Header="מספר בקשה" Width="auto" DisplayMemberBinding="{Binding GuestRequestKey}" />
+                                            <GridViewColumn Header="תאריך יצירה" Width="auto" DisplayMemberBinding="{Binding CreateDate}" />
+                                            <GridViewColumn Header="סטטוס" Width="auto" DisplayMemberBinding="{Binding Status}" />
+                                            <GridViewColumn Header="תאריך משלוח מייל ללקוח" Width="auto" DisplayMemberBinding="{Binding OrderDate}" />
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </Grid>
+                        </TabItem>
                         <TabItem Header="עדכון הזמנה">
                             <Grid Background="#FFE5E5E5">
                                 <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Text="בחר הזמנה לעדכון" TextWrapping="Wrap" VerticalAlignment="Top"/>
@@ -212,25 +233,6 @@
                                             <TranslateTransform X="-0.595"/>
                                         </TransformGroup>
                                     </ListView.RenderTransform>
-                                    <ListView.View>
-                                        <GridView>
-                                            <GridViewColumn Header="מספר הזמנה" Width="auto" DisplayMemberBinding="{Binding OrderKey}" />
-                                            <GridViewColumn Header="מספר יחדית אירוח" Width="auto" DisplayMemberBinding="{Binding HostingUnitKey}" />
-                                            <GridViewColumn Header="מספר בקשה" Width="auto" DisplayMemberBinding="{Binding GuestRequestKey}" />
-                                            <GridViewColumn Header="תאריך יצירה" Width="auto" DisplayMemberBinding="{Binding CreateDate}" />
-                                            <GridViewColumn Header="סטטוס" Width="auto" DisplayMemberBinding="{Binding Status}" />
-                                            <GridViewColumn Header="תאריך משלוח מייל ללקוח" Width="auto" DisplayMemberBinding="{Binding OrderDate}" />
-                                        </GridView>
-                                    </ListView.View>
-                                </ListView>
-                            </Grid>
-                        </TabItem>
-                        <TabItem Header="מחיקת הזמנה">
-                            <Grid Background="#FFE5E5E5">
-                                <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Text="בחר הזמנה" TextWrapping="Wrap" VerticalAlignment="Top"/>
-
-                                <Button x:Name="btnOrderDelete" Content="מחק" HorizontalAlignment="Center" Width="124"  Margin="0,0,0,10" Click="btnOrderDelete_Click" Height="46" VerticalAlignment="Bottom"/>
-                                <ListView x:Name="lsvOrderDelete" Margin="0,31,0,70">
                                     <ListView.View>
                                         <GridView>
                                             <GridViewColumn Header="מספר הזמנה" Width="auto" DisplayMemberBinding="{Binding OrderKey}" />

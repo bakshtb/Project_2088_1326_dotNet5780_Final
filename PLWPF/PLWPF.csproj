@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="icon.png" />
     <None Remove="Pictures\Admin.png" />
     <None Remove="Pictures\AdminSignInTextBox.png" />
     <None Remove="Pictures\back - Copy.png" />
@@ -35,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="icon.png" />
     <Resource Include="Pictures\Admin.png" />
     <Resource Include="Pictures\AdminSignInTextBox.png" />
     <Resource Include="Pictures\background grid guest request.png" />

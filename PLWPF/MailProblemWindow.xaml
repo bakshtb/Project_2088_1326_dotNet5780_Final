@@ -5,23 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PLWPF"
         mc:Ignorable="d"
-        Title="MailProblemWindow" Height="189" Width="394">
+        Title="MailProblemWindow" Height="236" Width="394">
     <Canvas>
         <TextBox Text="לא ניתן לשלוח מייל ללקוח" TextWrapping="Wrap" Width="260" FlowDirection="RightToLeft" FontSize="22" Foreground="Red" BorderThickness="0,0,0,0" ClipToBounds="True" Height="32" Canvas.Left="67" Canvas.Top="10"/>
         <TextBox Text="סיבות אפשריות:" TextWrapping="Wrap" Width="150" FlowDirection="RightToLeft" BorderThickness="0,0,0,0" Height="16" Canvas.Left="214" Canvas.Top="60"/>
         <TextBox Text="* הססימה לא נכונה" TextWrapping="Wrap" Width="150" FlowDirection="RightToLeft" BorderThickness="0,0,0,0" Canvas.Left="197" Canvas.Top="78.08"/>
-        <TextBox Text="* רמת האבטחה של החשבון שלך גבוהה מידי " TextWrapping="Wrap" Width="235" FlowDirection="RightToLeft" BorderThickness="0,0,0,0" Height="16" Canvas.Left="112" Canvas.Top="100"/>
+        <TextBox Text="* רמת האבטחה של החשבון שלך גבוהה מידי " TextWrapping="Wrap" Width="235" FlowDirection="RightToLeft" BorderThickness="0,0,0,0" Height="16" Canvas.Left="112" Canvas.Top="126"/>
 
-        <TextBlock x:Name="TextBlockWithHyperlink" RenderTransformOrigin="0.5,0.5" Height="16" Canvas.Left="116" Canvas.Top="120" Width="184">
+        <TextBlock x:Name="TextBlockWithHyperlink" RenderTransformOrigin="0.5,0.5" Height="16" Canvas.Left="116" Canvas.Top="140" Width="184">
             <TextBlock.RenderTransform>
                 <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-360.531"/>
-                    <TranslateTransform/>
                 </TransformGroup>
             </TextBlock.RenderTransform><Run Text="ניתן להוריד את רמת ההבטחה "/><Hyperlink 
                 NavigateUri="http://google.com"
                 RequestNavigate="Hyperlink_RequestNavigate"><Run Text="מכאן"/></Hyperlink></TextBlock>
+        <TextBox Text="* בעיה בכתובת המייל" TextWrapping="Wrap" Width="150" FlowDirection="RightToLeft" BorderThickness="0,0,0,0" Canvas.Left="197" Canvas.Top="94"/>
+        <TextBox Text="* בעיות ברשת" TextWrapping="Wrap" Width="150" FlowDirection="RightToLeft" BorderThickness="0,0,0,0" Canvas.Left="197" Canvas.Top="110"/>
     </Canvas>
 </Window>

@@ -7,10 +7,15 @@ using BE;
 
 namespace DAL
 {
+    /// <summary>
+    /// for b4 xml files (1st part of project)
+    /// </summary>
     public class Dal_imp : IDAL
     {
         public Dal_imp()
         {
+
+            // temp is needed for the unique information that are added by the 'add' functions
             for (int i = 0; i < 3; i++)
             {
                 DS.DataSource.tempHostList[i].BankBranchDetails = getListBankBranchs()[i];
@@ -32,6 +37,7 @@ namespace DAL
                 throw new Exception("יש כבר מארח עם אותו תעודת זהות");
             else
             {
+        
                 DS.DataSource.HostList.Add(host.Copy());
                 
             }
@@ -182,9 +188,9 @@ namespace DAL
                 return Order.Copy();
         }
 
-        public void deleteOrder(long key)
+        public bool deleteOrder(long key)
         {
-            DS.DataSource.OrderList.Remove(DS.DataSource.OrderList.FirstOrDefault(or => or.OrderKey == key));
+            return DS.DataSource.OrderList.Remove(DS.DataSource.OrderList.FirstOrDefault(or => or.OrderKey == key));
         }
 
         public IEnumerable<Order> getListOrders(Func<Order, bool> predicate = null)
@@ -194,7 +200,7 @@ namespace DAL
 
             return from item in DS.DataSource.OrderList
                    where predicate(item)
-                   select item.Copy();//(DS.DataSource.OrderList.Where(predicate)).Copy();
+                   select item.Copy();
         }
 
         public void updateOrder(Order order)
@@ -281,6 +287,16 @@ namespace DAL
         public int getAdminProfit()
         {
             return DS.DataSource.admin.Profits;
+        }
+
+        public void setFee(int fee)
+        {
+            BE.Configuration.fee = fee;
+        }
+
+        public int getFee()
+        {
+            return BE.Configuration.fee;
         }
     }
 }

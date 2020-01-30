@@ -12,13 +12,14 @@ namespace DAL
 {
     public class Dal_XML_imp : IDAL
     {
-        XElement GuestRequestRoot, HostingUnitRoot, HostRoot, OrderRoot , BankBranchRoot;
-        public string HostingUnitPath = @"HostingUnitXML.xml",
-            GuestRequestPath = @"GuestRequestXML.xml",
-            AdminPath = @"AdminXML.xml",
-            HostPath = @"HostXML.xml",
-            OrderdPath = @"OrderXML.xml",
-            BankBranchPath = @"BranchesXML.xml";
+        XElement GuestRequestRoot, HostingUnitRoot, HostRoot, OrderRoot , BankBranchRoot , ConfigurationRoot , adminRoot;
+        public string HostingUnitPath = @"../../../../XMLFiles/HostingUnitXML.xml",
+            GuestRequestPath = @"../../../../XMLFiles/GuestRequestXML.xml",
+            AdminPath = @"../../../../XMLFiles/AdminXML.xml",
+            HostPath = @"../../../../XMLFiles/HostXML.xml",
+            OrderdPath = @"../../../../XMLFiles/OrderXML.xml",
+            BankBranchPath = @"../../../../XMLFiles/BranchesXML.xml",
+            ConfigurationPath = @"../../../../XMLFiles/ConfigurationXML.xml";
 
         public Dal_XML_imp()
         {
@@ -42,9 +43,33 @@ namespace DAL
                 if (!File.Exists(BankBranchPath))
                     CreateBankBranchFile();
                 else LoadBankBranchFile();
+                if (!File.Exists(ConfigurationPath))
+                    CreateConfigurationFile();
+                else LoadConfigurationFile();
             }
             catch { }
 
+        }
+
+        #region create and load Xml files
+
+        private void LoadConfigurationFile()
+        {
+            try
+            {
+                ConfigurationRoot = XElement.Load(ConfigurationPath);
+            }
+            catch
+            {
+                throw new InvalidOperationException("שגיאה בטעינת קובץ הזמנות");
+            }
+        }
+
+        private void CreateConfigurationFile()
+        {
+            ConfigurationRoot = new XElement("Configuration");
+            ConfigurationRoot.Add(new XElement("HostingUnitKey", 10000000), new XElement("OrderKey", 10000000) , new XElement("GuestRequestKey", 10000000), new XElement("Fee", 10));
+            ConfigurationRoot.Save(ConfigurationPath);
         }
 
         private void LoadBankBranchFile()
@@ -94,7 +119,7 @@ namespace DAL
         private void CreateOrderFile()
         {
             OrderRoot = new XElement("Orders");
-            OrderRoot.Save(HostPath);
+            OrderRoot.Save(OrderdPath);
 
         }
 
@@ -118,12 +143,21 @@ namespace DAL
 
         private void LoadAdminFile()
         {
-
+            try
+            {
+                adminRoot = XElement.Load(AdminPath);
+            }
+            catch
+            {
+                throw new InvalidOperationException("שגיאה בטעינת קובץ המנהל");
+            }
         }
 
         private void CreateAdminFile()
         {
-
+            adminRoot = new XElement("Admin");
+            adminRoot.Add(new XElement("AdminPass", "0000"), new XElement("AdminProfit", 0));
+            adminRoot.Save(AdminPath);
         }
 
         private void LoadGuestRequestData()
@@ -156,17 +190,25 @@ namespace DAL
             }
         }
 
+
         private void CreateHostingUnitFile()
         {
             HostingUnitRoot = new XElement("HostingUnits");
             HostingUnitRoot.Save(HostingUnitPath);
         }
 
+        #endregion
+
+
         public void addGuestReq(GuestRequest guestRequest)
         {
+            guestRequest.Status = GuestReqStatusEnum.not_addressed;
+            guestRequest.GuestRequestKey = getAndUpdateGuestRequestConfig();
+            guestRequest.RegistrationDate = DateTime.Today;
+
             XElement GuestRequestKey = new XElement("GuestRequestKey", guestRequest.GuestRequestKey);
-            XElement PrivateName = new XElement("firstName", guestRequest.PrivateName);
-            XElement FamilyName = new XElement("lastName", guestRequest.FamilyName);
+            XElement PrivateName = new XElement("PrivateName", guestRequest.PrivateName);
+            XElement FamilyName = new XElement("FamilyName", guestRequest.FamilyName);
             XElement name = new XElement("name", PrivateName, FamilyName);
             XElement MailAddress = new XElement("MailAddress", guestRequest.MailAddress);
             XElement Status = new XElement("Status", guestRequest.Status);
@@ -185,15 +227,20 @@ namespace DAL
             XElement ChildrensAttractions = new XElement("ChildrensAttractions", guestRequest.ChildrensAttractions);
             XElement additionalOptions = new XElement("additionalOptions", Pool , Jacuzzi , Garden , ChildrensAttractions);
 
-            GuestRequestRoot.Add(new XElement("student", GuestRequestKey, name , MailAddress, Status, RegistrationDate, Dates, Area, Type, Guests , additionalOptions));
+            GuestRequestRoot.Add(new XElement("guestRequest", GuestRequestKey, name , MailAddress, Status, RegistrationDate, Dates, Area, Type, Guests , additionalOptions));
             GuestRequestRoot.Save(GuestRequestPath);
         }
 
         public IEnumerable<GuestRequest> getListGuestRequest(Func<GuestRequest, bool> predicate = null)
         {
-            return (from item in GuestRequestRoot.Elements()
-                    where getGuestRequest(long.Parse(item.Element("GuestRequestKey").Value)) != null
-                    select getGuestRequest(long.Parse(item.Element("GuestRequestKey").Value)));
+            IEnumerable<GuestRequest> guestRequests = (from item in GuestRequestRoot.Elements()
+                                                       where getGuestRequest(long.Parse(item.Element("GuestRequestKey").Value)) != null
+                                                       select getGuestRequest(long.Parse(item.Element("GuestRequestKey").Value)));
+
+            if (predicate == null)
+                return guestRequests;
+
+            return guestRequests.Where(predicate);
         }
 
         public GuestRequest getGuestRequest(long key)
@@ -202,31 +249,33 @@ namespace DAL
             try
             {
                 guestRequest = (from req in GuestRequestRoot.Elements()
-                           where int.Parse(req.Element("GuestRequestKey").Value) == key
-                           select new GuestRequest()
-                           {
-                               GuestRequestKey = long.Parse(req.Element("GuestRequestKey").Value),
-                               PrivateName = req.Element("name").Element("PrivateName").Value,
-                               FamilyName = req.Element("name").Element("FamilyName").Value,
-                               MailAddress = req.Element("MailAddress").Value,
-                               Status = getEnumFromString<GuestReqStatusEnum>(req.Element("Status").Value),
-                               RegistrationDate = DateTime.Parse(req.Element("RegistrationDate").Value),
-                               EntryDate = DateTime.Parse(req.Element("Dates").Element("EntryDate").Value),
-                               ReleaseDate = DateTime.Parse(req.Element("Dates").Element("ReleaseDate").Value),
-                               Area = getEnumFromString<AreaEnum>(req.Element("Area").Value),
-                               Type = getEnumFromString<GuestReqTypeEnum>(req.Element("Type").Value),
-                               Adults = int.Parse(req.Element("Guests").Element("Adults").Value),
-                               Children = int.Parse(req.Element("Guests").Element("Children").Value),
-                               Pool = getEnumFromString<optionsEnum>(req.Element("additionalOptions").Element("Pool").Value),
-                               Jacuzzi = getEnumFromString<optionsEnum>(req.Element("additionalOptions").Element("Jacuzzi").Value),
-                               Garden = getEnumFromString<optionsEnum>(req.Element("additionalOptions").Element("Garden").Value),
-                               ChildrensAttractions = getEnumFromString<optionsEnum>(req.Element("additionalOptions").Element("ChildrensAttractions").Value),
-                           }).FirstOrDefault();
+                                where int.Parse(req.Element("GuestRequestKey").Value) == key
+                                select new GuestRequest()
+                                {
+                                    GuestRequestKey = long.Parse(req.Element("GuestRequestKey").Value),
+                                    PrivateName = req.Element("name").Element("PrivateName").Value,
+                                    FamilyName = req.Element("name").Element("FamilyName").Value,
+                                    MailAddress = req.Element("MailAddress").Value,
+                                    Status = getEnumFromString<GuestReqStatusEnum>(req.Element("Status").Value),
+                                    RegistrationDate = DateTime.Parse(req.Element("RegistrationDate").Value),
+                                    EntryDate = DateTime.Parse(req.Element("Dates").Element("EntryDate").Value),
+                                    ReleaseDate = DateTime.Parse(req.Element("Dates").Element("ReleaseDate").Value),
+                                    Area = getEnumFromString<AreaEnum>(req.Element("Area").Value),
+                                    Type = getEnumFromString<GuestReqTypeEnum>(req.Element("Type").Value),
+                                    Adults = int.Parse(req.Element("Guests").Element("Adults").Value),
+                                    Children = int.Parse(req.Element("Guests").Element("Children").Value),
+                                    Pool = getEnumFromString<optionsEnum>(req.Element("additionalOptions").Element("Pool").Value),
+                                    Jacuzzi = getEnumFromString<optionsEnum>(req.Element("additionalOptions").Element("Jacuzzi").Value),
+                                    Garden = getEnumFromString<optionsEnum>(req.Element("additionalOptions").Element("Garden").Value),
+                                    ChildrensAttractions = getEnumFromString<optionsEnum>(req.Element("additionalOptions").Element("ChildrensAttractions").Value),
+                                }).FirstOrDefault();
             }
             catch
             {
-                guestRequest = null;
+                guestRequest = null;                
             }
+            if(guestRequest == null)
+                throw new Exception("מספר בקשה לא נכון");
             return guestRequest;
         }
 
@@ -235,6 +284,9 @@ namespace DAL
             XElement guestRequsetElement = (from req in GuestRequestRoot.Elements()
                                             where int.Parse(req.Element("GuestRequestKey").Value) == guestRequest.GuestRequestKey
                                             select req).FirstOrDefault();
+
+            if(guestRequsetElement == null)
+                throw new Exception("היחידת האירוח המבוקשת לא נימצאה");
 
             guestRequsetElement.Element("name").Element("PrivateName").Value = guestRequest.PrivateName;
             guestRequsetElement.Element("name").Element("FamilyName").Value = guestRequest.FamilyName;
@@ -255,31 +307,46 @@ namespace DAL
             GuestRequestRoot.Save(GuestRequestPath);
         }
 
+        private long getAndUpdateGuestRequestConfig()
+        {
+            long key = (long.Parse(ConfigurationRoot.Element("GuestRequestKey").Value));
+            ConfigurationRoot.Element("GuestRequestKey").Value = (key + 1).ToString();
+            ConfigurationRoot.Save(ConfigurationPath);
+            return key;
+        }
+
 
         public void addHost(Host host)
         {
-            XElement HostKey = new XElement("HostKey", host.HostKey);
-            XElement FhoneNumber = new XElement("FhoneNumber", host.FhoneNumber);
-            XElement BankAccountNumber = new XElement("BankAccountNumber", host.BankAccountNumber);
-            XElement PrivateName = new XElement("PrivateName", host.PrivateName);
-            XElement FamilyName = new XElement("FamilyName", host.FamilyName);
-            XElement name = new XElement("name", PrivateName, FamilyName);           
-            XElement MailAddress = new XElement("MailAddress", host.MailAddress);
-            XElement CollectionClearance = new XElement("CollectionClearance", host.CollectionClearance);    
-            
-            XElement BankNumber = new XElement("BankNumber", host.BankBranchDetails.BankNumber);
-            XElement BankName = new XElement("BankName", host.BankBranchDetails.BankName);
-            XElement Bank = new XElement("Bank", BankNumber , BankName);            
-            XElement BranchNumber = new XElement("BranchNumber", host.BankBranchDetails.BranchNumber);
-            XElement BranchAddress = new XElement("BranchAddress", host.BankBranchDetails.BranchAddress);
-            XElement BranchCity = new XElement("BranchCity", host.BankBranchDetails.BranchCity);
-            XElement Address = new XElement("Address", BranchAddress , BranchCity);
+            Host tempHost = getListHosts().FirstOrDefault(host1 => host1.HostKey == host.HostKey);
+
+            if (tempHost != null)
+                throw new Exception("יש כבר מארח עם אותו תעודת זהות");
+            else
+            {
+                XElement HostKey = new XElement("HostKey", host.HostKey);
+                XElement FhoneNumber = new XElement("FhoneNumber", host.FhoneNumber);
+                XElement BankAccountNumber = new XElement("BankAccountNumber", host.BankAccountNumber);
+                XElement PrivateName = new XElement("PrivateName", host.PrivateName);
+                XElement FamilyName = new XElement("FamilyName", host.FamilyName);
+                XElement name = new XElement("name", PrivateName, FamilyName);
+                XElement MailAddress = new XElement("MailAddress", host.MailAddress);
+                XElement CollectionClearance = new XElement("CollectionClearance", host.CollectionClearance);
+
+                XElement BankNumber = new XElement("BankNumber", host.BankBranchDetails.BankNumber);
+                XElement BankName = new XElement("BankName", host.BankBranchDetails.BankName);
+                XElement Bank = new XElement("Bank", BankNumber, BankName);
+                XElement BranchNumber = new XElement("BranchNumber", host.BankBranchDetails.BranchNumber);
+                XElement BranchAddress = new XElement("BranchAddress", host.BankBranchDetails.BranchAddress);
+                XElement BranchCity = new XElement("BranchCity", host.BankBranchDetails.BranchCity);
+                XElement Address = new XElement("Address", BranchAddress, BranchCity);
 
 
-            XElement BankBranchDetails = new XElement("BankBranchDetails", Bank, BranchNumber, Address);
+                XElement BankBranchDetails = new XElement("BankBranchDetails", Bank, BranchNumber, Address);
 
-            HostRoot.Add(new XElement("Host", HostKey, name, FhoneNumber, BankAccountNumber , MailAddress, MailAddress, CollectionClearance, BankBranchDetails));
-            HostRoot.Save(HostPath);
+                HostRoot.Add(new XElement("Host", HostKey, name, FhoneNumber, BankAccountNumber, MailAddress, CollectionClearance, BankBranchDetails));
+                HostRoot.Save(HostPath);
+            }
         }
 
         public bool deleteHost(long key)
@@ -311,8 +378,8 @@ namespace DAL
                                 {
                                     HostKey = long.Parse(item.Element("HostKey").Value),
                                     BankAccountNumber = int.Parse(item.Element("BankAccountNumber").Value),
-                                    FamilyName = item.Element("FamilyName").Value,
-                                    PrivateName = item.Element("PrivateName").Value,
+                                    FamilyName = item.Element("name").Element("FamilyName").Value,
+                                    PrivateName = item.Element("name").Element("PrivateName").Value,
                                     MailAddress = item.Element("MailAddress").Value,
                                     CollectionClearance = bool.Parse(item.Element("CollectionClearance").Value),
                                     FhoneNumber = item.Element("FhoneNumber").Value,
@@ -330,21 +397,32 @@ namespace DAL
             {
                 host = null;
             }
+            if(host == null)
+                throw new Exception("מספר תעודת זהות לא נכון");
             return host;
         }
 
         public IEnumerable<Host> getListHosts(Func<Host, bool> predicate = null)
         {
-            return (from item in HostRoot.Elements()
-                    where getHost(long.Parse(item.Element("HostKey").Value)) != null
-                    select getHost(long.Parse(item.Element("HostKey").Value)));
+            IEnumerable<Host> hosts = (from item in HostRoot.Elements()
+                                       where getHost(long.Parse(item.Element("HostKey").Value)) != null
+                                       select getHost(long.Parse(item.Element("HostKey").Value)));
+
+            if (predicate == null)
+                return hosts;
+
+            return hosts.Where(predicate);
         }
 
         public void updateHost(Host host)
-        {
-            XElement HostElement = (from item in GuestRequestRoot.Elements()
+        {          
+            XElement HostElement = (from item in HostRoot.Elements()
                                             where int.Parse(item.Element("HostKey").Value) == host.HostKey
                                             select item).FirstOrDefault();
+
+            if (HostElement == null)            
+                throw new Exception("התעודת זהות שהוזנה לא מייצגת מארח במערכת");
+            
 
             HostElement.Element("name").Element("PrivateName").Value = host.PrivateName;
             HostElement.Element("name").Element("FamilyName").Value = host.FamilyName;
@@ -363,6 +441,9 @@ namespace DAL
 
         public void addHostingUnit(HostingUnit hostingUnit)
         {
+            hostingUnit.HostingUnitKey = getAndUpdateHostingUnitConfig();
+            hostingUnit.AllDates = new List<DateTime>();
+
             XElement HostingUnitKey = new XElement("HostingUnitKey", hostingUnit.HostingUnitKey);
             XElement AllDates = new XElement("AllDates", ListDateTimeToString(hostingUnit.AllDates));
             XElement Area = new XElement("Area", hostingUnit.Area);
@@ -427,14 +508,21 @@ namespace DAL
             {
                 hostingUnit = null;
             }
+            if(hostingUnit == null)
+                throw new Exception("מספר יחידת אירוח לא נכון");
             return hostingUnit;            
         }
 
         public IEnumerable<HostingUnit> getListHostingUnit(Func<HostingUnit, bool> predicate = null)
         {
-            return (from item in HostingUnitRoot.Elements()
-                    where getHostingUnit(long.Parse(item.Element("HostingUnitKey").Value)) != null
-                    select getHostingUnit(long.Parse(item.Element("HostingUnitKey").Value)));
+            IEnumerable<HostingUnit> hostingUnits = (from item in HostingUnitRoot.Elements()
+                                                     where getHostingUnit(long.Parse(item.Element("HostingUnitKey").Value)) != null
+                                                     select getHostingUnit(long.Parse(item.Element("HostingUnitKey").Value)));
+
+            if (predicate == null)
+                return hostingUnits;
+
+            return hostingUnits.Where(predicate);
         }
 
 
@@ -458,7 +546,37 @@ namespace DAL
 
         public void updateHostingUnit(HostingUnit hostingUnit)
         {
-            throw new NotImplementedException();
+            XElement HostingUnitElement = (from item in HostingUnitRoot.Elements()
+                                           where int.Parse(item.Element("HostingUnitKey").Value) == hostingUnit.HostingUnitKey
+                                           select item).FirstOrDefault();
+
+            if(HostingUnitElement == null)
+                throw new Exception("יחדית האירוח לא נימצאה");
+
+            HostingUnitElement.Element("HostingUnitKey").Value = hostingUnit.HostingUnitKey.ToString();
+            HostingUnitElement.Element("Area").Value = hostingUnit.Area.ToString();
+            HostingUnitElement.Element("HostingUnitName").Value = hostingUnit.HostingUnitName.ToString();
+            HostingUnitElement.Element("AllDates").Value = ListDateTimeToString(hostingUnit.AllDates);
+            HostingUnitElement.Element("Owner").Element("OwnerHostKey").Value = hostingUnit.Owner.HostKey.ToString();
+            HostingUnitElement.Element("Owner").Element("OwnerBankAccountNumber").Value = hostingUnit.Owner.BankAccountNumber.ToString();
+            HostingUnitElement.Element("Owner").Element("OwnerMailAddress").Value = hostingUnit.Owner.MailAddress.ToString();
+            HostingUnitElement.Element("Owner").Element("OwnerFamilyName").Value = hostingUnit.Owner.FamilyName.ToString();
+            HostingUnitElement.Element("Owner").Element("OwnerPrivateName").Value = hostingUnit.Owner.PrivateName.ToString();
+            HostingUnitElement.Element("Owner").Element("OwnerCollectionClearance").Value = hostingUnit.Owner.CollectionClearance.ToString();
+            HostingUnitElement.Element("Owner").Element("BankBranch").Element("BankName").Value = hostingUnit.Owner.BankBranchDetails.BankName.ToString();
+            HostingUnitElement.Element("Owner").Element("BankBranch").Element("BankName").Value = hostingUnit.Owner.BankBranchDetails.BankName.ToString();
+            HostingUnitElement.Element("Owner").Element("BankBranch").Element("BranchAddress").Value = hostingUnit.Owner.BankBranchDetails.BranchAddress.ToString();
+            HostingUnitElement.Element("Owner").Element("BankBranch").Element("BranchCity").Value = hostingUnit.Owner.BankBranchDetails.BranchCity.ToString();
+            HostingUnitElement.Element("Owner").Element("BankBranch").Element("BranchNumber").Value = hostingUnit.Owner.BankBranchDetails.BranchNumber.ToString();
+
+            HostingUnitRoot.Save(HostingUnitPath);
+        }
+        private long getAndUpdateHostingUnitConfig()
+        {
+            long key = (long.Parse(ConfigurationRoot.Element("HostingUnitKey").Value));
+            ConfigurationRoot.Element("HostingUnitKey").Value = (key + 1).ToString();
+            ConfigurationRoot.Save(ConfigurationPath);
+            return key;
         }
 
 
@@ -489,33 +607,125 @@ namespace DAL
 
         public void addOrder(Order order)
         {
-            throw new NotImplementedException();
+            order.OrderKey = getAndUpdateOrderConfig();
+
+            XElement HostingUnitKey = new XElement("HostingUnitKey", order.HostingUnitKey);
+            XElement GuestRequestKey = new XElement("GuestRequestKey", order.GuestRequestKey);
+            XElement OrderKey = new XElement("OrderKey", order.OrderKey);
+            XElement Status = new XElement("Status", order.Status);
+            XElement CreateDate = new XElement("CreateDate", order.CreateDate);
+            XElement OrderDate = new XElement("OrderDate", order.OrderDate);
+            XElement isClosed = new XElement("isClosed", order.isClosed);
+            XElement isSendMail = new XElement("isSendMail", order.isSendMail);            
+
+            OrderRoot.Add(new XElement("Order", HostingUnitKey, GuestRequestKey, OrderKey, Status, CreateDate, OrderDate, isClosed, isSendMail));
+            OrderRoot.Save(OrderdPath);
+        }
+
+        public bool deleteOrder(long key)
+        {
+            XElement OrderElement;
+            try
+            {
+                OrderElement = (from item in OrderRoot.Elements()
+                               where int.Parse(item.Element("OrderKey").Value) == key
+                               select item).FirstOrDefault();
+                OrderElement.Remove();
+                OrderRoot.Save(OrderdPath);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public IEnumerable<Order> getListOrders(Func<Order, bool> predicate = null)
+        {
+            IEnumerable<Order> orders = from item in OrderRoot.Elements()
+                                        where GetOrder(long.Parse(item.Element("OrderKey").Value)) != null
+                                        select GetOrder(long.Parse(item.Element("OrderKey").Value));
+
+            if (predicate == null)
+                return orders;
+
+            return orders.Where(predicate);
+        }
+
+        public Order GetOrder(long key)
+        {
+            Order order;
+            try
+            {
+                order = (from item in OrderRoot.Elements()
+                               where long.Parse(item.Element("OrderKey").Value) == key
+                               select new Order()
+                               {                                   
+                                   OrderKey = long.Parse(item.Element("OrderKey").Value),
+                                   GuestRequestKey = long.Parse(item.Element("GuestRequestKey").Value),
+                                   HostingUnitKey = long.Parse(item.Element("HostingUnitKey").Value),
+                                   Status = getEnumFromString<OrderStatusEnum>((item.Element("Status").Value)),
+                                   isClosed = bool.Parse(item.Element("isClosed").Value),
+                                   isSendMail = bool.Parse(item.Element("isSendMail").Value),
+                                   CreateDate = DateTime.Parse(item.Element("CreateDate").Value),
+                                   OrderDate = DateTime.Parse(item.Element("OrderDate").Value),
+
+                               }).FirstOrDefault();
+            }
+            catch
+            {
+                order = null;
+            }
+            if(order == null)
+                throw new Exception("מספר הזמנה לא נכון");
+            return order;
+        }
+
+        public void updateOrder(Order order)
+        {
+            XElement orderElement = (from item in OrderRoot.Elements()
+                                           where int.Parse(item.Element("OrderKey").Value) == order.OrderKey
+                                           select item).FirstOrDefault();
+
+            if(orderElement == null)
+                throw new Exception("ההזמנה לא נמצאה");
+
+            orderElement.Element("OrderKey").Value = order.HostingUnitKey.ToString();
+            orderElement.Element("CreateDate").Value = order.CreateDate.ToString();
+            orderElement.Element("GuestRequestKey").Value = order.GuestRequestKey.ToString();
+            orderElement.Element("isClosed").Value = order.isClosed.ToString();
+            orderElement.Element("isSendMail").Value = order.isSendMail.ToString();
+            orderElement.Element("OrderDate").Value = order.OrderDate.ToString();
+            orderElement.Element("OrderKey").Value = order.OrderKey.ToString();
+            orderElement.Element("Status").Value = order.Status.ToString();
+
+            OrderRoot.Save(OrderdPath);
+        }
+
+        private long getAndUpdateOrderConfig()
+        {
+            long key = (long.Parse(ConfigurationRoot.Element("OrderKey").Value));
+            ConfigurationRoot.Element("OrderKey").Value = (key + 1).ToString();
+            ConfigurationRoot.Save(ConfigurationPath);
+            return key;
         }
 
         public void AddProfitToAdmin(int amount)
         {
-            throw new NotImplementedException();
+            adminRoot.Element("AdminProfit").Value += amount.ToString();
+            adminRoot.Save(AdminPath);
         }
 
        
-
-       
-
-        public void deleteOrder(long key)
-        {
-            throw new NotImplementedException();
-        }
-
         public string getAdminPass()
         {
-            throw new NotImplementedException();
+            return adminRoot.Element("AdminPass").Value;
         }
 
         public int getAdminProfit()
         {
-            throw new NotImplementedException();
-        }       
-        
+            return int.Parse(adminRoot.Element("AdminProfit").Value);
+        }               
         
 
         public List<BankBranch> getListBankBranchs()
@@ -523,10 +733,13 @@ namespace DAL
 
             int i = BankBranchRoot.Elements().Count();
 
-            List<BankBranch> bankBranchs;
+            List<BankBranch> bankBranchs = new List<BankBranch>();
             try
             {
-                bankBranchs = (from item in BankBranchRoot.Elements()
+                bankBranchs = (from item in BankBranchRoot.Elements()   
+                               let BankNumber = int.Parse(item.Element("קוד_בנק").Value)
+                               let BranchNumber = int.Parse(item.Element("קוד_סניף").Value)
+                               orderby BankNumber , BranchNumber
                                select new BankBranch()
                                {
                                    BankNumber = int.Parse(item.Element("קוד_בנק").Value),
@@ -534,7 +747,7 @@ namespace DAL
                                    BranchNumber = int.Parse(item.Element("קוד_סניף").Value),
                                    BranchAddress = item.Element("כתובת_ה-ATM").Value,
                                    BranchCity = item.Element("ישוב").Value
-                               }).ToList();
+                               }).Distinct().ToList();
             }
             catch
             {
@@ -544,33 +757,21 @@ namespace DAL
 
         }
 
-        
-        
-
-        public IEnumerable<Order> getListOrders(Func<Order, bool> predicate = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Order GetOrder(long key)
-        {
-            throw new NotImplementedException();
-        }
-
         public void setAdminPass(string pass)
         {
-            throw new NotImplementedException();
+            adminRoot.Element("AdminPass").Value = pass;
+            adminRoot.Save(AdminPath);
         }
 
-        
-
-        
-
-        
-
-        public void updateOrder(Order order)
+        public void setFee(int fee)
         {
-            throw new NotImplementedException();
+            ConfigurationRoot.Element("Fee").Value = fee.ToString();
+            ConfigurationRoot.Save(ConfigurationPath);
+        }
+
+        public int getFee()
+        {
+            return int.Parse(ConfigurationRoot.Element("Fee").Value);
         }
 
         public T getEnumFromString<T>(string st)
